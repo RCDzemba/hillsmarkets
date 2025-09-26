@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nail Products & Services - Hills Market</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50">
+    <!-- Mobile-friendly Navigation -->
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a href="#">
+                        <img src="ANewlogo.jpg" alt="Hills Market Logo" class="logo" width="130" height="auto">
+                    </a>
+                </div>
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button type="button" class="text-gray-700 hover:text-pink-600">
+                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+                <!-- Desktop menu (hidden on mobile) -->
+                <div class="hidden md:flex space-x-8">
+                    <a href="#" class="text-gray-700 hover:text-pink-600">Home</a>
+                    <a href="#" class="text-pink-600 font-medium">Shop</a>
+                    <a href="#" class="text-gray-700 hover:text-pink-600">Services</a>
+                    <a href="#" class="text-gray-700 hover:text-pink-600">Log In</a>
+                    <a href="#" class="bg-red-600 text-white px-3 py-1 rounded-lg hover:bg-red-700 text-sm">Sign Up</a>
+                </div>
+                <div class="flex items-center">
+                    <button id="cart-button" class="bg-pink-600 text-white px-3 py-1 rounded-lg hover:bg-pink-700 text-sm">
+                        Cart (<span id="cart-count">0</span>)
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Breadcrumb -->
+    <div class="bg-white border-b">
+        <div class="max-w-7xl mx-auto py-2 px-4">
+            <div class="text-xs text-gray-500">
+                <a href="#" class="hover:text-pink-600">Home</a> &gt; 
+                <a href="#" class="hover:text-pink-600">Shop</a> &gt; 
+                <span class="font-medium text-gray-700">Nail Products & Services</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Category Header -->
+    <div class="bg-white border-b">
+        <div class="max-w-7xl mx-auto py-4 px-4 flex justify-between items-center">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900">Nail Products & Services</h1>
+                <p class="text-sm text-gray-600">14 products</p>
+            </div>
+            <div class="flex items-center space-x-2">
+                <select class="text-xs border rounded p-1">
+                    <option>Sort by: Featured</option>
+                    <option>Price: Low to High</option>
+                    <option>Price: High to Low</option>
+                    <option>Newest</option>
+                </select>
+                <button class="text-xs border rounded p-1 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+                    </svg>
+                    Filter
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Category Subcategories -->
+    <div class="bg-white border-b">
+        <div class="max-w-7xl mx-auto py-2 px-4 overflow-x-auto">
+            <div class="flex space-x-2 whitespace-nowrap">
+                <a href="#" class="text-xs bg-gray-100 text-gray-800 px-3 py-1 rounded-full">
+                    All Items
+                </a>
+                <a href="#" class="text-xs bg-pink-100 text-pink-800 px-3 py-1 rounded-full font-medium">
+                    Nail Products
+                </a>
+                <a href="#" class="text-xs bg-gray-100 text-gray-800 px-3 py-1 rounded-full">
+                    Nail Services
+                </a>
+                <a href="#" class="text-xs bg-gray-100 text-gray-800 px-3 py-1 rounded-full">
+                    Tools & Equipment
+                </a>
+                <a href="#" class="text-xs bg-gray-100 text-gray-800 px-3 py-1 rounded-full">
+                    Nail Care
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Grid -->
+    <div class="max-w-7xl mx-auto py-4 px-4">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <!-- Nail Product 1 -->
+            <div class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+                <img src="/api/placeholder/200/150" alt="Premium Gel Polish" class="w-full h-32 object-cover">
+                <div class="p-3">
+                    <span class="text-xs text-white bg-red-500 px-2 py-0.5 rounded-full">Sale</span>
+                    <h3 class="font-medium text-sm mt-1">Premium Gel Polish Collection</h3>
+                    <p class="text-xs text-gray-500">Set of 6 colors, 15ml each</p>
+                    <div class="flex justify-between items-center mt-2">
+                        <div>
+                            <span class="text-pink-600 font-bold text-sm">R499.99</span>
+                            <span class="text-gray-400 text-xs line-through ml-1">R699.99</span>
+                        </div>
+                        <button class="add-to-cart-btn bg-pink-600 text-white rounded-full p-1 hover:bg-pink-700" data-name="Premium Gel Polish Collection" data-price="499.99">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nail Product 2 -->
+            <div class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+                <img src="/api/placeholder/200/150" alt="Nail Strengthener" class="w-full h-32 object-cover">
+                <div class="p-3">
+                    <h3 class="font-medium text-sm mt-1">Advanced Nail Strengthener</h3>
+                    <p class="text-xs text-gray-500">10ml, with keratin</p>
+                    <div class="flex justify-between items-center mt-2">
+                        <div>
+                            <span class="text-pink-600 font-bold text-sm">R249.99</span>
+                        </div>
+                        <button class="add-to-cart-btn bg-pink-600 text-white rounded-full p-1 hover:bg-pink-700" data-name="Advanced Nail Strengthener" data-price="249.99">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nail Product 3 -->
+            <div class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+                <img src="/api/placeholder/200/150" alt="Nail Art Kit" class="w-full h-32 object-cover">
+                <div class="p-3">
+                    <span class="text-xs text-white bg-pink-500 px-2 py-0.5 rounded-full">Bestseller</span>
+                    <h3 class="font-medium text-sm mt-1">Professional Nail Art Kit</h3>
+                    <p class="text-xs text-gray-500">30 pieces, various designs</p>
+                    <div class="flex justify-between items-center mt-2">
+                        <div>
+                            <span class="text-pink-600 font-bold text-sm">R350.00</span>
+                        </div>
+                        <button class="add-to-cart-btn bg-pink-600 text-white rounded-full p-1 hover:bg-pink-700" data-name="Professional Nail Art Kit" data-price="350.00">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nail Product 4 -->
+            <div class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+                <img src="/api/placeholder/200/150" alt="UV Lamp" class="w-full h-32 object-cover">
+                <div class="p-3">
+                    <h3 class="font-medium text-sm mt-1">Professional UV/LED Nail Lamp</h3>
+                    <p class="text-xs text-gray-500">48W, quick-dry technology</p>
+                    <div class="flex justify-between items-center mt-2">
+                        <div>
+                            <span class="text-pink-600 font-bold text-sm">R899.99</span>
+                        </div>
+                        <button class="add-to-cart-btn bg-pink-600 text-white rounded-full p-1 hover:bg-pink-700" data-name="Professional UV/LED Nail Lamp" data-price="899.99">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nail Product 5 -->
+            <div class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+                <img src="/api/placeholder/200/150" alt="Cuticle Oil" class="w-full h-32 object-cover">
+                <div class="p-3">
+                    <h3 class="font-medium text-sm mt-1">Nourishing Cuticle Oil</h3>
+                    <p class="text-xs text-gray-500">15ml, with vitamin E</p>
+                    <div class="flex justify-between items-center mt-2">
+                        <div>
+                            <span class="text-pink-600 font-bold text-sm">R120.00</span>
+                        </div>
+                        <button class="add-to-cart-btn bg-pink-600 text-white rounded-full p-1 hover:bg-pink-700" data-name="Nourishing Cuticle Oil" data-price="120.00">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nail Product 6 -->
+            <div class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+                <img src="/api/placeholder/200/150" alt="Nail File Set" class="w-full h-32 object-cover">
+                <div class="p-3">
+                    <span class="text-xs text-white bg-red-500 px-2 py-0.5 rounded-full">Sale</span>
+                    <h3 class="font-medium text-sm mt-1">Professional Nail File Set</h3>
+                    <p class="text-xs text-gray-500">5 pieces, varying grits</p>
+                    <div class="flex justify-between items-center mt-2">
+                        <div>
+                            <span class="text-pink-600 font-bold text-sm">R75.00</span>
+                            <span class="text-gray-400 text-xs line-through ml-1">R99.99</span>
+                        </div>
+                        <button class="add-to-cart-btn bg-pink-600 text-white rounded-full p-1 hover:bg-pink-700" data-name="Professional Nail File Set" data-price="75.00">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nail Service 1 -->
+            <div class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+                <img src="/api/placeholder/200/150" alt="Manicure Service" class="w-full h-32 object-cover">
+                <div class="p-3">
+                    <span class="text-xs text-white bg-purple-500 px-2 py-0.5 rounded-full">Service</span>
+                    <h3 class="font-medium text-sm mt-1">Classic Manicure</h3>
+                    <p class="text-xs text-gray-500">45 minutes, includes polish</p>
+                    <div class="flex justify-between items-center mt-2">
+                        <div>
+                            <span class="text-pink-600 font-bold text-sm">R250.00</span>
+                        </div>
+                        <button class="add-to-cart-btn bg-pink-600 text-white rounded-full p-1 hover:bg-pink-700" data-name="Classic Manicure" data-price="250.00">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nail Service 2 -->
+            <div class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+                <img src="/api/placeholder/200/150" alt="Gel Nails" class="w-full h-32 object-cover">
+                <div class="p-3">
+                    <span class="text-xs text-white bg-purple-500 px-2 py-0.5 rounded-full">Service</span>
+                    <h3 class="font-medium text-sm mt-1">Gel Nail Application</h3>
+                    <p class="text-xs text-gray-500">60 minutes, any color</p>
+                    <div class="flex justify-between items-center mt-2">
+                        <div>
+                            <span class="text-pink-600 font-bold text-sm">R350.00</span>
+                        </div>
+                        <button class="add-to-cart-btn bg-pink-600 text-white rounded-full p-1 hover:bg-pink-700" data-name="Gel Nail Application" data-price="350.00">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Nail Product 7 -->
+            <div class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+                <img src="/api/placeholder/200/150" alt="Nail Buffer" class="w-full h-32 object-cover">
+                <div class="p-3">
+                    <h3 class="font-medium text-sm mt-1">4-Way Professional Nail Buffer</h3>
+                    <p class="text-xs text-gray-500">Long-lasting, washable</p>
+                    <div class="flex justify-between items-center mt-2">
+                        <div>
+                            <span class="text-pink-600 font-bold text-sm">R45.00</span>
+                        </div>
+                        <button class="add-to-cart-btn bg-pink-600 text-white rounded-full p-1 hover:bg-pink-700" data-name="4-Way Professional Nail Buffer" data-price="45.00">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Nail Product 8 -->
+            <div class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+                <img src="/api/placeholder/200/150" alt="Nail Polish Remover" class="w-full h-32 object-cover">
+                <div class="p-3">
+                    <h3 class="font-medium text-sm mt-1">Acetone-Free Polish Remover</h3>
+                    <p class="text-xs text-gray-500">200ml, gentle formula</p>
+                    <div class="flex justify-between items-center mt-2">
+                        <div>
+                            <span class="text-pink-600 font-bold text-sm">R85.00</span>
+                        </div>
+                        <button class="add-to-cart-btn bg-pink-600 text-white rounded-full p-1 hover:bg-pink-700" data-name="Acetone-Free Polish Remover" data-price="85.00">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Nail Service 3 -->
+            <div class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+                <img src="/api/placeholder/200/150" alt="Nail Art Service" class="w-full h-32 object-cover">
+                <div class="p-3">
+                    <span class="text-xs text-white bg-purple-500 px-2 py-0.5 rounded-full">Service</span>
+                    <h3 class="font-medium text-sm mt-1">Custom Nail Art Design</h3>
+                    <p class="text-xs text-gray-500">Added to any service</p>
+                    <div class="flex justify-between items-center mt-2">
+                        <div>
+                            <span class="text-pink-600 font-bold text-sm">R150.00</span>
+                        </div>
+                        <button class="add-to-cart-btn bg-pink-600 text-white rounded-full p-1 hover:bg-pink-700" data-name="Custom Nail Art Design" data-price="150.00">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Nail Product 9 -->
+            <div class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+                <img src="/api/placeholder/200/150" alt="Nail Extensions" class="w-full h-32 object-cover">
+                <div class="p-3">
+                    <span class="text-xs text-white bg-green-500 px-2 py-0.5 rounded-full">Limited</span>
+                    <h3 class="font-medium text-sm mt-1">Press-On Nail Set</h3>
+                    <p class="text-xs text-gray-500">24 pieces, reusable</p>
+                    <div class="flex justify-between items-center mt-2">
+                        <div>
+                            <span class="text-pink-600 font-bold text-sm">R199.99</span>
+                        </div>
+                        <button class="add-to-cart-btn bg-pink-600 text-white rounded-full p-1 hover:bg-pink-700" data-name="Press-On Nail Set" data-price="199.99">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="max-w-7xl mx-auto py-4 px-4 flex justify-center">
+        <div class="flex space-x-1">
+            <button class="px-3 py-1 rounded border text-xs text-gray-500 hover:bg-gray-100">Previous</button>
+            <button class="px-3 py-1 rounded border text-xs bg-pink-600 text-white">1</button>
+            <button class="px-3 py-1 rounded border text-xs text-gray-500 hover:bg-gray-100">2</button>
+            <button class="px-3 py-1 rounded border text-xs text-gray-500 hover:bg-gray-100">Next</button>
+        </div>
+    </div>
+
+    <!-- Cart notification -->
+    <div id="cart-notification" class="fixed top-4 right-4 bg-pink-500 text-white px-4 py-2 rounded-lg shadow-lg transform translate-y-[-100px] transition-transform duration-300">
+        Item added to cart!
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white py-4 px-4 border-t">
+        <div class="max-w-7xl mx-auto text-center text-xs text-gray-500">
+            <p>© 2025 Hills Market. All rights reserved.</p>
+            <div class="mt-2">
+                <a href="#" class="text-gray-600 hover:text-pink-600 mx-2">Privacy</a>
+                <a href="#" class="text-gray-600 hover:text-pink-600 mx-2">Terms</a>
+                <a href="#" class="text-gray-600 hover:text-pink-600 mx-2">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript for cart functionality -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize cart
+            let cart = JSON.parse(localStorage.getItem('hillsMarketCart')) || [];
+            updateCartCount();
+
+            // Add event listeners to all "Add to Cart" buttons
+            document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const name = this.getAttribute('data-name');
+                    const price = parseFloat(this.getAttribute('data-price'));
+                    
+                    // Add item to cart
+                    cart.push({
+                        name: name,
+                        price: price,
+                        quantity: 1
+                    });
+                    
+                    // Save cart to localStorage
+                    localStorage.setItem('hillsMarketCart', JSON.stringify(cart));
+                    
+                    // Update cart count
+                    updateCartCount();
+                    
+                    // Show notification
+                    showNotification();
+                });
+            });
+
+            // Function to update cart count
+            function updateCartCount() {
+                const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
+                document.getElementById('cart-count').textContent = cartCount;
+            }
+
+            // Function to show notification
+            function showNotification() {
+                const notification = document.getElementById('cart-notification');
+                notification.style.transform = 'translateY(0)';
+                
+                // Hide notification after 3 seconds
+                setTimeout(() => {
+                    notification.style.transform = 'translateY(-100px)';
+                }, 3000);
+            }
+
+            // Cart button functionality
+            document.getElementById('cart-button').addEventListener('click', function() {
+                alert('Cart items:\n' + 
+                    cart.map(item => `${item.name} - R${item.price.toFixed(2)} x ${item.quantity}`).join('\n') +
+                    '\n\nTotal: R' + cart.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2)
+                );
+            });
+        });
+    </script>
+</body>
+</html>

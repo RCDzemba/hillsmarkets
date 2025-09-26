@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laptops & Computing - Hills Market</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.3/tiny-slider.css">
+    <style>
+        /* Custom color palette for laptops section */
+        .tech-blue { background-color: #1e40af; }
+        .tech-blue-light { background-color: #3b82f6; }
+        .gaming-purple { background-color: #7c3aed; }
+        .creative-orange { background-color: #f97316; }
+        .business-gray { background-color: #4b5563; }
+        .eco-green { background-color: #10b981; }
+        
+        /* Custom animations */
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 5px rgba(59, 130, 246, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.8); }
+            100% { box-shadow: 0 0 5px rgba(59, 130, 246, 0.5); }
+        }
+        
+        .pulse-glow {
+            animation: pulse-glow 2s infinite;
+        }
+        
+        /* Hover effects */
+        .product-card {
+            transition: all 0.3s ease;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        /* Comparison table styling */
+        .comparison-table th, .comparison-table td {
+            padding: 12px;
+            text-align: center;
+        }
+        
+        .comparison-table tr:nth-child(even) {
+            background-color: #f9fafb;
+        }
+        
+        /* Custom badge styling */
+        .badge-premium {
+            background: linear-gradient(45deg, #f59e0b, #d97706);
+        }
+        
+        .badge-gaming {
+            background: linear-gradient(45deg, #7c3aed, #6d28d9);
+        }
+        
+        .badge-business {
+            background: linear-gradient(45deg, #4b5563, #374151);
+        }
+        
+        .badge-creative {
+            background: linear-gradient(45deg, #f97316, #ea580c);
+        }
+        
+        /* Tech specs styling */
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+        }
+        
+        .spec-item {
+            background-color: #f3f4f6;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Mobile-friendly Navigation -->
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a href="#">
+                        <img src="ANewlogo.jpg" class="logo" width="150" height="auto">
+                    </a>
+                </div>
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button type="button" class="text-gray-700 hover:text-blue-600">
+                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+                <!-- Desktop menu (hidden on mobile) -->
+                <div class="hidden md:flex space-x-8">
+                    <a href="#" class="text-gray-700 hover:text-blue-600">Home</a>
+                    <a href="#" class="text-blue-600 font-medium">Shop</a>
+                    <a href="#" class="text-gray-700 hover:text-blue-600">Support</a>
+                    <a href="#" class="text-gray-700 hover:text-blue-600">Log In</a>
+                    <a href="#" class="bg-red-600 text-white px-3 py-1 rounded-lg hover:bg-red-700 text-sm">Sign Up</a>
+                </div>
+                <div class="flex items-center">
+                    <button id="cart-button" class="bg-blue-600 text-white px-3 py-1 rounded-lg hover:bg-blue-700 text-sm flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                        Cart (<span id="cart-count">0</span>)
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Breadcrumb -->
+    <div class="bg-white border-b">
+        <div class="max-w-7xl mx-auto py-2 px-4">
+            <div class="text-xs text-gray-500">
+                <a href="#" class="hover:text-blue-600">Home</a> &gt; 
+                <a href="#" class="hover:text-blue-600">Shop</a> &gt; 
+                <span class="font-medium text-gray-700">Laptops & Computing</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Advertisement Slider Section -->
+    <div class="max-w-7xl mx-auto mt-4 px-4">
+        <div class="bg-gradient-to-r from-gray-900 to-black rounded-lg shadow-md overflow-hidden">
+            <div class="flex flex-col md:flex-row items-center p-6 md:p-8 text-white">
+                <div class="w-full md:w-1/2 mb-4 md:mb-0">
+                    <h2 class="text-2xl md:text-3xl font-bold mb-2">New MacBook Pro with M3 Chip</h2>
+                    <p class="mb-4 text-sm md:text-base">Supercharged by M3 Pro and M3 Max chips for extreme performance in demanding pro workflows.</p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="text-xs bg-blue-500 px-2 py-1 rounded">Up to 22hrs Battery</span>
+                        <span class="text-xs bg-purple-500 px-2 py-1 rounded">Liquid Retina XDR Display</span>
+                        <span class="text-xs bg-green-500 px-2 py-1 rounded">Eco-Friendly</span>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <button class="bg-white text-gray-900 px-4 py-2 rounded-lg font-medium hover:bg-gray-100">
+                            Shop Now
+                        </button>
+                        <button class="border border-white text-white px-4 py-2 rounded-lg font-medium hover:bg-white hover:text-gray-900">
+                            Compare Models
+                        </button>
+                    </div>
+                </div>
+                <div class="w-full md:w-1/2 flex justify-center">
+                    <img src="pro.png" alt="MacBook Pro" class="h-48 md:h-64 object-contain pulse-glow">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Filters Bar -->
+    <div class="max-w-7xl mx-auto mt-6 px-4">
+        <div class="bg-white rounded-lg shadow-sm p-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <h3 class="text-lg font-semibold mb-2 md:mb-0">Find Your Perfect Laptop</h3>
+                <div class="flex flex-wrap gap-2">
+                    <button class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-medium">For Work</button>
+                    <button class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-xs font-medium">For Gaming</button>
+                    <button class="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-xs font-medium">For Creatives</button>
+                    <button class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-medium">For Students</button>
+                    <button class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-xs font-medium">Budget-Friendly</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Category Header -->
+    <div class="bg-white border-b mt-6">
+        <div class="max-w-7xl mx-auto py-4 px-4 flex flex-col md:flex-row justify-between items-start md:items-center">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900">Laptops & Computing</h1>
+                <p class="text-sm text-gray-600">24 products | Expert advice available</p>
+            </div>
+            <div class="flex items-center space-x-2 mt-2 md:mt-0">
+                <select class="text-xs border rounded p-2">
+                    <option>Sort by: Featured</option>
+                    <option>Price: Low to High</option>
+                    <option>Price: High to Low</option>
+                    <option>Newest</option>
+                    <option>Best Rated</option>
+                </select>
+                <button class="text-xs border rounded p-2 flex items-center bg-blue-50 text-blue-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+                    </svg>
+                    Filter
+                </button>
+                <button class="text-xs bg-gray-100 text-gray-800 px-3 py-2 rounded flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                    </svg>
+                    Compare
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Category Subcategories -->
+    <div class="bg-white border-b">
+        <div class="max-w-7xl mx-auto py-2 px-4 overflow-x-auto">
+            <div class="flex space-x-2 whitespace-nowrap">
+                <a href="#" class="text-xs bg-blue-100 text-blue-800 px-3 py-1 rounded-full font-medium">
+                    All Laptops
+                </a>
+                <a href="#" class="text-xs bg-gray-100 text-gray-800 px-3 py-1 rounded-full">
+                    Apple MacBook
+                </a>
+                <a href="#" class="text-xs bg-gray-100 text-gray-800 px-3 py-1 rounded-full">
+                    Gaming Laptops
+                </a>
+                <a href="#" class="text-xs bg-gray-100 text-gray-800 px-3 py-1 rounded-full">
+                    Business Laptops
+                </a>
+                <a href="#" class="text-xs bg-gray-100 text-gray-800 px-3 py-1 rounded-full">
+                    2-in-1 Convertibles
+                </a>
+                <a href="#" class="text-xs bg-gray-100 text-gray-800 px-3 py-1 rounded-full">
+                    Ultrabooks
+                </a>
+                <a href="#" class="text-xs bg-gray-100 text-gray-800 px-3 py-1 rounded-full">
+                    Accessories
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Grid -->
+    <div class="max-w-7xl mx-auto py-4 px-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <!-- MacBook Product 1 -->
+            <div class="bg-white rounded-lg shadow-sm overflow-hidden product-card">
+                <div class="relative">
+                    <img src="https://via.placeholder.com/300x200/f3f4f6/374151?text=MacBook+Pro+14" alt="MacBook Pro 14" class="w-full h-48 object-contain p-4">
+                    <span class="absolute top-2 left-2 text-xs text-white badge-premium px-2 py-1 rounded-full">Premium</span>
+                    <span class="absolute top-2 right-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 hover:text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                        </svg>
+                    </span>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-semibold text-lg mb-1">MacBook Pro 14" M3 Pro</h3>
+                    <div class="specs-grid mb-3">
+                        <div class="spec-item">12-core CPU</div>
+                        <div class="spec-item">18-core GPU</div>
+                        <div class="spec-item">18GB RAM</div>
+                        <div class="spec-item">1TB SSD</div>
+                    </div>
+                    <div class="flex justify-between items-center mt-2">
+                        <div>
+                            <span class="text-blue-600 font-bold text-lg">R39,999.99</span>
+                            <div class="flex items-center mt-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                </svg>
+                                <span class="text-xs text-gray-600 ml-1">4.8 (128 reviews)</span>
+                            </div>
+                        </div>
+                        <button class="add-to-cart-btn bg-blue-600 text-white rounded-full p-2 hover:bg-blue-700 flex items-center justify-center" data-name="MacBook Pro 14 M3 Pro" data-price="39999.99">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="mt-3 flex justify-between">
+                        <span class="text-xs text-green-600 font-medium">In Stock</span>
+                        <button class="text-xs text-blue-600 hover:underline">Quick View</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gaming Laptop 1 -->
+            <div class="bg-white rounded-lg shadow-sm overflow-hidden product-card">
+                <div class="relative">
+                    <img src="https://via.placeholder.com/300x200/1f2937/7c3aed?text=ROG+Gaming+Laptop" alt="ROG Gaming Laptop" class="w-full h-48 object-contain p-4">
+                    <span class="absolute top-2 left-2 text-xs text-white badge-gaming px-2 py-1 rounded-full">Gaming</span>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-semibold text-lg mb-1">ASUS ROG Zephyrus G15</h3>
+                    <div class="specs-grid mb-3">
+                        <div class="spec-item">AMD Ryzen 9</div>
+                        <div class="spec-item">RTX 4070</div>
+                        <div class="spec-item">32GB RAM</div>
+                        <div class="spec-item">1TB SSD</div>
+                    </div>
+                    <div class="flex justify-between items-center mt-2">
+                        <div>
+                            <span class="text-blue-600 font-bold text-lg">R32,499.99</span>
+                            <div class="flex items-center mt-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                </svg>
+                                <span class="text-xs text-gray-600 ml-1">4.6 (94 reviews)</span>
+                            </div>
+                        </div>
+                        <button class="add-to-cart-btn bg-blue-600 text-white rounded-full p-2 hover:bg-blue-700 flex items-center justify-center" data-name="ASUS ROG Zephyrus G15" data-price="32499.99">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="mt-3 flex justify-between">
+                        <span class="text-xs text-green-600 font-medium">In Stock</span>
+                        <button class="text-xs text-blue-600 hover:underline">Quick View</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Business Laptop 1 -->
+            <div class="bg-white rounded-lg shadow-sm overflow-hidden product-card">
+                <div class="relative">
+                    <img src="https://via.placeholder.com/300x200/f3f4f6/4b5563?text=ThinkPad+X1+Carbon" alt="ThinkPad X1 Carbon" class="w-full h-48 object-contain p-4">
+                    <span class="absolute top-2 left-2 text-xs text-white badge-business px-2 py-1 rounded-full">Business</span>
+                    <span class="absolute top-2 right-2 text-xs bg-red-500 text-white px-2 py-1 rounded">Sale</span>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-semibold text-lg mb-1">Lenovo ThinkPad X1 Carbon</h3>
+                    <div class="specs-grid mb-3">
+                        <div class="spec-item">Intel i7-1365U</div>
+                        <div class="spec-item">Iris Xe Graphics</div>
+                        <div class="spec-item">16GB RAM</div>
+                        <div class="spec-item">512GB SSD</div>
+                    </div>
+                    <div class="flex justify-between items-center mt-2">
+                        <div>
+                            <span class="text-blue-600 font-bold text-lg">R24,999.99</span>
+                            <span class="text-gray-400 text-sm line-through ml-1">R28,999.99</span>
+                            <div class="flex items-center mt-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                </svg>
+                                <span class="text-xs text-gray-600 ml-1">4.7 (203 reviews)</span>
+                            </div>
+                        </div>
+                        <button class="add-to-cart-btn bg-blue-600 text-white rounded-full p-2 hover:bg-blue-700 flex items-center justify-center" data-name="Lenovo ThinkPad X1 Carbon" data-price="24999.99">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="mt-3 flex justify-between">
+                        <span class="text-xs text-green-600 font-medium">In Stock</span>
+                        <button class="text-xs text-blue-600 hover:underline">Quick View</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2-in-1 Laptop -->
+            <div class="bg-white rounded-lg shadow-sm overflow-hidden product-card">
+                <div class="relative">
+                    <img src="https://via.placeholder.com/300x200/f3f4f6/f97316?text=Yoga+9i+2-in-1" alt="Yoga 9i 2-in-1" class="w-full h-48 object-contain p-4">
+                    <span class="absolute top-2 left-2 text-xs text-white badge-creative px-2 py-1 rounded-full">2-in-1</span>
+                    <span class="absolute top-2 right-2 text-xs bg-green-500 text-white px-2 py-1 rounded">Eco</span>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-semibold text-lg mb-1">Lenovo Yoga 9i 14" 2-in-1</h3>
+                    <div class="specs-grid mb-3">
+                        <div class="spec-item">Intel i7-1355U</div>
+                        <div class="spec-item">Iris Xe Graphics</div>
+                        <div class="spec-item">16GB RAM</div>
+                        <div class="spec-item">1TB SSD</div>
+                    </div>
+                    <div class="flex justify-between items-center mt-2">
+                        <div>
+                            <span class="text-blue-600 font-bold text-lg">R26,799.99</span>
+                            <div class="flex items-center mt-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                </svg>
+                                <span class="text-xs text-gray-600 ml-1">4.5 (87 reviews)</span>
+                            </div>
+                        </div>
+                        <button class="add-to-cart-btn bg-blue-600 text-white rounded-full p-2 hover:bg-blue-700 flex items-center justify-center" data-name="Lenovo Yoga 9i 14 2-in-1" data-price="26799.99">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="mt-3 flex justify-between">
+                        <span class="text-xs text-green-600 font-medium">In Stock</span>
+                        <button class="text-xs text-blue-600 hover:underline">Quick View</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Continue with more products... -->
+        </div>
+    </div>
+
+    <!-- Laptop Comparison Section -->
+    <div class="max-w-7xl mx-auto mt-8 px-4">
+        <div class="bg-white rounded-lg shadow-sm p-6">
+            <h2 class="text-xl font-bold mb-4">Compare Laptops</h2>
+            <div class="overflow-x-auto">
+                <table class="w-full comparison-table text-sm">
+                    <thead>
+                        <tr class="bg-gray-100">
+                            <th class="text-left">Model</th>
+                            <th>MacBook Pro 14"</th>
+                            <th>ROG Zephyrus G15</th>
+                            <th>ThinkPad X1 Carbon</th>
+                            <th>Yoga 9i 14"</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-left font-medium">Best For</td>
+                            <td><span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs">Professionals</span></td>
+                            <td><span class="bg-purple-100 text-purple-800 px-2 py-1 rounded text-xs">Gaming</span></td>
+                            <td><span class="bg-gray-100 text-gray-800 px-2 py-1 rounded text-xs">Business</span></td>
+                            <td><span class="bg-orange-100 text-orange-800 px-2 py-1 rounded text-xs">Creativity</span></td>
+                        </tr>
+                        <tr>
+                            <td class="text-left font-medium">Processor</td>
+                            <td>Apple M3 Pro</td>
+                            <td>AMD Ryzen 9</td>
+                            <td>Intel i7-1365U</td>
+                            <td>Intel i7-1355U</td>
+                        </tr>
+                        <tr>
+                            <td class="text-left font-medium">Graphics</td>
+                            <td>18-core GPU</td>
+                            <td>RTX 4070</td>
+                            <td>Iris Xe</td>
+                            <td>Iris Xe</td>
+                        </tr>
+                        <tr>
+                            <td class="text-left font-medium">RAM</td>
+                            <td>18GB</td>
+                            <td>32GB</td>
+                            <td>16GB</td>
+                            <td>16GB</td>
+                        </tr>
+                        <tr>
+                            <td class="text-left font-medium">Storage</td>
+                            <td>1TB SSD</td>
+                            <td>1TB SSD</td>
+                            <td>512GB SSD</td>
+                            <td>1TB SSD</td>
+                        </tr>
+                        <tr>
+                            <td class="text-left font-medium">Battery Life</td>
+                            <td>Up to 18hrs</td>
+                            <td>Up to 10hrs</td>
+                            <td>Up to 15hrs</td>
+                            <td>Up to 13hrs</td>
+                        </tr>
+                        <tr>
+                            <td class="text-left font-medium">Weight</td>
+                            <td>1.6kg</td>
+                            <td>1.9kg</td>
+                            <td>1.1kg</td>
+                            <td>1.4kg</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tech Support Section -->
+    <div class="max-w-7xl mx-auto mt-8 px-4">
+        <div class="bg-gradient-to-r from-blue-50 to-indigo-100 rounded-lg shadow-sm p-6">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="w-full md:w-2/3 mb-4 md:mb-0">
+                    <h2 class="text-xl font-bold mb-2">Need Help Choosing?</h2>
+                    <p class="mb-4">Our tech experts are available to help you select the perfect laptop for your needs.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700">
+                            Chat with Expert
+                        </button>
+                        <button class="border border-blue-600 text-blue-600 px-4 py-2 rounded-lg text-sm hover:bg-blue-50">
+                            Book a Consultation
+                        </button>
+                    </div>
+                </div>
+                <div class="w-full md:w-1/3 flex justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a

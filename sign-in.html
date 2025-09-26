@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - Hills Market</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <style>
+        /* Custom styles to match the existing site */
+        .logo {
+            max-width: 150px;
+            height: auto;
+        }
+        
+        .input-field {
+            transition: all 0.3s ease;
+            border: 1px solid #d1d5db;
+        }
+        
+        .input-field:focus {
+            border-color: #10b981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+        
+        .btn-primary {
+            background-color: #10b981;
+            transition: background-color 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: #059669;
+        }
+        
+        .btn-secondary {
+            background-color: #ef4444;
+            transition: background-color 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #dc2626;
+        }
+        
+        .signin-container {
+            min-height: calc(100vh - 200px);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation (same as home page) -->
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a href="home.html">
+                        <img src="ANewlogo.jpg" alt="Hills Market Logo" class="logo" width="150" height="auto">
+                    </a>
+                </div>
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button type="button" class="text-gray-700 hover:text-green-600" id="mobileMenuButton">
+                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+                <!-- Desktop menu (hidden on mobile) -->
+                <div class="hidden md:flex space-x-8">
+                    <a href="home.html" class="text-gray-700 hover:text-green-600">Home</a>
+                    <a href="mainpage.html" class="text-gray-700 hover:text-green-600">Shop</a>
+                    <a href="deliverypage.html" class="text-gray-700 hover:text-green-600">Delivery</a>
+                    <a href="#" class="text-green-600 font-medium">Log In</a>
+                    <a href="hills-market-signup.html" class="bg-red-600 text-white px-3 py-1 rounded-lg hover:bg-red-700 text-sm">Sign Up</a>
+                </div>
+                <div class="flex items-center">
+                    <button class="bg-green-600 text-white px-3 py-1 rounded-lg hover:bg-green-700 text-sm">
+                        Cart (0)
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile menu (hidden by default) -->
+        <div class="md:hidden hidden bg-white border-t" id="mobileMenu">
+            <div class="px-4 py-2 space-y-2">
+                <a href="home.html" class="block py-2 text-gray-700 hover:text-green-600">Home</a>
+                <a href="mainpage.html" class="block py-2 text-gray-700 hover:text-green-600">Shop</a>
+                <a href="deliverypage.html" class="block py-2 text-gray-700 hover:text-green-600">Delivery</a>
+                <a href="#" class="block py-2 text-green-600 font-medium">Log In</a>
+                <a href="hills-market-signup.html" class="block py-2 bg-red-600 text-white px-3 py-1 rounded-lg hover:bg-red-700 text-sm text-center">Sign Up</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sign In Section -->
+    <section class="signin-container py-12 px-4">
+        <div class="max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden">
+            <div class="bg-green-600 py-4 px-6">
+                <h1 class="text-2xl font-bold text-white">Sign In to Your Account</h1>
+            </div>
+            
+            <div class="p-6">
+                <form id="signinForm" class="space-y-6">
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            required 
+                            class="w-full px-4 py-2 rounded-lg input-field focus:outline-none"
+                            placeholder="your.email@example.com">
+                    </div>
+                    
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            required 
+                            class="w-full px-4 py-2 rounded-lg input-field focus:outline-none"
+                            placeholder="Enter your password">
+                    </div>
+                    
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <input 
+                                type="checkbox" 
+                                id="remember" 
+                                name="remember"
+                                class="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded">
+                            <label for="remember" class="ml-2 block text-sm text-gray-700">
+                                Remember me
+                            </label>
+                        </div>
+                        
+                        <a href="#" class="text-sm text-green-600 hover:text-green-700">
+                            Forgot your password?
+                        </a>
+                    </div>
+                    
+                    <button type="submit" class="w-full bg-green-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-green-700 transition duration-300">
+                        Sign In
+                    </button>
+                    
+                    <div class="text-center">
+                        <p class="text-sm text-gray-600">
+                            Don't have an account? 
+                            <a href="hills-market-signup.html" class="font-medium text-green-600 hover:text-green-700">
+                                Sign up here
+                            </a>
+                        </p>
+                    </div>
+                </form>
+                
+                <div class="mt-6 pt-6 border-t border-gray-200">
+                    <div class="relative">
+                        <div class="absolute inset-0 flex items-center">
+                            <div class="w-full border-t border-gray-300"></div>
+                        </div>
+                        <div class="relative flex justify-center text-sm">
+                            <span class="px-2 bg-white text-gray-500">Or continue with</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 grid grid-cols-2 gap-3">
+                        <button type="button" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                            </svg>
+                            <span class="ml-2">Google</span>
+                        </button>
+                        
+                        <button type="button" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+                            </svg>
+                            <span class="ml-2">Twitter</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer (same as home page) -->
+    <footer class="bg-white py-8 px-4 border-t">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div>
+                <img src="ANewlogo.jpg" alt="Hills Market Logo" class="logo mb-4" width="150" height="auto">
+                <p class="text-gray-600 text-sm">Your one-stop shop for produce and quality goods.</p>
+            </div>
+            <div>
+                <h3 class="font-bold mb-4">Quick Links</h3>
+                <ul class="space-y-2 text-sm text-gray-600">
+                    <li><a href="home.html" class="hover:text-green-600">Home</a></li>
+                    <li><a href="mainpage.html" class="hover:text-green-600">Shop</a></li>
+                    <li><a href="#" class="hover:text-green-600">Delivery Information</a></li>
+                    <li><a href="#" class="hover:text-green-600">About Us</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="font-bold mb-4">Customer Service</h3>
+                <ul class="space-y-2 text-sm text-gray-600">
+                    <li><a href="#" class="hover:text-green-600">Contact Us</a></li>
+                    <li><a href="#" class="hover:text-green-600">FAQs</a></li>
+                    <li><a href="#" class="hover:text-green-600">Returns & Refunds</a></li>
+                    <li><a href="#" class="hover:text-green-600">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="font-bold mb-4">Contact Info</h3>
+                <ul class="space-y-2 text-sm text-gray-600">
+                    <li>31 Parklane, Junction, Parktown</li>
+                    <li>Phone: +27 72 211-0805</li>
+                    <li>Email: info@hillsmarket.co.za</li>
+                </ul>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto text-center text-xs text-gray-500 mt-8 pt-4 border-t">
+            <p>© 2025 Hills Market. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Form submission handling
+        const signinForm = document.getElementById('signinForm');
+        
+        signinForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Get form values
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const remember = document.getElementById('remember').checked;
+            
+            // Basic validation
+            if (!email || !password) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+            
+            // In a real application, you would send this data to a server
+            // For this example, we'll just show a success message
+            alert(`Sign in successful! Welcome back, ${email}.`);
+            
+            // Redirect to home page after successful sign in
+            setTimeout(() => {
+                window.location.href = 'home.html';
+            }, 1000);
+        });
+
+        // Social sign in buttons
+        document.querySelectorAll('.social-signin button').forEach(button => {
+            button.addEventListener('click', () => {
+                const provider = button.querySelector('span').textContent;
+                alert(`Redirecting to ${provider} authentication...`);
+                // In a real app, this would redirect to the OAuth flow
+            });
+        });
+    </script>
+</body>
+</html>

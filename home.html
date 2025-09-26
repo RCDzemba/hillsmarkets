@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hills Market - Fresh Produce & More</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <style>
+        /* Custom styles for the modal and AR container */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal-content {
+            background-color: white;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+        
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+        
+        .image-gallery {
+            position: relative;
+            height: 300px;
+            overflow: hidden;
+        }
+        
+        .gallery-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .gallery-image.active {
+            opacity: 1;
+        }
+        
+        .gallery-nav {
+            position: absolute;
+            bottom: 10px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+        }
+        
+        .gallery-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+        }
+        
+        .gallery-dot.active {
+            background-color: white;
+        }
+        
+        .ar-container {
+            display: none;
+            height: 300px;
+            background-color: #f3f4f6;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .ar-container.active {
+            display: block;
+        }
+        
+        .ar-placeholder {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .view-toggle {
+            display: flex;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .view-toggle button {
+            flex: 1;
+            padding: 10px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        .view-toggle button.active {
+            border-bottom: 2px solid #10b981;
+            color: #10b981;
+        }
+        
+        .product-info {
+            padding: 20px;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 10;
+        }
+        
+        /* Home page specific styles */
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1542838132-92c53300491e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+        }
+        
+        .category-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Advertisement Space Styles */
+        .ad-carousel-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .ad-carousel {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        
+        .ad-slide {
+            min-width: 100%;
+            position: relative;
+        }
+        
+        .ad-slide img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+        
+        .ad-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            padding: 2rem;
+            color: white;
+        }
+        
+        .ad-content.left {
+            justify-content: flex-start;
+            background: linear-gradient(to right, rgba(0,0,0,0.7), transparent);
+        }
+        
+        .ad-content.right {
+            justify-content: flex-end;
+            background: linear-gradient(to left, rgba(0,0,0,0.7), transparent);
+            text-align: right;
+        }
+        
+        .ad-content.center {
+            justify-content: center;
+            background: rgba(0,0,0,0.5);
+            text-align: center;
+        }
+        
+        .carousel-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .carousel-dot.active {
+            background-color: white;
+        }
+        
+        .carousel-control {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.3);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .carousel-control:hover {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        
+        .carousel-control.prev {
+            left: 10px;
+        }
+        
+        .carousel-control.next {
+            right: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .ad-slide img {
+                height: 200px;
+            }
+            
+            .ad-content {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Mobile-friendly Navigation -->
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a href="home.html">
+                        <img src="ANewlogo.jpg" alt="Hills Market Logo" class="logo" width="150" height="auto">
+                    </a>
+                </div>
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button type="button" class="text-gray-700 hover:text-green-600" id="mobileMenuButton">
+                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+                <!-- Desktop menu (hidden on mobile) -->
+                <div class="hidden md:flex space-x-8">
+                    <a href="home.html" class="text-green-600 font-medium">Home</a>
+                    <a href="mainpage.html" class="text-gray-700 hover:text-green-600">Shop</a>
+                    <a href="#" class="text-gray-700 hover:text-green-600">Delivery</a>
+                    <a href="#" class="text-gray-700 hover:text-green-600">Log In</a>
+                    <a href="hills-market-signup.html" class="bg-red-600 text-white px-3 py-1 rounded-lg hover:bg-red-700 text-sm">Sign Up</a>
+                </div>
+                <div class="flex items-center">
+                    <button class="bg-green-600 text-white px-3 py-1 rounded-lg hover:bg-green-700 text-sm">
+                        Cart (0)
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile menu (hidden by default) -->
+        <div class="md:hidden hidden bg-white border-t" id="mobileMenu">
+            <div class="px-4 py-2 space-y-2">
+                <a href="home.html" class="block py-2 text-green-600 font-medium">Home</a>
+                <a href="mainpage.html" class="block py-2 text-gray-700 hover:text-green-600">Shop</a>
+                <a href="#" class="block py-2 text-gray-700 hover:text-green-600">Delivery</a>
+                <a href="#" class="block py-2 text-gray-700 hover:text-green-600">Log In</a>
+                <a href="hills-market-signup.html" class="block py-2 bg-red-600 text-white px-3 py-1 rounded-lg hover:bg-red-700 text-sm text-center">Sign Up</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Advertisement Space -->
+    <div class="bg-white py-8">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="ad-carousel-container">
+                <!-- Ad Carousel -->
+                <div class="ad-carousel" id="adCarousel">
+                    <!-- Ad Slide 1 (Image) -->
+                    <div class="ad-slide">
+                        <img src="sanlumadvert.webp" alt="Special Offer">
+                        <div class="ad-content left">
+                            <div>
+                                <h3 class="text-2xl md:text-3xl font-bold mb-2">Special Investment Offer</h3>
+                                <p class="text-base md:text-lg mb-4 max-w-md">Secure your future with our exclusive investment plans</p>
+                                <a href="#" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 inline-block">Invest Today</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Ad Slide 2 (Video Placeholder) -->
+                    <div class="ad-slide">
+                        <img src="https://images.unsplash.com/photo-1607082350899-7e105aa886ae?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="New Arrivals">
+                        <div class="ad-content center">
+                            <div>
+                                <div class="bg-white/30 rounded-full p-3 mb-4 inline-block">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                                <h3 class="text-2xl md:text-3xl font-bold mb-2">New Arrivals Video</h3>
+                                <p class="text-base md:text-lg">See what's new at Hills Market this week</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Ad Slide 3 (Image) -->
+                    <div class="ad-slide">
+                        <img src="sanlam-1.png" alt="Weekend Sale">
+                        <div class="ad-content right">
+                            <div>
+                                <h3 class="text-2xl md:text-3xl font-bold mb-2">Weekend Sale</h3>
+                                <p class="text-base md:text-lg mb-4">Up to 30% off on selected home accessories</p>
+                                <a href="#" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 inline-block">View Deals</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Carousel Navigation Dots -->
+                <div class="absolute bottom-4 left-0 right-0 flex justify-center space-x-2">
+                    <button class="carousel-dot active" data-slide="0"></button>
+                    <button class="carousel-dot" data-slide="1"></button>
+                    <button class="carousel-dot" data-slide="2"></button>
+                </div>
+                
+                <!-- Carousel Controls -->
+                <button class="carousel-control prev" id="prevBtn">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </button>
+                <button class="carousel-control next" id="nextBtn">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Featured Categories -->
+    <section class="max-w-7xl mx-auto py-8 px-4">
+        <h2 class="text-2xl font-bold mb-6">Shop by Category</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <a href="Art_products/art-category-page (1).html" class="category-card bg-white rounded-lg shadow-sm overflow-hidden">
+                <img src="artfrontpage.jpg" alt="Art" class="w-full h-32 object-cover">
+                <div class="p-4 text-center">
+                    <h3 class="font-medium">Art</h3>
+                    <p class="text-sm text-gray-500 mt-1">12 products</p>
+                </div>
+            </a>
+            <a href="Nail_Product_services/nails-page.html" class="category-card bg-white rounded-lg shadow-sm overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Nails" class="w-full h-32 object-cover">
+                <div class="p-4 text-center">
+                    <h3 class="font-medium">Nails</h3>
+                    <p class="text-sm text-gray-500 mt-1">15 products</p>
+                </div>
+            </a>
+            <a href="Phones/phones.html" class="category-card bg-white rounded-lg shadow-sm overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Phones" class="w-full h-32 object-cover">
+                <div class="p-4 text-center">
+                    <h3 class="font-medium">Phones</h3>
+                    <p class="text-sm text-gray-500 mt-1">9 products</p>
+                </div>
+            </a>
+            <a href="Home accessories/home-accessories-page.html" class="category-card bg-white rounded-lg shadow-sm overflow-hidden">
+                <img src="Kitchen_accessories.avif" alt="Home Accessories" class="w-full h-32 object-cover">
+                <div class="p-4 text-center">
+                    <h3 class="font-medium">Home Accessories</h3>
+                    <p class="text-sm text-gray-500 mt-1">14 products</p>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="max-w-7xl mx-auto py-8 px-4">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold">Featured Products</h2>
+            <a href="mainpage.html" class="text-green-600 hover:text-green-700 font-medium">View All</a>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <!-- Product 1 -->
+            <div class="product-container bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow cursor-pointer" data-product-id="1">
+                <img src="art.png" alt="Sun Set Art" class="w-full h-33 object-cover">
+                <div class="p-3">
+                    <span class="text-xs text-white bg-red-500 px-2 py-0.5 rounded-full">Sale</span>
+                    <h3 class="font-medium text-sm mt-1">Sun Set</h3>
+                    <p class="text-xs text-gray-500">Golden, tranquil, reflective, serene, timeless.</p>
+                    <div class="flex justify-between items-center mt-2">
+                        <div>
+                            <span class="text-green-600 font-bold text-sm">R1299.99</span>
+                            <span class="text-gray-400 text-xs line-through ml-1">R3000.99</span>
+                        </div>
+                        <button class="bg-green-600 text-white rounded-full p-1 hover:bg-green-700">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 2 -->
+            <div class="product-container bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow cursor-pointer" data-product-id="2">
+                <img src="Art3.png" alt="Walk in the Night Art" class="w-full h-33 object-cover">
+                <div class="p-3">
+                    <h3 class="font-medium text-sm mt-1">Walk in the Night</h3>
+                    <p class="text-xs text-gray-500">Under moonlit skies, two souls walk</p>
+                    <div class="flex justify-between items-center mt-2">
+                        <div>
+                            <span class="text-green-600 font-bold text-sm">R999.59</span>
+                        </div>
+                        <button class="bg-green-600 text-white rounded-full p-1 hover:bg-green-700">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 3 -->
+            <div class="product-container bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow cursor-pointer" data-product-id="3">
+                <img src="Art4.png" alt="Chaos meets rhythm Art" class="w-full h-33 object-cover">
+                <div class="p-3">
+                    <h3 class="font-medium text-sm mt-1">Chaos meets rhythm</h3>
+                    <p class="text-xs text-gray-500">Random paints swirl in lines and circles</p>
+                    <div class="flex justify-between items-center mt-2">
+                        <div>
+                            <span class="text-green-600 font-bold text-sm">R899.99</span>
+                        </div>
+                        <button class="bg-green-600 text-white rounded-full p-1 hover:bg-green-700">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 4 -->
+            <div class="product-container bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow cursor-pointer" data-product-id="4">
+                <img src="art5.png" alt="Colorful Art" class="w-full h-33 object-cover">
+                <div class="p-3">
+                    <span class="text-xs text-white bg-green-500 px-2 py-0.5 rounded-full">Organic</span>
+                    <h3 class="font-medium text-sm mt-1">A vivid dance of color and calm</h3>
+                    <p class="text-xs text-gray-500">Beneath umbrellas, people stroll as trees burst with color</p>
+                    <div class="flex justify-between items-center mt-2">
+                        <div>
+                            <span class="text-green-600 font-bold text-sm">R400.99</span>
+                        </div>
+                        <button class="bg-green-600 text-white rounded-full p-1 hover:bg-green-700">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="bg-green-600 py-8 px-4 text-white">
+        <div class="max-w-3xl mx-auto text-center">
+            <h2 class="text-2xl font-bold mb-4">Subscribe to Our Newsletter</h2>
+            <p class="mb-6">Get the latest updates on new products, special offers, and seasonal promotions.</p>
+            <form class="flex flex-col md:flex-row gap-2 justify-center">
+                <input type="email" placeholder="Your email address" class="px-4 py-2 rounded-lg text-gray-900 flex-grow max-w-md">
+                <button type="submit" class="bg-white text-green-700 px-6 py-2 rounded-lg font-medium hover:bg-gray-100">Subscribe</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-white py-8 px-4 border-t">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div>
+                <img src="ANewlogo.jpg" alt="Hills Market Logo" class="logo mb-4" width="150" height="auto">
+                <p class="text-gray-600 text-sm">Your one-stop shop for fresh produce and quality goods.</p>
+            </div>
+            <div>
+                <h3 class="font-bold mb-4">Quick Links</h3>
+                <ul class="space-y-2 text-sm text-gray-600">
+                    <li><a href="home.html" class="hover:text-green-600">Home</a></li>
+                    <li><a href="mainpage.html" class="hover:text-green-600">Shop</a></li>
+                    <li><a href="#" class="hover:text-green-600">Delivery Information</a></li>
+                    <li><a href="#" class="hover:text-green-600">About Us</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="font-bold mb-4">Customer Service</h3>
+                <ul class="space-y-2 text-sm text-gray-600">
+                    <li><a href="#" class="hover:text-green-600">Contact Us</a></li>
+                    <li><a href="#" class="hover:text-green-600">FAQs</a></li>
+                    <li><a href="#" class="hover:text-green-600">Returns & Refunds</a></li>
+                    <li><a href="#" class="hover:text-green-600">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="font-bold mb-4">Contact Info</h3>
+                <ul class="space-y-2 text-sm text-gray-600">
+                    <li>123 Market Street, Cityville</li>
+                    <li>Phone: (123) 456-7890</li>
+                    <li>Email: info@hillsmarket.com</li>
+                </ul>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto text-center text-xs text-gray-500 mt-8 pt-4 border-t">
+            <p>© 2025 Hills Market. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Product Detail Modal -->
+    <div class="modal-overlay" id="productModal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeModal">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                </svg>
+            </button>
+            
+            <div class="view-toggle">
+                <button class="active" data-view="images">Images</button>
+                <button data-view="ar">View in AR</button>
+            </div>
+            
+            <div class="image-gallery" id="imageGallery">
+                <!-- Images will be dynamically inserted here -->
+            </div>
+            
+            <div class="ar-container" id="arContainer">
+                <div class="ar-placeholder">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                    <h3 class="font-bold text-lg mb-2">Augmented Reality View</h3>
+                    <p class="text-gray-600 mb-4">Point your camera at a flat surface to place this product in your space.</p>
+                    <button class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
+                        Start AR Experience
+                    </button>
+                </div>
+            </div>
+            
+            <div class="product-info">
+                <h2 id="productTitle" class="text-2xl font-bold mb-2">Product Title</h2>
+                <div class="flex items-center mb-4">
+                    <span id="productPrice" class="text-green-600 font-bold text-xl mr-2">R0.00</span>
+                    <span id="productOldPrice" class="text-gray-400 text-sm line-through"></span>
+                    <span id="productBadge" class="ml-2 text-xs text-white px-2 py-0.5 rounded-full"></span>
+                </div>
+                <p id="productDescription" class="text-gray-700 mb-4">Product description will appear here.</p>
+                
+                <div class="flex items-center mb-4">
+                    <div class="flex items-center mr-6">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-600 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                        </svg>
+                        <span class="text-sm">In Stock</span>
+                    </div>
+                    <div class="flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-600 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
+                        </svg>
+                        <span class="text-sm">Free Delivery</span>
+                    </div>
+                </div>
+                
+                <div class="flex items-center mb-6">
+                    <button class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center mr-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd" />
+                        </svg>
+                        Add to Cart
+                    </button>
+                    <button class="border border-green-600 text-green-600 px-4 py-2 rounded-lg hover:bg-green-50 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" />
+                        </svg>
+                        Add to Wishlist
+                    </button>
+                </div>
+                
+                <div class="border-t pt-4">
+                    <h3 class="font-bold mb-2">Product Details</h3>
+                    <ul id

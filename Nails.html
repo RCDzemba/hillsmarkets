@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nail Products & Services - Hills Market</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Custom styles for product modal and interactions */
+        .product-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal-content {
+            background-color: white;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 1000px;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+        
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 10;
+            font-size: 1.2rem;
+        }
+        
+        .product-detail {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        @media (min-width: 768px) {
+            .product-detail {
+                flex-direction: row;
+            }
+        }
+        
+        .product-images {
+            flex: 1;
+            position: relative;
+        }
+        
+        .main-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 12px 12px 0 0;
+        }
+        
+        @media (min-width: 768px) {
+            .main-image {
+                border-radius: 12px 0 0 12px;
+                height: 400px;
+            }
+        }
+        
+        .thumbnail-container {
+            display: flex;
+            gap: 0.5rem;
+            padding: 1rem;
+            overflow-x: auto;
+        }
+        
+        .thumbnail {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+        
+        .thumbnail.active, .thumbnail:hover {
+            opacity: 1;
+            border: 2px solid #ec4899;
+        }
+        
+        .product-info {
+            flex: 1;
+            padding: 1.5rem;
+        }
+        
+        .product-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .product-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #ec4899;
+            margin-bottom: 1rem;
+        }
+        
+        .original-price {
+            font-size: 1rem;
+            color: #9ca3af;
+            text-decoration: line-through;
+            margin-left: 0.5rem;
+        }
+        
+        .product-description {
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            color: #4b5563;
+        }
+        
+        .product-details {
+            margin-bottom: 1.5rem;
+        }
+        
+        .detail-item {
+            display: flex;
+            margin-bottom: 0.5rem;
+        }
+        
+        .detail-label {
+            font-weight: 600;
+            width: 120px;
+            color: #374151;
+        }
+        
+        .detail-value {
+            flex: 1;
+            color: #6b7280;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .btn-primary {
+            background: #ec4899;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: background 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background: #db2777;
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #374151;
+            border: 1px solid #d1d5db;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            background: #f9fafb;
+            border-color: #9ca3af;
+        }
+        
+        .related-products {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .related-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #374151;
+        }
+        
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+        
+        .related-product {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .related-product:hover {
+            transform: translateY(-5px);
+        }
+        
+        .related-image {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+        }
+        
+        .related-info {
+            padding: 0.75rem;
+        }
+        
+        .related-name {
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .related-price {
+            font-size: 0.8rem;
+            color: #ec4899;
+            font-weight: 600;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .badge-sale {
+            background: #ef4444;
+            color: white;
+        }
+        
+        .badge-bestseller {
+            background: #ec4899;
+            color: white;
+        }
+        
+        .badge-service {
+            background: #8b5cf6;
+            color: white;
+        }
+        
+        .badge-limited {
+            background: #10b981;
+            color: white;
+        }
+        
+        .rating {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stars {
+            color: #fbbf24;
+            margin-right: 0.5rem;
+        }
+        
+        .rating-count {
+            font-size: 0.8rem;
+            color: #6b7280;
+        }
+        
+        .cart-notification {
+            position: fixed;
+            top: 4rem;
+            right: 1rem;
+            background: #ec4899;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 1001;
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+        }
+        
+        .cart-notification.active {
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Mobile-friendly Navigation -->
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a href="home.html">
+                        <img src="ANewlogo.png" alt="Hills Market Logo" class="logo" width="130" height="auto">
+                    </a>
+                </div>
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button type="button" class="text-gray-700 hover:text-pink-600" id="mobileMenuButton">
+                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+                <!-- Desktop menu (hidden on mobile) -->
+                <div class="hidden md:flex space-x-8">
+                    <a href="home.html" class="text-gray-700 hover:text-pink-600">Home</a>
+                    <a href="mainpage.html" class="text-pink-600 font-medium">Shop</a>
+                    <a href="#" class="text-gray-700 hover:text-pink-600">Services</a>
+                    <a href="sign-in.html" class="text-gray-700 hover:text-pink-600">Log In</a>
+                    <a href="signup.html" class="bg-red-600 text-white px-3 py-1 rounded-lg hover:bg-red-700 text-sm">Sign Up</a>
+                </div>
+                <div class="flex items-center">
+                    <button id="cart-button" class="bg-pink-600 text-white px-3 py-1 rounded-lg hover:bg-pink-700 text-sm">
+                        Cart (<span id="cart-count">0</span>)
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile menu (hidden by default) -->
+        <div class="md:hidden hidden bg-white border-t" id="mobileMenu">
+            <div class="px-4 py-2 space-y-2">
+                <a href="home.html" class="block py-2 text-gray-700 hover:text-pink-600">Home</a>
+                <a href="mainpage.html" class="block py-2 text-pink-600 font-medium">Shop</a>
+                <a href="#" class="block py-2 text-gray-700 hover:text-pink-600">Services</a>
+                <a href="#" class="block py-2 text-gray-700 hover:text-pink-600">Log In</a>
+                <a href="hills-market-signup.html" class="block py-2 bg-red-600 text-white px-3 py-1 rounded-lg hover:bg-red-700 text-sm text-center">Sign Up</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Breadcrumb -->
+    <div class="bg-white border-b">
+        <div class="max-w-7xl mx-auto py-2 px-4">
+            <div class="text-xs text-gray-500">
+                <a href="home.html" class="hover:text-pink-600">Home</a> &gt; 
+                <a href="mainpage.html" class="hover:text-pink-600">Shop</a> &gt; 
+                <span class="font-medium text-gray-700">Nail Products & Services</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Category Header -->
+    <div class="bg-white border-b">
+        <div class="max-w-7xl mx-auto py-4 px-4 flex justify-between items-center">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900">Nail Products & Services</h1>
+                <p class="text-sm text-gray-600">14 products</p>
+            </div>
+            <div class="flex items-center space-x-2">
+                <select class="text-xs border rounded p-1">
+                    <option>Sort by: Featured</option>
+                    <option>Price: Low to High</option>
+                    <option>Price: High to Low</option>
+                    <option>Newest</option>
+                </select>
+                <button class="text-xs border rounded p-1 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+                    </svg>
+                    Filter
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Category Subcategories -->
+    <div class="bg-white border-b">
+        <div class="max-w-7xl mx-auto py-2 px-4 overflow-x-auto">
+            <div class="flex space-x-2 whitespace-nowrap">
+                <a href="#" class="text-xs bg-gray-100 text-gray-800 px-3 py-1 rounded-full">
+                    All Items
+                </a>
+                <a href="#" class="text-xs bg-pink-100 text-pink-800 px-3 py-1 rounded-full font-medium">
+                    Nail Products
+                </a>
+                <a href="#" class="text-xs bg-gray-100 text-gray-800 px-3 py-1 rounded-full">
+                    Nail Services
+                </a>
+                <a href="#" class="text-xs bg-gray-100 text-gray-800 px-3 py-1 rounded-full">
+                    Tools & Equipment
+                </a>
+                <a href="#" class="text-xs bg-gray-100 text-gray-800 px-3 py-1 rounded-full">
+                    Nail Care
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Grid -->
+    <div class="max-w-7xl mx-auto py-4 px-4">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3" id="productGrid">
+            <!-- Products will be dynamically inserted here -->
+        </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="max-w-7xl mx-auto py-4 px-4 flex justify-center">
+        <div class="flex space-x-1">
+            <button class="px-3 py-1 rounded border text-xs text-gray-500 hover:bg-gray-100">Previous</button>
+            <button class="px-3 py-1 rounded border text-xs bg-pink-600 text-white">1</button>
+            <button class="px-3 py-1 rounded border text-xs text-gray-500 hover:bg-gray-100">2</button>
+            <button class="px-3 py-1 rounded border text-xs text-gray-500 hover:bg-gray-100">Next</button>
+        </div>
+    </div>
+
+    <!-- Product Detail Modal -->
+    <div class="modal-overlay" id="productModal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeModal">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="product-detail">
+                <div class="product-images">
+                    <img src="" alt="" class="main-image" id="mainProductImage">
+                    <div class="thumbnail-container" id="thumbnailContainer">
+                        <!-- Thumbnails will be dynamically inserted here -->
+                    </div>
+                </div>
+                <div class="product-info">
+                    <div id="productBadges"></div>
+                    <h2 class="product-title" id="productTitle">Product Title</h2>
+                    
+                    <div class="rating">
+                        <div class="stars" id="productRating">
+                            <!-- Stars will be dynamically inserted here -->
+                        </div>
+                        <span class="rating-count" id="productRatingCount">(0 reviews)</span>
+                    </div>
+                    
+                    <div class="product-price">
+                        <span id="productPrice">R0.00</span>
+                        <span class="original-price" id="productOriginalPrice"></span>
+                    </div>
+                    
+                    <p class="product-description" id="productDescription">Product description will appear here.</p>
+                    
+                    <div class="product-details">
+                        <div class="detail-item">
+                            <span class="detail-label">Type:</span>
+                            <span class="detail-value" id="productType">Product Type</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Size:</span>
+                            <span class="detail-value" id="productSize">Product Size</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Duration:</span>
+                            <span class="detail-value" id="productDuration">N/A</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Ingredients:</span>
+                            <span class="detail-value" id="productIngredients">N/A</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Benefits:</span>
+                            <span class="detail-value" id="productBenefits">N/A</span>
+                        </div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="btn-primary" id="addToCartBtn">
+                            <i class="fas fa-shopping-cart"></i>
+                            Add to Cart
+                        </button>
+                        <button class="btn-secondary">
+                            <i class="fas fa-heart"></i>
+                            Add to Wishlist
+                        </button>
+                    </div>
+                    
+                    <div class="related-products">
+                        <h3 class="related-title">You Might Also Like</h3>
+                        <div class="related-grid" id="relatedProducts">
+                            <!-- Related products will be dynamically inserted here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Notification -->
+    <div id="cart-notification" class="cart-notification">
+        Item added to cart!
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white py-4 px-4 border-t">
+        <div class="max-w-7xl mx-auto text-center text-xs text-gray-500">
+            <p>© 2025 Hills Market. All rights reserved.</p>
+            <div class="mt-2">
+                <a href="#" class="text-gray-600 hover:text-pink-600 mx-2">Privacy</a>
+                <a href="#" class="text-gray-600 hover:text-pink-600 mx-2">Terms</a>
+                <a href="#" class="text-gray-600 hover:text-pink-600 mx-2">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript for dynamic functionality -->
+    <script>
+        // Nail products data
+        const nailProducts = [
+            {
+                id: 1,
+                name: "Premium Gel Polish Collection",
+                description: "A premium set of 6 long-lasting gel polish colors in trendy shades. Each bottle contains 15ml of high-quality, chip-resistant formula that provides a glossy finish for up to 3 weeks. Perfect for both professional and at-home use.",
+                price: "499.99",
+                originalPrice: "699.99",
+                type: "Gel Polish",
+                size: "6 x 15ml",
+                duration: "N/A",
+                ingredients: "Ethyl Acetate, Butyl Acetate, Nitrocellulose, Tosylamide/Epoxy Resin",
+                benefits: "Long-lasting, chip-resistant, glossy finish, easy application",
+                category: "polish",
+                badge: "sale",
+                images: [
+                    "https://images.unsplash.com/photo-1607778833979-44d9f39cfb70?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1607778833979-44d9f39cfb70?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                ],
+                rating: 4.5,
+                reviewCount: 128
+            },
+            {
+                id: 2,
+                name: "Advanced Nail Strengthener",
+                description: "A powerful nail strengthener infused with keratin and calcium to fortify weak, brittle nails. This 10ml formula helps prevent splitting and breaking while promoting healthy nail growth. Apply daily for best results.",
+                price: "249.99",
+                originalPrice: null,
+                type: "Nail Treatment",
+                size: "10ml",
+                duration: "N/A",
+                ingredients: "Keratin, Calcium, Vitamin E, Biotin",
+                benefits: "Strengthens nails, prevents breakage, promotes growth",
+                category: "treatment",
+                badge: null,
+                images: [
+                    "https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                ],
+                rating: 4.2,
+                reviewCount: 76
+            },
+            {
+                id: 3,
+                name: "Professional Nail Art Kit",
+                description: "Complete nail art kit with 30 pieces including brushes, dotting tools, gems, stickers, and striping tape. Everything you need to create stunning nail designs at home or in a salon setting.",
+                price: "350.00",
+                originalPrice: null,
+                type: "Nail Art Tools",
+                size: "30 pieces",
+                duration: "N/A",
+                ingredients: "N/A",
+                benefits: "Versatile tools, professional results, creative possibilities",
+                category: "tools",
+                badge: "bestseller",
+                images: [
+                    "https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                ],
+                rating: 4.7,
+                reviewCount: 203
+            },
+            {
+                id: 4,
+                name: "Professional UV/LED Nail Lamp",
+                description: "48W professional UV/LED nail lamp with quick-dry technology. Features 4 timer settings and sensor mode for efficient curing of gel polish. Compact design with foldable handle for easy storage.",
+                price: "899.99",
+                originalPrice: null,
+                type: "Equipment",
+                size: "48W",
+                duration: "N/A",
+                ingredients: "N/A",
+                benefits: "Fast curing, multiple timer settings, portable",
+                category: "equipment",
+                badge: null,
+                images: [
+                    "https://images.unsplash.com/photo-1604654894610-df63bc536371?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                ],
+                rating: 4.4,
+                reviewCount: 89
+            },
+            {
+                id: 5,
+                name: "Nourishing Cuticle Oil",
+                description: "Rich cuticle oil infused with vitamin E and jojoba oil to moisturize and nourish dry cuticles. The 15ml bottle features a precision brush for easy application. Use daily for soft, healthy cuticles.",
+                price: "120.00",
+                originalPrice: null,
+                type: "Cuticle Care",
+                size: "15ml",
+                duration: "N/A",
+                ingredients: "Vitamin E, Jojoba Oil, Almond Oil, Coconut Oil",
+                benefits: "Moisturizes cuticles, promotes nail health, easy application",
+                category: "treatment",
+                badge: null,
+                images: [
+                    "https://images.unsplash.com/photo-1578321272177-8c6da62f4eb7?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                ],
+                rating: 4.3,
+                reviewCount: 54
+            },
+            {
+                id: 6,
+                name: "Professional Nail File Set",
+                description: "Set of 5 professional nail files with varying grits (100/180, 180/240, 240/400, 400/600, buffer) for all your nail shaping and finishing needs. Durable and washable for repeated use.",
+                price: "75.00",
+                originalPrice: "99.99",
+                type: "Nail Files",
+                size: "5 pieces",
+                duration: "N/A",
+                ingredients: "N/A",
+                benefits: "Multiple grits, durable, washable, professional results",
+                category: "tools",
+                badge: "sale",
+                images: [
+                    "https://images.unsplash.com/photo-1607082350899-7e105aa886ae?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                ],
+                rating: 4.1,
+                reviewCount: 112
+            },
+            {
+                id: 7,
+                name: "Classic Manicure",
+                description: "A relaxing classic manicure service that includes nail shaping, cuticle care, hand massage, and polish application. Takes approximately 45 minutes and leaves your hands looking and feeling refreshed.",
+                price: "250.00",
+                originalPrice: null,
+                type: "Service",
+                size: "N/A",
+                duration: "45 minutes",
+                ingredients: "N/A",
+                benefits: "Relaxing, improves nail appearance, professional finish",
+                category: "service",
+                badge: "service",
+                images: [
+                    "https://images.unsplash.com/photo-1607778833979-44d9f39cfb70?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                ],
+                rating: 4.8,
+                reviewCount: 167
+            },
+            {
+                id: 8,
+                name: "Gel Nail Application",
+                description: "Professional gel nail application service that includes nail prep, application of gel polish, and curing under LED lamp. Provides a durable, glossy finish that lasts up to 3 weeks without chipping.",
+                price: "350.00",
+                originalPrice: null,
+                type: "Service",
+                size: "N/A",
+                duration: "60 minutes",
+                ingredients: "N/A",
+                benefits: "Long-lasting, chip-resistant, glossy finish",
+                category: "service",
+                badge: "service",
+                images: [
+                    "https://images.unsplash.com/photo-1604654894610-df63bc536371?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                ],
+                rating: 4.6,
+                reviewCount: 98
+            },
+            {
+                id: 9,
+                name: "4-Way Professional Nail Buffer",
+                description: "Multi-purpose 4-way nail buffer for shaping, smoothing, shining, and finishing nails. The long-lasting, washable buffer provides professional results at home.",
+                price: "45.00",
+                originalPrice: null,
+                type: "Nail Buffer",
+                size: "1 piece",
+                duration: "N/A",
+                ingredients: "N/A",
+                benefits: "Multi-functional, long-lasting, professional finish",
+                category: "tools",
+                badge: null,
+                images: [
+                    "https://images.unsplash.com/photo-1607082350899-7e105aa886ae?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                ],
+                rating: 4.0,
+                reviewCount: 43
+            },
+            {
+                id: 10,
+                name: "Acetone-Free Polish Remover",
+                description: "Gentle, acetone-free nail polish remover that effectively removes polish without drying out nails or cuticles. The 200ml bottle features a convenient flip-top cap.",
+                price: "85.00",
+                originalPrice: null,
+                type: "Polish Remover",
+                size: "200ml",
+                duration: "N/A",
+                ingredients: "Ethyl Acetate, Isopropyl Alcohol, Glycerin, Aloe Vera",
+                benefits: "Gentle on nails, moisturizing, effective removal",
+                category: "treatment",
+                badge: null,
+                images: [
+                    "https://images.unsplash.com/photo-1578321272177-8c6da62f4eb7?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                ],
+                rating: 4.2,
+                reviewCount: 67
+            },
+            {
+                id: 11,
+                name: "Custom Nail Art Design",
+                description: "Add custom nail art to any manicure or gel service. Our talented technicians can create intricate designs, patterns, or accents to make your nails unique. Price is in addition to base service cost.",
+                price: "150.00",
+                originalPrice: null,
+                type: "Service",
+                size: "N/A",
+                duration: "15-30 minutes",
+                ingredients: "N/A",
+                benefits: "Personalized design, creative expression, unique look",
+                category: "service",
+                badge: "service",
+                images: [
+                    "https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                ],
+                rating: 4.9,
+                reviewCount: 134
+            },
+            {
+                id: 12,
+                name: "Press-On Nail Set",
+                description: "Set of 24 reusable press-on nails in various sizes. Features trendy designs and comes with adhesive tabs for easy application. Perfect for temporary nail enhancements or special occasions.",
+                price: "199.99",
+                originalPrice: null,
+                type: "Nail Extensions",
+                size: "24 pieces",
+                duration: "N/A",
+                ingredients: "ABS Plastic, Medical Grade Adhesive",
+                benefits: "Reusable, easy application, temporary, variety of sizes",
+                category: "extensions",
+                badge: "limited",
+                images: [
+                    "https://images.unsplash.com/photo-1604654894610-df63bc536371?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                ],
+                rating: 4.3,
+                reviewCount: 89
+            }
+        ];
+
+        // DOM Elements
+        const productGrid = document.getElementById('productGrid');
+        const productModal = document.getElementById('productModal');
+        const closeModal = document.getElementById('closeModal');
+        const mainProductImage = document.getElementById('mainProductImage');
+        const thumbnailContainer = document.getElementById('thumbnailContainer');
+        const productTitle = document.getElementById('productTitle');
+        const productPrice = document.getElementById('productPrice');
+        const productOriginalPrice = document.getElementById('productOriginalPrice');
+        const productDescription = document.getElementById('productDescription');
+        const productType = document.getElementById('productType');
+        const productSize = document.getElementById('productSize');
+        const productDuration = document.getElementById('productDuration');
+        const productIngredients = document.getElementById('productIngredients');
+        const productBenefits = document.getElementById('productBenefits');
+        const productBadges = document.getElementById('productBadges');
+        const productRating = document.getElementById('productRating');
+        const productRatingCount = document.getElementById('productRatingCount');
+        const relatedProducts = document.getElementById('relatedProducts');
+        const addToCartBtn = document.getElementById('addToCartBtn');
+        const cartNotification = document.getElementById('cart-notification');
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            renderProductGrid();
+            setupEventListeners();
+            
+            // Initialize cart
+            let cart = JSON.parse(localStorage.getItem('hillsMarketCart')) || [];
+            updateCartCount();
+        });
+
+        function setupEventListeners() {
+            // Mobile menu toggle
+            mobileMenuButton.addEventListener('click', function() {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // Close modal
+            closeModal.addEventListener('click', closeProductModal);
+
+            // Close modal when clicking outside
+            productModal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeProductModal();
+                }
+            });
+
+            // Add to cart button in modal
+            addToCartBtn.addEventListener('click', function() {
+                const productId = this.getAttribute('data-product-id');
+                addToCart(productId);
+            });
+        }
+
+        function renderProductGrid() {
+            productGrid.innerHTML = '';
+            
+            nailProducts.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card bg-white rounded-lg shadow-sm overflow-hidden';
+                productCard.setAttribute('data-id', product.id);
+                
+                // Create badge HTML if applicable
+                let badgeHTML = '';
+                if (product.badge) {
+                    let badgeClass = '';
+                    let badgeText = '';
+                    
+                    switch(product.badge) {
+                        case 'sale':
+                            badgeClass = 'badge-sale';
+                            badgeText = 'Sale';
+                            break;
+                        case 'bestseller':
+                            badgeClass = 'badge-bestseller';
+                            badgeText = 'Bestseller';
+                            break;
+                        case 'service':
+                            badgeClass = 'badge-service';
+                            badgeText = 'Service';
+                            break;
+                        case 'limited':
+                            badgeClass = 'badge-limited';
+                            badgeText = 'Limited';
+                            break;
+                    }
+                    
+                    badgeHTML = `<span class="badge ${badgeClass}">${badgeText}</span>`;
+                }
+                
+                productCard.innerHTML = `
+                    <div class="h-32 overflow-hidden">
+                        <img src="${product.images[0]}" alt="${product.name}" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-3">
+                        ${badgeHTML}
+                        <h3 class="font-medium text-sm mt-1">${product.name}</h3>
+                        <p class="text-xs text-gray-500">${product.size}</p>
+                        <div class="flex justify-between items-center mt-2">
+                            <div>
+                                <span class="text-pink-600 font-bold text-sm">R${product.price}</span>
+                                ${product.originalPrice ? `<span class="text-gray-400 text-xs line-through ml-1">R${product.originalPrice}</span>` : ''}
+                            </div>
+                            <button class="add-to-cart-btn bg-pink-600 text-white rounded-full p-1 hover:bg-pink-700" data-id="${product.id}" data-name="${product.name}" data-price="${product.price}">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                // Add click event to open product details
+                productCard.addEventListener('click', function(e) {
+                    // Don't trigger if the add to cart button was clicked
+                    if (!e.target.closest('.add-to-cart-btn')) {
+                        const productId = this.getAttribute('data-id');
+                        openProductModal(productId);
+                    }
+                });
+                
+                // Add event to add to cart button
+                const addToCartBtn = productCard.querySelector('.add-to-cart-btn');
+                addToCartBtn.addEventListener('click', function(e) {
+                    e.stopPropagation(); // Prevent triggering the card click event
+                    const productId = this.getAttribute('data-id');
+                    addToCart(productId);
+                });
+                
+                productGrid.appendChild(productCard);
+            });
+        }
+
+        function openProductModal(productId) {
+            const product = nailProducts.find(p => p.id == productId);
+            if (!product) return;
+            
+            // Set product details
+            productTitle.textContent = product.name;
+            productPrice.textContent = `R${product.price}`;
+            
+            if (product.originalPrice) {
+                productOriginalPrice.textContent = `R${product.originalPrice}`;
+                productOriginalPrice.style.display = 'inline';
+            } else {
+                productOriginalPrice.style.display = 'none';
+            }
+            
+            productDescription.textContent = product.description;
+            productType.textContent = product.type;
+            productSize.textContent = product.size;
+            productDuration.textContent = product.duration || 'N/A';
+            productIngredients.textContent = product.ingredients || 'N/A';
+            productBenefits.textContent = product.benefits || 'N/A';
+            
+            // Set product badges
+            productBadges.innerHTML = '';
+            if (product.badge) {
+                let badgeClass = '';
+                let badgeText = '';
+                
+                switch(product.badge) {
+                    case 'sale':
+                        badgeClass = 'badge-sale';
+                        badgeText = 'Sale';
+                        break;
+                    case 'bestseller':
+                        badgeClass = 'badge-bestseller';
+                        badgeText = 'Bestseller';
+                        break;
+                    case 'service':
+                        badgeClass = 'badge-service';
+                        badgeText = 'Service';
+                        break;
+                    case 'limited':
+                        badgeClass = 'badge-limited';
+                        badgeText = 'Limited';
+                        break;
+                }
+                
+                productBadges.innerHTML = `<span class="badge ${badgeClass}">${badgeText}</span>`;
+            }
+            
+            // Set rating
+            productRating.innerHTML = '';
+            const fullStars = Math.floor(product.rating);
+            const hasHalfStar = product.rating % 1 !== 0;
+            
+            for (let i = 0; i < fullStars; i++) {
+                productRating.innerHTML += '<i class="fas fa-star"></i>';
+            }
+            
+            if (hasHalfStar) {
+                productRating.innerHTML += '<i class="fas fa-star-half-alt"></i>';
+            }
+            
+            const emptyStars = 5 - Math.ceil(product.rating);
+            for (let i = 0; i < emptyStars; i++) {
+                productRating.innerHTML += '<i class="far fa-star"></i>';
+            }
+            
+            productRatingCount.textContent = `(${product.reviewCount} reviews)`;
+            
+            // Set main image
+            mainProductImage.src = product.images[0];
+            mainProductImage.alt = product.name;
+            
+            // Set thumbnails
+            thumbnailContainer.innerHTML = '';
+            product.images.forEach((image, index) => {
+                const thumbnail = document.createElement('img');
+                thumbnail.src = image;
+                thumbnail.alt = `${product.name} - View ${index + 1}`;
+                thumbnail.className = `thumbnail ${index === 0 ? 'active' : ''}`;
+                
+                thumbnail.addEventListener('click', function() {
+                    // Update main image
+                    mainProductImage.src = image;
+                    
+                    // Update active thumbnail
+                    document.querySelectorAll('.thumbnail').forEach(thumb => {
+                        thumb.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                });
+                
+                thumbnailContainer.appendChild(thumbnail);
+            });
+            
+            // Set product ID for add to cart button
+            addToCartBtn.setAttribute('data-product-id', product.id);
+            
+            // Load related products
+            loadRelatedProducts(product);
+            
+            // Show modal
+            productModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeProductModal() {
+            productModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function loadRelatedProducts(currentProduct) {
+            relatedProducts.innerHTML = '';
+            
+            // Find products in the same category (excluding the current product)
+            const related = nailProducts.filter(p => 
+                p.category === currentProduct.category && p.id !== currentProduct.id
+            ).slice(0, 4); // Limit to 4 products
+            
+            // If not enough products in the same category, add some from other categories
+            if (related.length < 4) {
+                const additional = nailProducts.filter(p => 
+                    p.category !== currentProduct.category && p.id !== currentProduct.id
+                ).slice(0, 4 - related.length);
+                
+                related.push(...additional);
+            }
+            
+            // Render related products
+            related.forEach(product => {
+                const relatedProduct = document.createElement('div');
+                relatedProduct.className = 'related-product';
+                relatedProduct.setAttribute('data-id', product.id);
+                
+                relatedProduct.innerHTML = `
+                    <img src="${product.images[0]}" alt="${product.name}" class="related-image">
+                    <div class="related-info">
+                        <div class="related-name">${product.name}</div>
+                        <div class="related-price">R${product.price}</div>
+                    </div>
+                `;
+                
+                relatedProduct.addEventListener('click', function() {
+                    const productId = this.getAttribute('data-id');
+                    openProductModal(productId);
+                });
+                
+                relatedProducts.appendChild(relatedProduct);
+            });
+        }
+
+        function addToCart(productId) {
+            const product = nailProducts.find(p => p.id == productId);
+            if (!product) return;
+            
+            let cart = JSON.parse(localStorage.getItem('hillsMarketCart')) || [];
+            
+            // Check if product already in cart
+            const existingItem = cart.find(item => item.id == productId);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    id: product.id,
+                    name: product.name,
+                    price: parseFloat(product.price),
+                    quantity: 1
+                });
+            }
+            
+            // Save cart to localStorage
+            localStorage.setItem('hillsMarketCart', JSON.stringify(cart));
+            
+            // Update cart count
+            updateCartCount();
+            
+            // Show notification
+            showNotification();
+        }
+
+        function updateCartCount() {
+            const cart = JSON.parse(localStorage.getItem('hillsMarketCart')) || [];
+            const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
+            document.getElementById('cart-count').textContent = cartCount;
+        }
+
+        function showNotification() {
+            cartNotification.classList.add('active');
+            
+            // Hide notification after 3 seconds
+            setTimeout(() => {
+                cartNotification.classList.remove('active');
+            }, 3000);
+        }
+
+        // Handle image loading errors
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('img').forEach(img => {
+                img.addEventListener('error', function() {
+                    this.src = 'https://images.unsplash.com/photo-1578321272177-8c6da62f4eb7?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80';
+                    this.alt = 'Image not available';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

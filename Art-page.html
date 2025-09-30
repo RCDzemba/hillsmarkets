@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Art Collection - Hills Market</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Custom styles for the art gallery */
+        .art-gallery {
+            display: grid;
+            gap: 1.5rem;
+            padding: 1rem;
+        }
+        
+        .desktop-gallery {
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        }
+        
+        .mobile-gallery {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+        
+        .art-card {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            background: white;
+        }
+        
+        .art-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .art-image-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 100%; /* Creates a square aspect ratio */
+            overflow: hidden;
+        }
+        
+        .art-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .art-card:hover .art-image {
+            transform: scale(1.05);
+        }
+        
+        .art-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+            color: white;
+            padding: 1.5rem 1rem 1rem;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .art-card:hover .art-overlay {
+            transform: translateY(0);
+        }
+        
+        .hand-indicator {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.9);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 10;
+            pointer-events: none;
+        }
+        
+        .art-card:hover .hand-indicator {
+            opacity: 1;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.1); }
+            100% { transform: translate(-50%, -50%) scale(1); }
+        }
+        
+        .hand-icon {
+            font-size: 24px;
+            color: #10b981;
+        }
+        
+        .art-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .art-description {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            line-height: 1.4;
+        }
+        
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+            padding: 1rem;
+        }
+        
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 50px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-btn.active, .filter-btn:hover {
+            background: #10b981;
+            color: white;
+            border-color: #10b981;
+        }
+        
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal-content {
+            background-color: white;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+        
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 10;
+            font-size: 1.2rem;
+        }
+        
+        .product-detail {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        @media (min-width: 768px) {
+            .product-detail {
+                flex-direction: row;
+            }
+        }
+        
+        .product-images {
+            flex: 1;
+            position: relative;
+        }
+        
+        .main-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 12px 12px 0 0;
+        }
+        
+        @media (min-width: 768px) {
+            .main-image {
+                border-radius: 12px 0 0 12px;
+                height: 500px;
+            }
+        }
+        
+        .thumbnail-container {
+            display: flex;
+            gap: 0.5rem;
+            padding: 1rem;
+            overflow-x: auto;
+        }
+        
+        .thumbnail {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+        
+        .thumbnail.active, .thumbnail:hover {
+            opacity: 1;
+            border: 2px solid #10b981;
+        }
+        
+        .product-info {
+            flex: 1;
+            padding: 2rem;
+        }
+        
+        .product-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #10b981;
+            margin-bottom: 1.5rem;
+        }
+        
+        .product-description {
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            color: #4b5563;
+        }
+        
+        .product-details {
+            margin-bottom: 1.5rem;
+        }
+        
+        .detail-item {
+            display: flex;
+            margin-bottom: 0.5rem;
+        }
+        
+        .detail-label {
+            font-weight: 600;
+            width: 120px;
+            color: #374151;
+        }
+        
+        .detail-value {
+            flex: 1;
+            color: #6b7280;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .btn-primary {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: background 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background: #059669;
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #374151;
+            border: 1px solid #d1d5db;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            background: #f9fafb;
+            border-color: #9ca3af;
+        }
+        
+        .mobile-tap-hint {
+            display: none;
+            text-align: center;
+            padding: 1rem;
+            background: #f0fdf4;
+            border-radius: 8px;
+            margin: 1rem;
+            color: #065f46;
+            font-weight: 500;
+        }
+        
+        @media (max-width: 767px) {
+            .mobile-tap-hint {
+                display: block;
+            }
+            
+            .hand-indicator {
+                display: none;
+            }
+            
+            .art-overlay {
+                transform: translateY(0);
+                background: rgba(0,0,0,0.6);
+                padding: 1rem;
+            }
+            
+            .art-title {
+                font-size: 1rem;
+            }
+            
+            .art-description {
+                font-size: 0.8rem;
+            }
+        }
+        
+        /* Loading animation for images */
+        .image-loading {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+        
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a href="home.html">
+                        <img src="ANewlogo.png" alt="Hills Market Logo" class="logo" width="150" height="auto">
+                    </a>
+                </div>
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button type="button" class="text-gray-700 hover:text-green-600" id="mobileMenuButton">
+                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+                <!-- Desktop menu -->
+                <div class="hidden md:flex space-x-8">
+                    <a href="home.html" class="text-gray-700 hover:text-green-600">Home</a>
+                    <a href="mainpage.html" class="text-gray-700 hover:text-green-600">Shop</a>
+                    <a href="about.html" class="text-gray-700 hover:text-green-600">About Us</a>
+                    <a href="sign-in.html" class="text-gray-700 hover:text-green-600">Log In</a>
+                    <a href="signup.html" class="bg-red-600 text-white px-3 py-1 rounded-lg hover:bg-red-700 text-sm">Sign Up</a>
+                </div>
+                <div class="flex items-center">
+                    <button class="bg-green-600 text-white px-3 py-1 rounded-lg hover:bg-green-700 text-sm">
+                        Cart (0)
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile menu -->
+        <div class="md:hidden hidden bg-white border-t" id="mobileMenu">
+            <div class="px-4 py-2 space-y-2">
+                <a href="home.html" class="block py-2 text-gray-700 hover:text-green-600">Home</a>
+                <a href="mainpage.html" class="block py-2 text-gray-700 hover:text-green-600">Shop</a>
+                <a href="#" class="block py-2 text-gray-700 hover:text-green-600">Delivery</a>
+                <a href="about.html" class="block py-2 text-gray-700 hover:text-green-600">About Us</a>
+                <a href="#" class="block py-2 text-gray-700 hover:text-green-600">Log In</a>
+                <a href="hills-market-signup.html" class="block py-2 bg-red-600 text-white px-3 py-1 rounded-lg hover:bg-red-700 text-sm text-center">Sign Up</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="bg-white py-8">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <h1 class="text-3xl md:text-4xl font-bold mb-4">Art Collection</h1>
+            <p class="text-gray-600 max-w-2xl mx-auto">Discover our curated selection of unique artworks from talented artists. Click or tap on any image to view details and pricing.</p>
+        </div>
+    </div>
+
+    <!-- Mobile Tap Hint -->
+    <div class="mobile-tap-hint">
+        <i class="fas fa-hand-point-up mr-2"></i> Tap on any artwork to view details and pricing
+    </div>
+
+    <!-- Filter Buttons -->
+    <div class="filter-buttons">
+        <button class="filter-btn active" data-filter="all">All Artworks</button>
+        <button class="filter-btn" data-filter="abstract">Abstract</button>
+        <button class="filter-btn" data-filter="landscape">Landscape</button>
+        <button class="filter-btn" data-filter="portrait">Portrait</button>
+        <button class="filter-btn" data-filter="modern">Modern</button>
+    </div>
+
+    <!-- Art Gallery -->
+    <div class="max-w-7xl mx-auto">
+        <div class="art-gallery desktop-gallery" id="artGallery">
+            <!-- Art cards will be dynamically inserted here -->
+        </div>
+    </div>
+
+    <!-- Product Detail Modal -->
+    <div class="modal-overlay" id="productModal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeModal">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="product-detail">
+                <div class="product-images">
+                    <img src="" alt="" class="main-image" id="mainProductImage">
+                    <div class="thumbnail-container" id="thumbnailContainer">
+                        <!-- Thumbnails will be dynamically inserted here -->
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h2 class="product-title" id="productTitle">Product Title</h2>
+                    <div class="product-price" id="productPrice">R0.00</div>
+                    <p class="product-description" id="productDescription">Product description will appear here.</p>
+                    
+                    <div class="product-details">
+                        <div class="detail-item">
+                            <span class="detail-label">Artist:</span>
+                            <span class="detail-value" id="productArtist">Artist Name</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Style:</span>
+                            <span class="detail-value" id="productStyle">Art Style</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Dimensions:</span>
+                            <span class="detail-value" id="productDimensions">0 x 0 cm</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Medium:</span>
+                            <span class="detail-value" id="productMedium">Oil on Canvas</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Year:</span>
+                            <span class="detail-value" id="productYear">2023</span>
+                        </div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="btn-primary">
+                            <i class="fas fa-shopping-cart"></i>
+                            Add to Cart
+                        </button>
+                        <button class="btn-secondary">
+                            <i class="fas fa-heart"></i>
+                            Add to Wishlist
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12 mt-12">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <img src="ANewlogo.png" alt="Hills Market Logo" class="logo mb-4" width="150" height="auto">
+                    <p class="text-gray-400 text-sm">Your one-stop shop for fresh produce and quality goods.</p>
+                </div>
+                <div>
+                    <h3 class="font-bold mb-4">Quick Links</h3>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="home.html" class="hover:text-white">Home</a></li>
+                        <li><a href="mainpage.html" class="hover:text-white">Shop</a></li>
+                        <li><a href="#" class="hover:text-white">Delivery Information</a></li>
+                        <li><a href="about.html" class="hover:text-white">About Us</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold mb-4">Customer Service</h3>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-white">Contact Us</a></li>
+                        <li><a href="#" class="hover:text-white">FAQs</a></li>
+                        <li><a href="#" class="hover:text-white">Returns & Refunds</a></li>
+                        <li><a href="#" class="hover:text-white">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold mb-4">Contact Info</h3>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li>21 Junction Parktown, Johannesburg</li>
+                        <li>Phone: +27 72 211-0805</li>
+                        <li>Email: info@hillsmarket.com</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="max-w-7xl mx-auto text-center text-xs text-gray-500 mt-8 pt-8 border-t border-gray-700">
+                <p>© 2025 Hills Market. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Sample art data
+        const artProducts = [
+            {
+                id: 1,
+                title: "Sun Set",
+                description: "Golden, tranquil, reflective, serene, timeless.",
+                price: "R1299.99",
+                originalPrice: "R3000.99",
+                category: "landscape",
+                artist: "Maria Rodriguez",
+                style: "Impressionism",
+                dimensions: "60 x 80 cm",
+                medium: "Oil on Canvas",
+                year: "2023",
+                images: [
+                    "art.png",
+                    "https://images.unsplash.com/photo-1578301978693-85fa9c0320b9?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1578321272177-8c6da62f4eb7?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                ]
+            },
+            {
+                id: 2,
+                title: "Walk in the Night",
+                description: "Under moonlit skies, two souls walk through a dreamlike landscape.",
+                price: "R999.59",
+                originalPrice: null,
+                category: "landscape",
+                artist: "James Wilson",
+                style: "Surrealism",
+                dimensions: "50 x 70 cm",
+                medium: "Acrylic on Canvas",
+                year: "2022",
+                images: [
+                    "Art3.png",
+                    "https://images.unsplash.com/photo-1541961017774-22349e4a1262?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                ]
+            },
+            {
+                id: 3,
+                title: "Chaos meets rhythm",
+                description: "Random paints swirl in lines and circles creating a harmonious chaos.",
+                price: "R899.99",
+                originalPrice: null,
+                category: "abstract",
+                artist: "Sophie Chen",
+                style: "Abstract Expressionism",
+                dimensions: "80 x 80 cm",
+                medium: "Mixed Media",
+                year: "2023",
+                images: [
+                    "Art4.png",
+                    "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                ]
+            },
+            {
+                id: 4,
+                title: "A vivid dance of color and calm",
+                description: "Beneath umbrellas, people stroll as trees burst with color in a vibrant cityscape.",
+                price: "R400.99",
+                originalPrice: null,
+                category: "modern",
+                artist: "Thomas Johnson",
+                style: "Contemporary",
+                dimensions: "40 x 60 cm",
+                medium: "Watercolor and Ink",
+                year: "2023",
+                images: [
+                    "art5.png",
+                    "https://images.unsplash.com/photo-1549289524-06cf8837ace5?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                ]
+            },
+            {
+                id: 5,
+                title: "Abstract Harmony",
+                description: "Vibrant colors in perfect chaos creating a dynamic visual experience.",
+                price: "R1200.00",
+                originalPrice: null,
+                category: "abstract",
+                artist: "Lisa Park",
+                style: "Abstract",
+                dimensions: "70 x 70 cm",
+                medium: "Acrylic on Canvas",
+                year: "2023",
+                images: [
+                    "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1541961017774-22349e4a1262?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                ]
+            },
+            {
+                id: 6,
+                title: "Portrait Elegance",
+                description: "A detailed charcoal portrait capturing subtle expressions and emotions.",
+                price: "R1800.00",
+                originalPrice: null,
+                category: "portrait",
+                artist: "David Kim",
+                style: "Realism",
+                dimensions: "50 x 70 cm",
+                medium: "Charcoal on Paper",
+                year: "2023",
+                images: [
+                    "https://images.unsplash.com/photo-1541961017774-22349e4a1262?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                ]
+            },
+            {
+                id: 7,
+                title: "Mountain Serenity",
+                description: "Majestic mountains reflected in a tranquil alpine lake at dawn.",
+                price: "R1500.00",
+                originalPrice: "R1800.00",
+                category: "landscape",
+                artist: "Emma Watson",
+                style: "Realism",
+                dimensions: "60 x 90 cm",
+                medium: "Oil on Canvas",
+                year: "2022",
+                images: [
+                    "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1507608616759-54f48f0af0ee?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                ]
+            },
+            {
+                id: 8,
+                title: "Urban Dreams",
+                description: "A modern cityscape with geometric patterns and vibrant colors.",
+                price: "R1100.00",
+                originalPrice: null,
+                category: "modern",
+                artist: "Alex Turner",
+                style: "Contemporary",
+                dimensions: "50 x 70 cm",
+                medium: "Digital Print",
+                year: "2023",
+                images: [
+                    "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1547036967-23d11aacaee0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                ]
+            }
+        ];
+
+        // DOM Elements
+        const artGallery = document.getElementById('artGallery');
+        const productModal = document.getElementById('productModal');
+        const closeModal = document.getElementById('closeModal');
+        const mainProductImage = document.getElementById('mainProductImage');
+        const thumbnailContainer = document.getElementById('thumbnailContainer');
+        const productTitle = document.getElementById('productTitle');
+        const productPrice = document.getElementById('productPrice');
+        const productDescription = document.getElementById('productDescription');
+        const productArtist = document.getElementById('productArtist');
+        const productStyle = document.getElementById('productStyle');
+        const productDimensions = document.getElementById('productDimensions');
+        const productMedium = document.getElementById('productMedium');
+        const productYear = document.getElementById('productYear');
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        // Initialize the gallery
+        document.addEventListener('DOMContentLoaded', function() {
+            renderArtGallery(artProducts);
+            setupEventListeners();
+        });
+
+        function setupEventListeners() {
+            // Mobile menu toggle
+            mobileMenuButton.addEventListener('click', function() {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // Filter buttons
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const filter = this.getAttribute('data-filter');
+                    
+                    // Update active button
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Filter products
+                    if (filter === 'all') {
+                        renderArtGallery(artProducts);
+                    } else {
+                        const filteredProducts = artProducts.filter(product => product.category === filter);
+                        renderArtGallery(filteredProducts);
+                    }
+                });
+            });
+
+            // Close modal
+            closeModal.addEventListener('click', closeProductModal);
+
+            // Close modal when clicking outside
+            productModal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeProductModal();
+                }
+            });
+        }
+
+        function renderArtGallery(products) {
+            artGallery.innerHTML = '';
+            
+            products.forEach(product => {
+                const artCard = document.createElement('div');
+                artCard.className = 'art-card';
+                artCard.setAttribute('data-id', product.id);
+                
+                artCard.innerHTML = `
+                    <div class="art-image-container">
+                        <div class="hand-indicator">
+                            <i class="fas fa-hand-pointer hand-icon"></i>
+                        </div>
+                        <img src="${product.images[0]}" alt="${product.title}" class="art-image">
+                        <div class="art-overlay">
+                            <h3 class="art-title">${product.title}</h3>
+                            <p class="art-description">${product.description}</p>
+                        </div>
+                    </div>
+                `;
+                
+                artCard.addEventListener('click', function() {
+                    openProductModal(product.id);
+                });
+                
+                artGallery.appendChild(artCard);
+            });
+        }
+
+        function openProductModal(productId) {
+            const product = artProducts.find(p => p.id == productId);
+            if (!product) return;
+            
+            // Set product details
+            productTitle.textContent = product.title;
+            productPrice.textContent = product.price;
+            productDescription.textContent = product.description;
+            productArtist.textContent = product.artist;
+            productStyle.textContent = product.style;
+            productDimensions.textContent = product.dimensions;
+            productMedium.textContent = product.medium;
+            productYear.textContent = product.year;
+            
+            // Set main image
+            mainProductImage.src = product.images[0];
+            mainProductImage.alt = product.title;
+            
+            // Set thumbnails
+            thumbnailContainer.innerHTML = '';
+            product.images.forEach((image, index) => {
+                const thumbnail = document.createElement('img');
+                thumbnail.src = image;
+                thumbnail.alt = `${product.title} - View ${index + 1}`;
+                thumbnail.className = `thumbnail ${index === 0 ? 'active' : ''}`;
+                
+                thumbnail.addEventListener('click', function() {
+                    // Update main image
+                    mainProductImage.src = image;
+                    
+                    // Update active thumbnail
+                    document.querySelectorAll('.thumbnail').forEach(thumb => {
+                        thumb.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                });
+                
+                thumbnailContainer.appendChild(thumbnail);
+            });
+            
+            // Show modal
+            productModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeProductModal() {
+            productModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Handle image loading errors
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('img').forEach(img => {
+                img.addEventListener('error', function() {
+                    this.src = 'https://images.unsplash.com/photo-1578321272177-8c6da62f4eb7?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80';
+                    this.alt = 'Image not available';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Hills Market</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Custom styles to match the existing design */
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 50vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+        }
+        
+        .value-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .value-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .team-member {
+            transition: transform 0.3s ease;
+        }
+        
+        .team-member:hover {
+            transform: scale(1.05);
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .timeline-item:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #10b981;
+        }
+        
+        .timeline-item:after {
+            content: '';
+            position: absolute;
+            left: 5px;
+            top: 17px;
+            width: 2px;
+            height: calc(100% + 13px);
+            background-color: #e5e7eb;
+        }
+        
+        .timeline-item:last-child:after {
+            display: none;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-radius: 10px;
+            padding: 25px;
+            color: white;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation (same as home page) -->
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a href="home.html">
+                        <img src="ANewlogo.png" alt="Hills Market Logo" class="logo" width="150" height="auto">
+                    </a>
+                </div>
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button type="button" class="text-gray-700 hover:text-green-600" id="mobileMenuButton">
+                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+                <!-- Desktop menu -->
+                <div class="hidden md:flex space-x-8">
+                    <a href="home.html" class="text-gray-700 hover:text-green-600">Home</a>
+                    <a href="mainpage.html" class="text-gray-700 hover:text-green-600">Shop</a>
+                    <a href="about.html" class="text-green-600 font-medium">About Us</a>
+                    <a href="#" class="text-gray-700 hover:text-green-600">Log In</a>
+                    <a href="hills-market-signup.html" class="bg-red-600 text-white px-3 py-1 rounded-lg hover:bg-red-700 text-sm">Sign Up</a>
+                </div>
+                <div class="flex items-center">
+                    <button class="bg-green-600 text-white px-3 py-1 rounded-lg hover:bg-green-700 text-sm">
+                        Cart (0)
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile menu -->
+        <div class="md:hidden hidden bg-white border-t" id="mobileMenu">
+            <div class="px-4 py-2 space-y-2">
+                <a href="home.html" class="block py-2 text-gray-700 hover:text-green-600">Home</a>
+                <a href="mainpage.html" class="block py-2 text-gray-700 hover:text-green-600">Shop</a>
+                <a href="#" class="block py-2 text-gray-700 hover:text-green-600">Delivery</a>
+                <a href="about.html" class="block py-2 text-green-600 font-medium">About Us</a>
+                <a href="#" class="block py-2 text-gray-700 hover:text-green-600">Log In</a>
+                <a href="hills-market-signup.html" class="block py-2 bg-red-600 text-white px-3 py-1 rounded-lg hover:bg-red-700 text-sm text-center">Sign Up</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="max-w-3xl mx-auto px-4">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">Our Story</h1>
+            <p class="text-xl md:text-2xl">From a small local market to your favorite online shopping destination</p>
+        </div>
+    </section>
+
+    <!-- Our Story Section -->
+    <section class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-3xl font-bold mb-6">Welcome to Hills Market</h2>
+                    <p class="text-gray-700 mb-4">
+                        Founded in 2010, Hills Market began as a small neighborhood store with a simple mission: to provide fresh, high-quality products at fair prices while building lasting relationships with our community.
+                    </p>
+                    <p class="text-gray-700 mb-4">
+                        What started as a single location has grown into a trusted online marketplace serving customers across the country. While we've expanded our reach, we've never lost sight of our core values and commitment to exceptional customer service.
+                    </p>
+                    <p class="text-gray-700">
+                        Today, we're proud to offer a carefully curated selection of products ranging from art and home accessories to beauty products and electronics, all while maintaining the personal touch that made us successful from the beginning.
+                    </p>
+                </div>
+                <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Our Store" class="rounded-lg shadow-lg">
+                    <div class="absolute -bottom-6 -left-6 bg-green-600 text-white p-6 rounded-lg shadow-lg">
+                        <p class="text-2xl font-bold">5+</p>
+                        <p class="text-sm">Years of Service</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Mission & Vision -->
+    <section class="py-16 bg-gray-100">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div class="bg-white p-8 rounded-lg shadow-sm">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-bullseye text-green-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Our Mission</h3>
+                    <p class="text-gray-700">
+                        To make quality products accessible to everyone by providing an exceptional shopping experience, competitive prices, and outstanding customer service that builds trust and loyalty.
+                    </p>
+                </div>
+                <div class="bg-white p-8 rounded-lg shadow-sm">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-eye text-green-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Our Vision</h3>
+                    <p class="text-gray-700">
+                        To become the most trusted online marketplace where customers can discover unique, high-quality products that enhance their lives while supporting artisans and small businesses.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Values -->
+    <section class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">Our Values</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="value-card bg-gray-50 p-6 rounded-lg text-center">
+                    <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-handshake text-green-600 text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Integrity</h3>
+                    <p class="text-gray-700">
+                        We believe in honest business practices, transparent pricing, and doing the right thing even when no one is watching.
+                    </p>
+                </div>
+                <div class="value-card bg-gray-50 p-6 rounded-lg text-center">
+                    <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-users text-green-600 text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Community</h3>
+                    <p class="text-gray-700">
+                        We're committed to supporting local artisans and businesses, creating jobs, and giving back to the communities we serve.
+                    </p>
+                </div>
+                <div class="value-card bg-gray-50 p-6 rounded-lg text-center">
+                    <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-star text-green-600 text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Quality</h3>
+                    <p class="text-gray-700">
+                        We carefully curate our product selection to ensure everything we offer meets our high standards for quality and value.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Journey Timeline -->
+    <section class="py-16 bg-gray-100">
+        <div class="max-w-7xl mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">Our Journey</h2>
+            <div class="max-w-3xl mx-auto">
+                <div class="timeline-item">
+                    <h3 class="text-xl font-bold mb-2">2010 - Humble Beginnings</h3>
+                    <p class="text-gray-700">Hills Market opens its first physical location in a small neighborhood, focusing on fresh produce and local goods.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3 class="text-xl font-bold mb-2">2013 - Expansion</h3>
+                    <p class="text-gray-700">We open two additional locations and expand our product range to include home accessories and artisanal products.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3 class="text-xl font-bold mb-2">2016 - Digital Transformation</h3>
+                    <p class="text-gray-700">Launch of our e-commerce platform, allowing customers to shop online with convenient home delivery.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3 class="text-xl font-bold mb-2">2019 - Product Diversification</h3>
+                    <p class="text-gray-700">We expand our offerings to include electronics, beauty products, and a wider range of home goods.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3 class="text-xl font-bold mb-2">2022 - National Reach</h3>
+                    <p class="text-gray-700">Hills Market now serves customers across the country with fast, reliable shipping and an expanded product catalog.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3 class="text-xl font-bold mb-2">Today & Beyond</h3>
+                    <p class="text-gray-700">Continuing to innovate with new technologies like AR product visualization and AI-powered shopping assistance.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">By The Numbers</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="stat-card">
+                    <p class="text-4xl font-bold mb-2">50,000+</p>
+                    <p class="text-lg">Happy Customers</p>
+                </div>
+                <div class="stat-card">
+                    <p class="text-4xl font-bold mb-2">1,200+</p>
+                    <p class="text-lg">Products Available</p>
+                </div>
+                <div class="stat-card">
+                    <p class="text-4xl font-bold mb-2">15+</p>
+                    <p class="text-lg">Product Categories</p>
+                </div>
+                <div class="stat-card">
+                    <p class="text-4xl font-bold mb-2">98%</p>
+                    <p class="text-lg">Customer Satisfaction</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="py-16 bg-gray-100">
+        <div class="max-w-7xl mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">Meet Our Team</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="team-member bg-white rounded-lg overflow-hidden shadow-sm text-center">
+                    <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Sarah Johnson" class="w-full h-64 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-1">Rifumo Maluleke</h3>
+                        <p class="text-green-600 mb-3">Co-Founder</p>
+                        <p class="text-gray-700 text-sm">Sarah started Hills Market with a vision to create a community-focused shopping experience that prioritizes quality and customer relationships.</p>
+                    </div>
+                </div>
+                <div class="team-member bg-white rounded-lg overflow-hidden shadow-sm text-center">
+                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Michael Chen" class="w-full h-64 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-1">Tebogo Chen</h3>
+                        <p class="text-green-600 mb-3">Head of Operations</p>
+                        <p class="text-gray-700 text-sm">Michael ensures our operations run smoothly, from inventory management to delivery logistics, so customers receive their orders promptly.</p>
+                    </div>
+                </div>
+                <div class="team-member bg-white rounded-lg overflow-hidden shadow-sm text-center">
+                    <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Emily Rodriguez" class="w-full h-64 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-1">Sindiswa Mulondo</h3>
+                        <p class="text-green-600 mb-3">Product Curator</p>
+                        <p class="text-gray-700 text-sm">Emily carefully selects each product in our catalog, ensuring they meet our quality standards and align with our customers' needs and preferences.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16 bg-green-600 text-white">
+        <div class="max-w-3xl mx-auto text-center px-4">
+            <h2 class="text-3xl font-bold mb-4">Join the Hills Market Family</h2>
+            <p class="text-xl mb-8">Experience the difference of shopping with a company that truly cares about quality, community, and customer satisfaction.</p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="mainpage.html" class="bg-white text-green-700 px-6 py-3 rounded-lg font-bold hover:bg-gray-100 transition duration-300">Start Shopping</a>
+                <a href="signup.html" class="bg-transparent border-2 border-white text-white px-6 py-3 rounded-lg font-bold hover:bg-white hover:text-green-700 transition duration-300">Create Account</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <img src="ANewlogo.png" alt="Hills Market Logo" class="logo mb-4" width="150" height="auto">
+                    <p class="text-gray-400 text-sm">Your one-stop shop for fresh produce and quality goods.</p>
+                </div>
+                <div>
+                    <h3 class="font-bold mb-4">Quick Links</h3>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="home.html" class="hover:text-white">Home</a></li>
+                        <li><a href="mainpage.html" class="hover:text-white">Shop</a></li>
+                        <li><a href="#" class="hover:text-white">Delivery Information</a></li>
+                        <li><a href="about.html" class="hover:text-white">About Us</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold mb-4">Customer Service</h3>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-white">Contact Us</a></li>
+                        <li><a href="#" class="hover:text-white">FAQs</a></li>
+                        <li><a href="#" class="hover:text-white">Returns & Refunds</a></li>
+                        <li><a href="#" class="hover:text-white">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold mb-4">Contact Info</h3>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li>21 Junction Parktown, Johhanesburg</li>
+                        <li>Phone: +27 72 211-0805</li>
+                        <li>Email: info@hillsmarket.com</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="max-w-7xl mx-auto text-center text-xs text-gray-500 mt-8 pt-8 border-t border-gray-700">
+                <p>© 2025 Hills Market. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Simple animation for stats counter (for demonstration)
+        document.addEventListener('DOMContentLoaded', function() {
+            const statCards = document.querySelectorAll('.stat-card');
+            
+            statCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-5px)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

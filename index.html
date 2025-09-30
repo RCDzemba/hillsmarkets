@@ -162,37 +162,6 @@
             color: white;
         }
         
-        .desktop-ad {
-            background: linear-gradient(135deg, #10b981, #047857);
-            color: white;
-            border-radius: 8px;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            margin: 2rem 0;
-        }
-        
-        .mobile-ad {
-            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-            color: white;
-            border-radius: 8px;
-            overflow: hidden;
-            display: none;
-            margin: 1rem 0;
-            text-align: center;
-            padding: 1.5rem;
-        }
-        
-        @media (max-width: 768px) {
-            .desktop-ad {
-                display: none;
-            }
-            
-            .mobile-ad {
-                display: block;
-            }
-        }
-        
         .category-card {
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
@@ -200,6 +169,275 @@
         .category-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Advertisement Space Styles */
+        .ad-carousel-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .ad-carousel {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        
+        .ad-slide {
+            min-width: 100%;
+            position: relative;
+        }
+        
+        .ad-slide img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+        
+        .ad-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            padding: 2rem;
+            color: white;
+        }
+        
+        .ad-content.left {
+            justify-content: flex-start;
+            background: linear-gradient(to right, rgba(0,0,0,0.7), transparent);
+        }
+        
+        .ad-content.right {
+            justify-content: flex-end;
+            background: linear-gradient(to left, rgba(0,0,0,0.7), transparent);
+            text-align: right;
+        }
+        
+        .ad-content.center {
+            justify-content: center;
+            background: rgba(0,0,0,0.5);
+            text-align: center;
+        }
+        
+        .carousel-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .carousel-dot.active {
+            background-color: white;
+        }
+        
+        .carousel-control {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.3);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .carousel-control:hover {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        
+        .carousel-control.prev {
+            left: 10px;
+        }
+        
+        .carousel-control.next {
+            right: 10px;
+        }
+        
+        /* AI Assistant Styles */
+        .ai-assistant {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        .ai-toggle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease;
+        }
+        
+        .ai-toggle:hover {
+            transform: scale(1.05);
+        }
+        
+        .ai-toggle.listening {
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+        
+        .ai-chat {
+            position: absolute;
+            bottom: 70px;
+            right: 0;
+            width: 350px;
+            height: 450px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+        }
+        
+        .ai-chat.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .ai-header {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 15px;
+            border-radius: 12px 12px 0 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .ai-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .message {
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 18px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        
+        .message.ai {
+            align-self: flex-start;
+            background: #f1f5f9;
+            color: #334155;
+            border-bottom-left-radius: 5px;
+        }
+        
+        .message.user {
+            align-self: flex-end;
+            background: #10b981;
+            color: white;
+            border-bottom-right-radius: 5px;
+        }
+        
+        .ai-input {
+            display: flex;
+            padding: 15px;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .ai-input input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid #d1d5db;
+            border-radius: 20px;
+            outline: none;
+        }
+        
+        .ai-input button {
+            background: #10b981;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            margin-left: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        .ai-input button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+        
+        .close-ai {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+        
+        /* Responsive category images */
+        .category-image-container {
+            width: 100%;
+            height: 0;
+            padding-bottom: 75%; /* 4:3 aspect ratio */
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .category-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        @media (max-width: 768px) {
+            .ad-slide img {
+                height: 200px;
+            }
+            
+            .ad-content {
+                padding: 1rem;
+            }
+            
+            .ai-chat {
+                width: 300px;
+                height: 400px;
+            }
         }
     </style>
 </head>
@@ -210,7 +448,7 @@
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center">
                     <a href="home.html">
-                        <img src="ANewlogo.jpg" alt="Hills Market Logo" class="logo" width="130" height="auto">
+                        <img src="ANewlogo.png" alt="Hills Market Logo" class="logo" width="150" height="auto">
                     </a>
                 </div>
                 <!-- Mobile menu button -->
@@ -225,9 +463,9 @@
                 <div class="hidden md:flex space-x-8">
                     <a href="home.html" class="text-green-600 font-medium">Home</a>
                     <a href="mainpage.html" class="text-gray-700 hover:text-green-600">Shop</a>
-                    <a href="deliverypage.html" class="text-gray-700 hover:text-green-600">Delivery</a>
+                    <a href="AboutUs.html" class="text-gray-700 hover:text-green-600">About Us</a>
                     <a href="sign-in.html" class="text-gray-700 hover:text-green-600">Log In</a>
-                    <a href="signup.html" class="bg-red-600 text-white px-3 py-1 rounded-lg hover:bg-red-700 text-sm">Sign Up</a>
+                    <a href="hills-market-signup.html" class="bg-red-600 text-white px-3 py-1 rounded-lg hover:bg-red-700 text-sm">Sign Up</a>
                 </div>
                 <div class="flex items-center">
                     <button class="bg-green-600 text-white px-3 py-1 rounded-lg hover:bg-green-700 text-sm">
@@ -241,65 +479,119 @@
             <div class="px-4 py-2 space-y-2">
                 <a href="home.html" class="block py-2 text-green-600 font-medium">Home</a>
                 <a href="mainpage.html" class="block py-2 text-gray-700 hover:text-green-600">Shop</a>
-                <a href="#" class="block py-2 text-gray-700 hover:text-green-600">Delivery</a>
+                <a href="#" class="block py-2 text-gray-700 hover:text-green-600"></a>
                 <a href="#" class="block py-2 text-gray-700 hover:text-green-600">Log In</a>
                 <a href="hills-market-signup.html" class="block py-2 bg-red-600 text-white px-3 py-1 rounded-lg hover:bg-red-700 text-sm text-center">Sign Up</a>
             </div>
         </div>
     </nav>
 
-     <!-- Desktop Advertising Container -->
-    <div class="max-w-7xl mx-auto px-4">
-        <div class="desktop-ad">
-            <div class="w-1/2 p-8">
-                <h2 class="text-3xl font-bold mb-4">Summer Sale - Up to 50% Off!</h2>
-                <p class="text-lg mb-6">Stock up on fresh fruits and vegetables with our amazing summer discounts. Limited time offer!</p>
-                <a href="mainpage.html" class="bg-white text-green-700 px-5 py-2 rounded-lg font-medium inline-block hover:bg-gray-100">Shop the Sale</a>
-            </div>
-            <div class="w-1/2">
-                <img src="iphone.webp" alt="Fresh Fruits" class="w-full h-64 object-cover">
+    <!-- Advertisement Space -->
+    <div class="bg-white py-8">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="ad-carousel-container">
+                <!-- Ad Carousel -->
+                <div class="ad-carousel" id="adCarousel">
+                    <!-- Ad Slide 1 (Image) -->
+                    <div class="ad-slide">
+                        <img src="sanlumadvert.webp" alt="Special Offer">
+                        <div class="ad-content left">
+                            <div>
+                                <h3 class="text-2xl md:text-3xl font-bold mb-2">Special Investment Offer</h3>
+                                <p class="text-base md:text-lg mb-4 max-w-md">Secure your future with our exclusive investment plans</p>
+                                <a href="#" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 inline-block">Invest Today</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Ad Slide 2 (Video Placeholder) -->
+                    <div class="ad-slide">
+                        <img src="https://images.unsplash.com/photo-1607082350899-7e105aa886ae?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="New Arrivals">
+                        <div class="ad-content center">
+                            <div>
+                                <div class="bg-white/30 rounded-full p-3 mb-4 inline-block">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                                <h3 class="text-2xl md:text-3xl font-bold mb-2">New Arrivals Video</h3>
+                                <p class="text-base md:text-lg">See what's new at Hills Market this week</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Ad Slide 3 (Image) -->
+                    <div class="ad-slide">
+                        <img src="sanlam-1.png" alt="Weekend Sale">
+                        <div class="ad-content right">
+                            <div>
+                                <h3 class="text-2xl md:text-3xl font-bold mb-2">Weekend Sale</h3>
+                                <p class="text-base md:text-lg mb-4">Up to 30% off on selected home accessories</p>
+                                <a href="#" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 inline-block">View Deals</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Carousel Navigation Dots -->
+                <div class="absolute bottom-4 left-0 right-0 flex justify-center space-x-2">
+                    <button class="carousel-dot active" data-slide="0"></button>
+                    <button class="carousel-dot" data-slide="1"></button>
+                    <button class="carousel-dot" data-slide="2"></button>
+                </div>
+                
+                <!-- Carousel Controls -->
+                <button class="carousel-control prev" id="prevBtn">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </button>
+                <button class="carousel-control next" id="nextBtn">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </button>
             </div>
         </div>
     </div>
-
-    <!-- Mobile Advertising Container -->
-   <div class="max-w-7xl mx-auto px-4">
-  <div class="mobile-ad bg-cover bg-center rounded-xl p-6 text-white flex flex-col justify-center"
-       style="background-image: url('iphone15lineup.jpg'); height: 300px;">
-    <h2 class="text-2xl font-bold mb-3">Special Mobile Offer!</h2>
-    <p class="mb-4">Get 15% off your first order when you shop on your mobile device. Use code: MOBILE15</p>
-    <a href="mainpage.html" class="bg-white text-blue-700 px-4 py-2 rounded-lg font-medium inline-block hover:bg-gray-100">
-      Shop Now
-    </a>
-  </div>
-</div>
 
     <!-- Featured Categories -->
     <section class="max-w-7xl mx-auto py-8 px-4">
         <h2 class="text-2xl font-bold mb-6">Shop by Category</h2>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <a href="Art_products/art-category-page (1).html" class="category-card bg-white rounded-lg shadow-sm overflow-hidden">
-                <img src="art.png" alt="Art" class="w-full h-32 object-cover">
+            <a href="Art-page.html" class="category-card bg-white rounded-lg shadow-sm overflow-hidden">
+                <div class="category-image-container">
+                    <img src="paintings.jpg" alt="Art" class="category-image">
+                </div>
                 <div class="p-4 text-center">
                     <h3 class="font-medium">Art</h3>
+                    <p class="text-sm text-gray-500 mt-1">12 products</p>
                 </div>
             </a>
-            <a href="Nail_Product_services/nails-page.html" class="category-card bg-white rounded-lg shadow-sm overflow-hidden">
-                <img src="nails.jpg" alt="Nails" class="w-full h-32 object-cover">
+            <a href="Nails.html" class="category-card bg-white rounded-lg shadow-sm overflow-hidden">
+                <div class="category-image-container">
+                    <img src="nails.jpg" alt="Nails" class="category-image">
+                </div>
                 <div class="p-4 text-center">
                     <h3 class="font-medium">Nails</h3>
+                    <p class="text-sm text-gray-500 mt-1">15 products</p>
                 </div>
             </a>
-            <a href="Phones/phones.html" class="category-card bg-white rounded-lg shadow-sm overflow-hidden">
-                <img src="iphone15lineup.jpg" alt="Phones" class="w-full h-32 object-cover">
+            <a href="phones.html" class="category-card bg-white rounded-lg shadow-sm overflow-hidden">
+                <div class="category-image-container">
+                    <img src="phone.webp" alt="Phones" class="category-image">
+                </div>
                 <div class="p-4 text-center">
                     <h3 class="font-medium">Phones</h3>
+                    <p class="text-sm text-gray-500 mt-1">9 products</p>
                 </div>
             </a>
-            <a href="Home accessories/home-accessories-page.html" class="category-card bg-white rounded-lg shadow-sm overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Home Accessories" class="w-full h-32 object-cover">
+            <a href="home-accessories-page.html" class="category-card bg-white rounded-lg shadow-sm overflow-hidden">
+                <div class="category-image-container">
+                    <img src="accessories.webp" alt="Home Accessories" class="category-image">
+                </div>
                 <div class="p-4 text-center">
                     <h3 class="font-medium">Home Accessories</h3>
+                    <p class="text-sm text-gray-500 mt-1">14 products</p>
                 </div>
             </a>
         </div>
@@ -393,425 +685,739 @@
         </div>
     </section>
 
-    <!-- Newsletter Section -->
-    <section class="bg-green-600 py-8 px-4 text-white">
-        <div class="max-w-3xl mx-auto text-center">
-            <h2 class="text-2xl font-bold mb-4">Subscribe to Our Newsletter</h2>
-            <p class="mb-6">Get the latest updates on new products, special offers, and seasonal promotions.</p>
-            <form class="flex flex-col md:flex-row gap-2 justify-center">
-                <input type="email" placeholder="Your email address" class="px-4 py-2 rounded-lg text-gray-900 flex-grow max-w-md">
-                <button type="submit" class="bg-white text-green-700 px-6 py-2 rounded-lg font-medium hover:bg-gray-100">Subscribe</button>
-            </form>
+    <!-- Additional Featured Products by Category -->
+    <section class="max-w-7xl mx-auto py-8 px-4">
+        <h2 class="text-2xl font-bold mb-6">More Featured Products</h2>
+        
+        <!-- Art Category -->
+        <div class="mb-10">
+            <h3 class="text-xl font-semibold mb-4 text-green-700">Art Collection</h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <!-- Art Product 1 -->
+                <div class="product-container bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow cursor-pointer" data-product-id="5">
+                    <img src="https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Abstract Art" class="w-full h-33 object-cover">
+                    <div class="p-3">
+                        <h3 class="font-medium text-sm mt-1">Abstract Harmony</h3>
+                        <p class="text-xs text-gray-500">Vibrant colors in perfect chaos</p>
+                        <div class="flex justify-between items-center mt-2">
+                            <div>
+                                <span class="text-green-600 font-bold text-sm">R1200.00</span>
+                            </div>
+                            <button class="bg-green-600 text-white rounded-full p-1 hover:bg-green-700">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Art Product 2 -->
+                <div class="product-container bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow cursor-pointer" data-product-id="6">
+                    <img src="https://images.unsplash.com/photo-1541961017774-22349e4a1262?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Portrait Art" class="w-full h-33 object-cover">
+                    <div class="p-3">
+                        <span class="text-xs text-white bg-purple-500 px-2 py-0.5 rounded-full">New</span>
+                        <h3 class="font-medium text-sm mt-1">Portrait Elegance</h3>
+                        <p class="text-xs text-gray-500">Detailed charcoal portrait</p>
+                        <div class="flex justify-between items-center mt-2">
+                            <div>
+                                <span class="text-green-600 font-bold text-sm">R1800.00</span>
+                            </div>
+                            <button class="bg-green-600 text-white rounded-full p-1 hover:bg-green-700">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Nails Category -->
+        <div class="mb-10">
+            <h3 class="text-xl font-semibold mb-4 text-pink-600">Nail Products</h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <!-- Nails Product 1 -->
+                <div class="product-container bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow cursor-pointer" data-product-id="7">
+                    <img src="https://images.unsplash.com/photo-1607778833979-44d9f39cfb70?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Nail Polish Set" class="w-full h-33 object-cover">
+                    <div class="p-3">
+                        <h3 class="font-medium text-sm mt-1">Gel Polish Set</h3>
+                        <p class="text-xs text-gray-500">Long-lasting gel polish collection</p>
+                        <div class="flex justify-between items-center mt-2">
+                            <div>
+                                <span class="text-green-600 font-bold text-sm">R350.00</span>
+                            </div>
+                            <button class="bg-green-600 text-white rounded-full p-1 hover:bg-green-700">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Nails Product 2 -->
+                <div class="product-container bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow cursor-pointer" data-product-id="8">
+                    <img src="https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Nail Art Kit" class="w-full h-33 object-cover">
+                    <div class="p-3">
+                        <span class="text-xs text-white bg-red-500 px-2 py-0.5 rounded-full">Sale</span>
+                        <h3 class="font-medium text-sm mt-1">Nail Art Kit</h3>
+                        <p class="text-xs text-gray-500">Complete nail art design set</p>
+                        <div class="flex justify-between items-center mt-2">
+                            <div>
+                                <span class="text-green-600 font-bold text-sm">R280.00</span>
+                                <span class="text-gray-400 text-xs line-through ml-1">R350.00</span>
+                            </div>
+                            <button class="bg-green-600 text-white rounded-full p-1 hover:bg-green-700">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="bg-white py-8 px-4 border-t">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div>
-                <img src="ANewlogo.jpg" alt="Hills Market Logo" class="logo mb-4" width="150" height="auto">
-                <p class="text-gray-600 text-sm">Your one-stop shop for produce and quality goods.</p>
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-lg font-bold mb-4 flex items-center">
+                       <img src="hills-logo.png" alt="Hills Market Logo" class="w-8 h-10 mr-2">
+                           
+                    </h3>
+                    <p class="text-gray-400">Your one-stop shop for quality products at affordable prices.</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="home.html" class="text-gray-400 hover:text-white">Home</a></li>
+                        <li><a href="mainpage.html" class="text-gray-400 hover:text-white">Shop</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">About Us</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Customer Service</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Shipping Info</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Returns</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">FAQ</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Contact Us</h3>
+                    <p class="text-gray-400">Email: info@hillsmarket.com</p>
+                    <p class="text-gray-400">Phone: +27 72 211 0805</p>
+                    <div class="flex space-x-4 mt-4">
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M18.77 7.46H14.5v-1.9c0-.9.6-1.1 1-1.1h3V.5h-4.33C10.24.5 9.5 3.44 9.5 5.32v2.15h-3v4h3v12h5v-12h3.85l.42-4z"/></svg>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M23.44 4.83c-.8.37-1.5.38-2.22.02.93-.56.98-.96 1.32-2.02-.88.52-1.86.9-2.9 1.1-.82-.88-2-1.43-3.3-1.43-2.5 0-4.55 2.04-4.55 4.54 0 .36.03.7.1 1.04-3.77-.2-7.12-2-9.36-4.75-.4.67-.6 1.45-.6 2.3 0 1.56.8 2.95 2 3.77-.74-.03-1.44-.23-2.05-.57v.06c0 2.2 1.56 4.03 3.64 4.44-.67.2-1.37.2-2.06.08.58 1.8 2.26 3.12 4.25 3.16C5.78 18.1 3.37 18.74 1 18.46c2 1.3 4.4 2.04 6.97 2.04 8.35 0 12.92-6.92 12.92-12.93 0-.2 0-.4-.02-.6.9-.63 1.96-1.22 2.56-2.14z"/></svg>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z"/></svg>
+                        </a>
+                    </div>
+                </div>
             </div>
-            <div>
-                <h3 class="font-bold mb-4">Quick Links</h3>
-                <ul class="space-y-2 text-sm text-gray-600">
-                    <li><a href="home.html" class="hover:text-green-600">Home</a></li>
-                    <li><a href="mainpage.html" class="hover:text-green-600">Shop</a></li>
-                    <li><a href="#" class="hover:text-green-600">Delivery Information</a></li>
-                    <li><a href="#" class="hover:text-green-600">About Us</a></li>
-                </ul>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2025 Hills Market. All rights reserved.</p>
             </div>
-            <div>
-                <h3 class="font-bold mb-4">Customer Service</h3>
-                <ul class="space-y-2 text-sm text-gray-600">
-                    <li><a href="#" class="hover:text-green-600">Contact Us</a></li>
-                    <li><a href="#" class="hover:text-green-600">FAQs</a></li>
-                    <li><a href="#" class="hover:text-green-600">Returns & Refunds</a></li>
-                    <li><a href="#" class="hover:text-green-600">Privacy Policy</a></li>
-                </ul>
-            </div>
-            <div>
-                <h3 class="font-bold mb-4">Contact Info</h3>
-                <ul class="space-y-2 text-sm text-gray-600">
-                    <li>31 Parklane, Junction, Parktown</li>
-                    <li>Phone: +27 72 211-0805</li>
-                    <li>Email: info@hillsmarket.co.za</li>
-                </ul>
-            </div>
-        </div>
-        <div class="max-w-7xl mx-auto text-center text-xs text-gray-500 mt-8 pt-4 border-t">
-            <p>© 2025 Hills Market. All rights reserved.</p>
         </div>
     </footer>
 
     <!-- Product Detail Modal -->
     <div class="modal-overlay" id="productModal">
         <div class="modal-content">
-            <button class="close-modal" id="closeModal">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
-                </svg>
-            </button>
-            
-            <div class="view-toggle">
-                <button class="active" data-view="images">Images</button>
-                <button data-view="ar">View in AR</button>
-            </div>
-            
-            <div class="image-gallery" id="imageGallery">
-                <!-- Images will be dynamically inserted here -->
-            </div>
-            
-            <div class="ar-container" id="arContainer">
-                <div class="ar-placeholder">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                    </svg>
-                    <h3 class="font-bold text-lg mb-2">Augmented Reality View</h3>
-                    <p class="text-gray-600 mb-4">Point your camera at a flat surface to place this product in your space.</p>
-                    <button class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
-                        Start AR Experience
-                    </button>
-                </div>
-            </div>
-            
-            <div class="product-info">
-                <h2 id="productTitle" class="text-2xl font-bold mb-2">Product Title</h2>
-                <div class="flex items-center mb-4">
-                    <span id="productPrice" class="text-green-600 font-bold text-xl mr-2">R0.00</span>
-                    <span id="productOldPrice" class="text-gray-400 text-sm line-through"></span>
-                    <span id="productBadge" class="ml-2 text-xs text-white px-2 py-0.5 rounded-full"></span>
-                </div>
-                <p id="productDescription" class="text-gray-700 mb-4">Product description will appear here.</p>
-                
-                <div class="flex items-center mb-4">
-                    <div class="flex items-center mr-6">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-600 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                        </svg>
-                        <span class="text-sm">In Stock</span>
+            <button class="close-modal" id="closeModal">×</button>
+            <div class="flex flex-col md:flex-row">
+                <div class="md:w-1/2">
+                    <div class="image-gallery" id="imageGallery">
+                        <!-- Images will be loaded dynamically -->
                     </div>
-                    <div class="flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-600 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                            <path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
-                        </svg>
-                        <span class="text-sm">Free Delivery</span>
+                    <div class="view-toggle">
+                        <button class="active" id="productImagesBtn">Product Images</button>
+                        <button id="arViewBtn">AR View</button>
+                    </div>
+                    <div class="ar-container" id="arContainer">
+                        <div class="ar-placeholder">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+                            </svg>
+                            <h3 class="text-xl font-bold mb-2">AR View</h3>
+                            <p class="text-gray-600 mb-4">View this product in your space using augmented reality</p>
+                            <button class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Launch AR Experience</button>
+                        </div>
                     </div>
                 </div>
-                
-                <div class="flex items-center mb-6">
-                    <button class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center mr-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd" />
-                        </svg>
-                        Add to Cart
-                    </button>
-                    <button class="border border-green-600 text-green-600 px-4 py-2 rounded-lg hover:bg-green-50 flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" />
-                        </svg>
-                        Add to Wishlist
-                    </button>
-                </div>
-                
-                <div class="border-t pt-4">
-                    <h3 class="font-bold mb-2">Product Details</h3>
-                    <ul id="productDetails" class="text-sm text-gray-600 list-disc pl-5">
-                        <!-- Product details will be dynamically inserted here -->
-                    </ul>
+                <div class="md:w-1/2">
+                    <div class="product-info">
+                        <h2 id="productTitle" class="text-2xl font-bold mb-2"></h2>
+                        <div class="flex items-center mb-4">
+                            <div class="flex text-yellow-400">
+                                <!-- Stars will be loaded dynamically -->
+                            </div>
+                            <span id="reviewCount" class="text-gray-500 ml-2"></span>
+                        </div>
+                        <p id="productDescription" class="text-gray-700 mb-4"></p>
+                        <div class="mb-4">
+                            <span id="productPrice" class="text-2xl font-bold text-green-600"></span>
+                            <span id="originalPrice" class="text-gray-400 line-through ml-2"></span>
+                        </div>
+                        <div class="mb-6">
+                            <h3 class="font-semibold mb-2">Available Sizes:</h3>
+                            <div class="flex space-x-2" id="sizeOptions">
+                                <!-- Size options will be loaded dynamically -->
+                            </div>
+                        </div>
+                        <div class="mb-6">
+                            <h3 class="font-semibold mb-2">Available Colors:</h3>
+                            <div class="flex space-x-2" id="colorOptions">
+                                <!-- Color options will be loaded dynamically -->
+                            </div>
+                        </div>
+                        <div class="flex items-center mb-6">
+                            <span class="mr-4">Quantity:</span>
+                            <div class="flex items-center border rounded">
+                                <button class="px-3 py-1" id="decreaseQty">-</button>
+                                <span class="px-3 py-1 border-l border-r" id="quantity">1</span>
+                                <button class="px-3 py-1" id="increaseQty">+</button>
+                            </div>
+                        </div>
+                        <div class="flex space-x-4">
+                            <button class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 flex-1">Add to Cart</button>
+                            <button class="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 flex-1">Buy Now</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- AI Assistant -->
+    <div class="ai-assistant">
+        <div class="ai-chat" id="aiChat">
+            <div class="ai-header">
+                <div class="flex items-center">
+                    <div class="w-3 h-3 bg-green-400 rounded-full mr-2"></div>
+                    <span>Hills Assistant</span>
+                </div>
+                <button class="close-ai" id="closeAi">×</button>
+            </div>
+            <div class="ai-messages" id="aiMessages">
+                <div class="message ai">
+                    Hi! I'm your Hills Market assistant. How can I help you find the perfect product today?
+                </div>
+            </div>
+            <div class="ai-input">
+                <input type="text" placeholder="Type your message..." id="aiInput">
+                <button id="sendMessage">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <button class="ai-toggle" id="aiToggle">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+            </svg>
+        </button>
+    </div>
+
     <script>
-        // Product data - in a real app, this would come from a database
+        // Product data
         const products = {
             1: {
-                title: "Sun Set",
+                title: "Sun Set Art",
+                description: "A beautiful depiction of a golden sunset over tranquil waters. This piece captures the serene moment when day transitions to night, with warm tones that create a calming atmosphere in any room.",
                 price: "R1299.99",
-                oldPrice: "R3000.99",
-                badge: "Sale",
-                badgeColor: "bg-red-500",
-                description: "Golden, tranquil, reflective, serene, timeless. This beautiful artwork captures the essence of a peaceful sunset with warm tones and soft textures.",
-                images: ["art.png", "Art3.png", "Art4.png"],
-                details: [
-                    "Dimensions: 24x36 inches",
-                    "Medium: Oil on canvas",
-                    "Artist: Jane Smith",
-                    "Framing: Not included",
-                    "Shipping: Ready to hang"
+                originalPrice: "R3000.99",
+                images: [
+                    "art.png",
+                    "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1507608616759-54f48f0af0ee?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
                 ],
-                hasAR: false
+                sizes: ["Small (20x30cm)", "Medium (40x60cm)", "Large (60x90cm)"],
+                colors: ["#f59e0b", "#ef4444", "#3b82f6"],
+                rating: 4.5,
+                reviews: 24,
+                category: "Art"
             },
             2: {
-                title: "Walk in the Night",
+                title: "Walk in the Night Art",
+                description: "This captivating piece shows two figures walking under a moonlit sky. The artist masterfully uses dark tones and subtle highlights to create a mysterious and romantic atmosphere.",
                 price: "R999.59",
-                oldPrice: "",
-                badge: "",
-                badgeColor: "",
-                description: "Under moonlit skies, two souls walk through a serene landscape. This piece evokes feelings of companionship and tranquility.",
-                images: ["Art3.png", "art.png", "art5.png"],
-                details: [
-                    "Dimensions: 20x30 inches",
-                    "Medium: Acrylic on canvas",
-                    "Artist: Michael Brown",
-                    "Framing: Optional",
-                    "Shipping: Rolled in a tube"
+                originalPrice: null,
+                images: [
+                    "Art3.png",
+                    "https://images.unsplash.com/photo-1541961017774-22349e4a1262?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
                 ],
-                hasAR: false
+                sizes: ["Small (20x30cm)", "Medium (40x60cm)"],
+                colors: ["#1e293b", "#475569", "#64748b"],
+                rating: 4.2,
+                reviews: 18,
+                category: "Art"
             },
             3: {
-                title: "Chaos meets rhythm",
+                title: "Chaos meets rhythm Art",
+                description: "An abstract composition where random paints swirl in lines and circles, creating a dynamic visual experience. This piece represents the beautiful chaos of creativity and the underlying rhythm that connects all things.",
                 price: "R899.99",
-                oldPrice: "",
-                badge: "",
-                badgeColor: "",
-                description: "Random paints swirl in lines and circles, whispering energy, freedom, and emotion. An abstract expression of inner feelings.",
-                images: ["Art4.png", "art.png", "Art3.png"],
-                details: [
-                    "Dimensions: 30x40 inches",
-                    "Medium: Mixed media",
-                    "Artist: Sarah Johnson",
-                    "Framing: Included",
-                    "Shipping: Stretched canvas"
+                originalPrice: null,
+                images: [
+                    "Art4.png",
+                    "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
                 ],
-                hasAR: false
+                sizes: ["Small (20x30cm)", "Medium (40x60cm)", "Large (60x90cm)"],
+                colors: ["#ec4899", "#8b5cf6", "#06b6d4"],
+                rating: 4.7,
+                reviews: 31,
+                category: "Art"
             },
             4: {
                 title: "A vivid dance of color and calm",
+                description: "This vibrant artwork shows people strolling beneath colorful umbrellas as trees burst with autumn hues. The contrast between the peaceful figures and the explosive colors creates a unique visual harmony.",
                 price: "R400.99",
-                oldPrice: "",
-                badge: "Organic",
-                badgeColor: "bg-green-500",
-                description: "Beneath umbrellas, people stroll as trees burst with orange, yellow, and blue. A vibrant urban scene full of life and movement.",
-                images: ["art5.png", "Art3.png", "Art4.png"],
-                details: [
-                    "Dimensions: 18x24 inches",
-                    "Medium: Watercolor on paper",
-                    "Artist: David Wilson",
-                    "Framing: Not included",
-                    "Shipping: Protected flat packaging"
+                originalPrice: null,
+                images: [
+                    "art5.png",
+                    "https://images.unsplash.com/photo-1549289524-06cf8837ace5?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
                 ],
-                hasAR: false
+                sizes: ["Small (20x30cm)", "Medium (40x60cm)"],
+                colors: ["#f59e0b", "#10b981", "#3b82f6"],
+                rating: 4.0,
+                reviews: 15,
+                category: "Art"
+            },
+            5: {
+                title: "Abstract Harmony",
+                description: "A vibrant explosion of colors in perfect chaos. This abstract piece uses bold brushstrokes and contrasting hues to create a dynamic composition that energizes any space.",
+                price: "R1200.00",
+                originalPrice: null,
+                images: [
+                    "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1541961017774-22349e4a1262?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                ],
+                sizes: ["Small (20x30cm)", "Medium (40x60cm)", "Large (60x90cm)"],
+                colors: ["#ef4444", "#f59e0b", "#10b981"],
+                rating: 4.3,
+                reviews: 22,
+                category: "Art"
+            },
+            6: {
+                title: "Portrait Elegance",
+                description: "A detailed charcoal portrait capturing the subtle expressions and emotions of the subject. The artist's mastery of light and shadow creates a lifelike representation with emotional depth.",
+                price: "R1800.00",
+                originalPrice: null,
+                images: [
+                    "https://images.unsplash.com/photo-1541961017774-22349e4a1262?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                ],
+                sizes: ["Medium (40x60cm)", "Large (60x90cm)"],
+                colors: ["#1e293b", "#475569", "#64748b"],
+                rating: 4.8,
+                reviews: 19,
+                category: "Art"
+            },
+            7: {
+                title: "Gel Polish Set",
+                description: "A complete set of long-lasting gel polishes in trendy colors. These polishes provide a professional finish that lasts for weeks without chipping.",
+                price: "R350.00",
+                originalPrice: null,
+                images: [
+                    "https://images.unsplash.com/photo-1607778833979-44d9f39cfb70?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                ],
+                sizes: ["6 Colors", "12 Colors", "18 Colors"],
+                colors: ["#ef4444", "#ec4899", "#8b5cf6", "#3b82f6", "#10b981", "#f59e0b"],
+                rating: 4.5,
+                reviews: 47,
+                category: "Nails"
+            },
+            8: {
+                title: "Nail Art Kit",
+                description: "A complete nail art design set with everything you need to create stunning nail designs at home. Includes brushes, dotting tools, gems, and stickers.",
+                price: "R280.00",
+                originalPrice: "R350.00",
+                images: [
+                    "https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1607778833979-44d9f39cfb70?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                ],
+                sizes: ["Basic Kit", "Deluxe Kit", "Professional Kit"],
+                colors: ["#f3f4f6", "#1e293b"],
+                rating: 4.7,
+                reviews: 38,
+                category: "Nails"
             }
         };
 
-        // DOM elements
-        const modal = document.getElementById('productModal');
-        const closeModalBtn = document.getElementById('closeModal');
+        // DOM Elements
+        const productModal = document.getElementById('productModal');
+        const closeModal = document.getElementById('closeModal');
+        const productImagesBtn = document.getElementById('productImagesBtn');
+        const arViewBtn = document.getElementById('arViewBtn');
         const imageGallery = document.getElementById('imageGallery');
         const arContainer = document.getElementById('arContainer');
-        const viewToggleButtons = document.querySelectorAll('.view-toggle button');
         const productTitle = document.getElementById('productTitle');
-        const productPrice = document.getElementById('productPrice');
-        const productOldPrice = document.getElementById('productOldPrice');
-        const productBadge = document.getElementById('productBadge');
         const productDescription = document.getElementById('productDescription');
-        const productDetails = document.getElementById('productDetails');
+        const productPrice = document.getElementById('productPrice');
+        const originalPrice = document.getElementById('originalPrice');
+        const sizeOptions = document.getElementById('sizeOptions');
+        const colorOptions = document.getElementById('colorOptions');
+        const reviewCount = document.getElementById('reviewCount');
+        const decreaseQty = document.getElementById('decreaseQty');
+        const increaseQty = document.getElementById('increaseQty');
+        const quantity = document.getElementById('quantity');
         const productContainers = document.querySelectorAll('.product-container');
         const mobileMenuButton = document.getElementById('mobileMenuButton');
         const mobileMenu = document.getElementById('mobileMenu');
+        const aiToggle = document.getElementById('aiToggle');
+        const aiChat = document.getElementById('aiChat');
+        const closeAi = document.getElementById('closeAi');
+        const aiMessages = document.getElementById('aiMessages');
+        const aiInput = document.getElementById('aiInput');
+        const sendMessage = document.getElementById('sendMessage');
+        const adCarousel = document.getElementById('adCarousel');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const carouselDots = document.querySelectorAll('.carousel-dot');
 
-        // Current product and image index
-        let currentProductId = null;
-        let currentImageIndex = 0;
+        // Advertisement Carousel
+        let currentSlide = 0;
+        const totalSlides = document.querySelectorAll('.ad-slide').length;
+
+        function showSlide(index) {
+            if (index >= totalSlides) {
+                currentSlide = 0;
+            } else if (index < 0) {
+                currentSlide = totalSlides - 1;
+            } else {
+                currentSlide = index;
+            }
+            
+            adCarousel.style.transform = `translateX(-${currentSlide * 100}%)`;
+            
+            // Update active dot
+            carouselDots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === currentSlide);
+            });
+        }
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+
+        function prevSlide() {
+            showSlide(currentSlide - 1);
+        }
+
+        // Auto-advance carousel
+        let carouselInterval = setInterval(nextSlide, 5000);
+
+        function resetCarouselInterval() {
+            clearInterval(carouselInterval);
+            carouselInterval = setInterval(nextSlide, 5000);
+        }
+
+        // Event listeners for carousel
+        prevBtn.addEventListener('click', () => {
+            prevSlide();
+            resetCarouselInterval();
+        });
+
+        nextBtn.addEventListener('click', () => {
+            nextSlide();
+            resetCarouselInterval();
+        });
+
+        carouselDots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                const slideIndex = parseInt(dot.getAttribute('data-slide'));
+                showSlide(slideIndex);
+                resetCarouselInterval();
+            });
+        });
 
         // Mobile menu toggle
         mobileMenuButton.addEventListener('click', () => {
             mobileMenu.classList.toggle('hidden');
         });
 
-        // Open modal when product container is clicked
-        productContainers.forEach(container => {
-            container.addEventListener('click', (e) => {
-                // Don't open modal if the add to cart button was clicked
-                if (e.target.closest('button') && e.target.closest('button').textContent.includes('+')) {
-                    return;
-                }
-                
-                const productId = container.getAttribute('data-product-id');
-                openProductModal(productId);
-            });
-        });
-
-        // Close modal when close button is clicked
-        closeModalBtn.addEventListener('click', closeModal);
-
-        // Close modal when clicking outside the modal content
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                closeModal();
-            }
-        });
-
-        // Switch between image gallery and AR view
-        viewToggleButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const view = button.getAttribute('data-view');
-                
-                // Update active button
-                viewToggleButtons.forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
-                
-                // Show/hide appropriate content
-                if (view === 'images') {
-                    imageGallery.style.display = 'block';
-                    arContainer.classList.remove('active');
-                } else if (view === 'ar') {
-                    imageGallery.style.display = 'none';
-                    arContainer.classList.add('active');
-                }
-            });
-        });
-
-        // Function to open product modal
+        // Product modal functionality
         function openProductModal(productId) {
             const product = products[productId];
             if (!product) return;
-            
-            currentProductId = productId;
-            currentImageIndex = 0;
-            
-            // Update modal content
+
+            // Set product details
             productTitle.textContent = product.title;
-            productPrice.textContent = product.price;
             productDescription.textContent = product.description;
+            productPrice.textContent = product.price;
             
-            // Update old price if available
-            if (product.oldPrice) {
-                productOldPrice.textContent = product.oldPrice;
-                productOldPrice.style.display = 'inline';
+            if (product.originalPrice) {
+                originalPrice.textContent = product.originalPrice;
+                originalPrice.style.display = 'inline';
             } else {
-                productOldPrice.style.display = 'none';
+                originalPrice.style.display = 'none';
+            }
+
+            // Set rating stars
+            const ratingContainer = document.querySelector('.product-info .flex.text-yellow-400');
+            ratingContainer.innerHTML = '';
+            const fullStars = Math.floor(product.rating);
+            const hasHalfStar = product.rating % 1 !== 0;
+            
+            for (let i = 0; i < fullStars; i++) {
+                ratingContainer.innerHTML += '<svg class="h-5 w-5 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>';
             }
             
-            // Update badge if available
-            if (product.badge) {
-                productBadge.textContent = product.badge;
-                productBadge.className = `ml-2 text-xs text-white px-2 py-0.5 rounded-full ${product.badgeColor}`;
-                productBadge.style.display = 'inline-block';
-            } else {
-                productBadge.style.display = 'none';
+            if (hasHalfStar) {
+                ratingContainer.innerHTML += '<svg class="h-5 w-5 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4V6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z"/></svg>';
             }
             
-            // Update product details
-            productDetails.innerHTML = '';
-            product.details.forEach(detail => {
-                const li = document.createElement('li');
-                li.textContent = detail;
-                productDetails.appendChild(li);
+            const emptyStars = 5 - Math.ceil(product.rating);
+            for (let i = 0; i < emptyStars; i++) {
+                ratingContainer.innerHTML += '<svg class="h-5 w-5 fill-current text-gray-300" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z"/></svg>';
+            }
+            
+            reviewCount.textContent = `(${product.reviews} reviews)`;
+
+            // Set size options
+            sizeOptions.innerHTML = '';
+            product.sizes.forEach(size => {
+                const button = document.createElement('button');
+                button.textContent = size;
+                button.className = 'border border-gray-300 px-3 py-1 rounded text-sm hover:bg-gray-100';
+                sizeOptions.appendChild(button);
             });
-            
-            // Update image gallery
-            updateImageGallery(product.images);
-            
-            // Show/hide AR button based on product
-            const arButton = document.querySelector('[data-view="ar"]');
-            if (product.hasAR) {
-                arButton.style.display = 'block';
-            } else {
-                arButton.style.display = 'none';
-                // Make sure images view is active if AR is not available
-                document.querySelector('[data-view="images"]').click();
-            }
-            
-            // Show modal
-            modal.classList.add('active');
-            document.body.style.overflow = 'hidden'; // Prevent scrolling
-        }
 
-        // Function to close modal
-        function closeModal() {
-            modal.classList.remove('active');
-            document.body.style.overflow = ''; // Re-enable scrolling
-            
-            // Reset to images view
-            setTimeout(() => {
-                document.querySelector('[data-view="images"]').click();
-            }, 300);
-        }
+            // Set color options
+            colorOptions.innerHTML = '';
+            product.colors.forEach(color => {
+                const button = document.createElement('button');
+                button.className = 'w-8 h-8 rounded-full border border-gray-300';
+                button.style.backgroundColor = color;
+                colorOptions.appendChild(button);
+            });
 
-        // Function to update image gallery
-        function updateImageGallery(images) {
+            // Set image gallery
             imageGallery.innerHTML = '';
-            
-            // Add images to gallery
-            images.forEach((imageSrc, index) => {
+            product.images.forEach((image, index) => {
                 const img = document.createElement('img');
-                img.src = imageSrc;
-                img.alt = productTitle.textContent;
-                img.className = 'gallery-image';
-                if (index === 0) img.classList.add('active');
+                img.src = image;
+                img.alt = product.title;
+                img.className = `gallery-image ${index === 0 ? 'active' : ''}`;
                 imageGallery.appendChild(img);
             });
-            
-            // Add navigation dots if there are multiple images
-            if (images.length > 1) {
-                const nav = document.createElement('div');
-                nav.className = 'gallery-nav';
-                
-                images.forEach((_, index) => {
-                    const dot = document.createElement('div');
-                    dot.className = 'gallery-dot';
-                    if (index === 0) dot.classList.add('active');
-                    
-                    dot.addEventListener('click', () => {
-                        showImage(index);
-                    });
-                    
-                    nav.appendChild(dot);
+
+            // Add gallery navigation dots
+            const galleryNav = document.createElement('div');
+            galleryNav.className = 'gallery-nav';
+            product.images.forEach((_, index) => {
+                const dot = document.createElement('div');
+                dot.className = `gallery-dot ${index === 0 ? 'active' : ''}`;
+                dot.addEventListener('click', () => {
+                    showGalleryImage(index);
                 });
-                
-                imageGallery.appendChild(nav);
-            }
+                galleryNav.appendChild(dot);
+            });
+            imageGallery.appendChild(galleryNav);
+
+            // Reset quantity
+            quantity.textContent = '1';
+
+            // Show modal
+            productModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
         }
 
-        // Function to show specific image in gallery
-        function showImage(index) {
-            const images = document.querySelectorAll('.gallery-image');
-            const dots = document.querySelectorAll('.gallery-dot');
+        function showGalleryImage(index) {
+            const images = imageGallery.querySelectorAll('.gallery-image');
+            const dots = imageGallery.querySelectorAll('.gallery-dot');
             
             images.forEach(img => img.classList.remove('active'));
             dots.forEach(dot => dot.classList.remove('active'));
             
             images[index].classList.add('active');
-            if (dots[index]) dots[index].classList.add('active');
-            
-            currentImageIndex = index;
+            dots[index].classList.add('active');
         }
 
-        // Add to cart functionality
-        document.addEventListener('click', (e) => {
-            if (e.target.closest('button') && e.target.closest('button').textContent.includes('+')) {
-                e.preventDefault();
-                e.stopPropagation();
-                
-                // In a real app, this would add the product to the cart
-                const cartButton = document.querySelector('.bg-green-600.text-white');
-                const currentCount = parseInt(cartButton.textContent.match(/\d+/)[0]) || 0;
-                cartButton.textContent = `Cart (${currentCount + 1})`;
-                
-                // Show a confirmation message
-                const confirmation = document.createElement('div');
-                confirmation.className = 'fixed top-4 right-4 bg-green-600 text-white px-4 py-2 rounded-lg shadow-lg z-50';
-                confirmation.textContent = 'Product added to cart!';
-                document.body.appendChild(confirmation);
-                
-                setTimeout(() => {
-                    confirmation.remove();
-                }, 3000);
+        function closeProductModal() {
+            productModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Event listeners for product modals
+        productContainers.forEach(container => {
+            container.addEventListener('click', () => {
+                const productId = container.getAttribute('data-product-id');
+                openProductModal(productId);
+            });
+        });
+
+        closeModal.addEventListener('click', closeProductModal);
+
+        productModal.addEventListener('click', (e) => {
+            if (e.target === productModal) {
+                closeProductModal();
             }
         });
 
-        // Newsletter form submission
-        document.querySelector('form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const emailInput = e.target.querySelector('input[type="email"]');
-            if (emailInput.value) {
-                alert(`Thank you for subscribing with ${emailInput.value}!`);
-                emailInput.value = '';
+        // View toggle functionality
+        productImagesBtn.addEventListener('click', () => {
+            productImagesBtn.classList.add('active');
+            arViewBtn.classList.remove('active');
+            imageGallery.style.display = 'block';
+            arContainer.classList.remove('active');
+        });
+
+        arViewBtn.addEventListener('click', () => {
+            arViewBtn.classList.add('active');
+            productImagesBtn.classList.remove('active');
+            imageGallery.style.display = 'none';
+            arContainer.classList.add('active');
+        });
+
+        // Quantity controls
+        decreaseQty.addEventListener('click', () => {
+            let qty = parseInt(quantity.textContent);
+            if (qty > 1) {
+                quantity.textContent = qty - 1;
             }
+        });
+
+        increaseQty.addEventListener('click', () => {
+            let qty = parseInt(quantity.textContent);
+            quantity.textContent = qty + 1;
+        });
+
+        // AI Assistant functionality
+        function toggleAiChat() {
+            aiChat.classList.toggle('active');
+        }
+
+        function addMessage(text, isUser = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user' : 'ai'}`;
+            messageDiv.textContent = text;
+            aiMessages.appendChild(messageDiv);
+            aiMessages.scrollTop = aiMessages.scrollHeight;
+        }
+
+        function processUserMessage(message) {
+            // Simple response logic - in a real app, this would connect to an AI service
+            const lowerMessage = message.toLowerCase();
+            
+            if (lowerMessage.includes('hello') || lowerMessage.includes('hi')) {
+                return "Hello! I'm your Hills Market assistant. How can I help you find the perfect product today?";
+            } else if (lowerMessage.includes('art') || lowerMessage.includes('painting')) {
+                return "We have a beautiful collection of art pieces! From abstract works to detailed portraits, there's something for every taste. Would you like me to show you our featured art pieces?";
+            } else if (lowerMessage.includes('nails') || lowerMessage.includes('polish')) {
+                return "Our nail products include long-lasting gel polishes and complete nail art kits. They're perfect for creating salon-quality looks at home. Would you like to see our best-selling nail products?";
+            } else if (lowerMessage.includes('price') || lowerMessage.includes('cost')) {
+                return "Our products range from R400 to R1800, with regular sales and discounts. Is there a specific product category you're interested in?";
+            } else if (lowerMessage.includes('delivery') || lowerMessage.includes('shipping')) {
+                return "We offer free delivery on orders over R500. Standard delivery takes 3-5 business days, and express delivery is available for an additional fee.";
+            } else if (lowerMessage.includes('help') || lowerMessage.includes('support')) {
+                return "I'm here to help! You can ask me about our products, prices, delivery options, or anything else about Hills Market.";
+            } else {
+                return "I'm not sure I understand. Could you please rephrase your question? I can help you find products, check prices, or answer questions about our services.";
+            }
+        }
+
+        function sendAiMessage() {
+            const message = aiInput.value.trim();
+            if (message === '') return;
+            
+            addMessage(message, true);
+            aiInput.value = '';
+            
+            // Simulate AI thinking
+            setTimeout(() => {
+                const response = processUserMessage(message);
+                addMessage(response);
+            }, 1000);
+        }
+
+        // Voice recognition
+        function startVoiceRecognition() {
+            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                addMessage("Sorry, your browser doesn't support voice recognition. Please type your message instead.");
+                return;
+            }
+            
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            const recognition = new SpeechRecognition();
+            
+            recognition.lang = 'en-US';
+            recognition.interimResults = false;
+            recognition.maxAlternatives = 1;
+            
+            aiToggle.classList.add('listening');
+            
+            recognition.start();
+            
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                aiInput.value = transcript;
+                sendAiMessage();
+                aiToggle.classList.remove('listening');
+            };
+            
+            recognition.onerror = () => {
+                aiToggle.classList.remove('listening');
+                addMessage("Sorry, I couldn't understand your voice. Please try again or type your message.");
+            };
+            
+            recognition.onend = () => {
+                aiToggle.classList.remove('listening');
+            };
+        }
+
+        // Event listeners for AI assistant
+        aiToggle.addEventListener('click', toggleAiChat);
+        closeAi.addEventListener('click', toggleAiChat);
+        sendMessage.addEventListener('click', sendAiMessage);
+        aiInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendAiMessage();
+            }
+        });
+
+        // Long press for voice recognition
+        let pressTimer;
+        aiToggle.addEventListener('mousedown', () => {
+            pressTimer = window.setTimeout(startVoiceRecognition, 500);
+        });
+        
+        aiToggle.addEventListener('touchstart', () => {
+            pressTimer = window.setTimeout(startVoiceRecognition, 500);
+        });
+        
+        aiToggle.addEventListener('mouseup', () => {
+            clearTimeout(pressTimer);
+        });
+        
+        aiToggle.addEventListener('touchend', () => {
+            clearTimeout(pressTimer);
+        });
+        
+        aiToggle.addEventListener('mouseleave', () => {
+            clearTimeout(pressTimer);
+        });
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add some sample AI messages for demonstration
+            setTimeout(() => {
+                addMessage("Need help finding something? I can help you browse our products or answer any questions!");
+            }, 2000);
         });
     </script>
 </body>

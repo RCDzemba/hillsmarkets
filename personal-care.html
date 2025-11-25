@@ -1,0 +1,1725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beauty & Personal Care - Hills Market</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a1a1a;
+            --secondary: #ffffff;
+            --accent: #4a5568;
+            --light: #f8f9fa;
+            --dark: #0f0f0f;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --beauty-pink: #ec4899;
+            --beauty-purple: #a855f7;
+            --beauty-gold: #f59e0b;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #ffffff;
+            color: #1a1a1a;
+        }
+
+        /* Header Styles */
+        .header {
+            background: var(--secondary);
+            border-bottom: 1px solid #e5e5e5;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .search-bar {
+            flex: 1;
+            max-width: 600px;
+        }
+
+        .search-bar input {
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            padding: 10px 15px;
+            font-size: 14px;
+            width: 100%;
+            transition: all 0.2s;
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(26, 26, 26, 0.1);
+        }
+
+        .search-bar button {
+            background: var(--primary);
+            color: var(--secondary);
+            border: none;
+            border-radius: 6px;
+            padding: 10px 20px;
+            margin-left: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .search-bar button:hover {
+            background: #333333;
+        }
+
+        .nav-link {
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: all 0.2s;
+            color: #4a5568;
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            background: #f7f7f7;
+            color: var(--primary);
+        }
+
+        .nav-link.active {
+            color: var(--primary);
+            background: #f0f0f0;
+        }
+
+        .beauty-nav-link {
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: all 0.2s;
+            color: #4a5568;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .beauty-nav-link.active {
+            color: var(--beauty-pink);
+            font-weight: 600;
+        }
+
+        .beauty-nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 12px;
+            right: 12px;
+            height: 2px;
+            background: var(--beauty-pink);
+        }
+
+        .cart-count {
+            background: var(--primary);
+            color: var(--secondary);
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: -5px;
+            right: -5px;
+        }
+
+        /* Beauty Hero Section */
+        .beauty-hero {
+            background: linear-gradient(135deg, #fdf2f8 0%, #faf5ff 100%);
+            padding: 60px 0;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .beauty-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" opacity="0.03"><path fill="%23ec4899" d="M500,150c138.07,0,250,111.93,250,250s-111.93,250-250,250s-250-111.93-250-250S361.93,150,500,150z"/></svg>') repeat;
+        }
+
+        .beauty-hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .beauty-hero-title {
+            font-size: 48px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--beauty-pink), var(--beauty-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 16px;
+        }
+
+        .beauty-hero-subtitle {
+            font-size: 20px;
+            color: #6b7280;
+            margin-bottom: 30px;
+            max-width: 600px;
+        }
+
+        .beauty-tag {
+            display: inline-block;
+            background: var(--beauty-pink);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+
+        /* Beauty Categories */
+        .beauty-categories {
+            margin-bottom: 50px;
+        }
+
+        .beauty-category-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            position: relative;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .beauty-category-card:hover {
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            transform: translateY(-5px);
+        }
+
+        .beauty-category-image {
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+            background: #fdf2f8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .beauty-category-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            transition: transform 0.5s ease;
+        }
+
+        .beauty-category-card:hover .beauty-category-image img {
+            transform: scale(1.05);
+        }
+
+        .beauty-category-content {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .beauty-category-name {
+            font-weight: 700;
+            font-size: 18px;
+            margin-bottom: 8px;
+            color: var(--primary);
+        }
+
+        .beauty-category-description {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+
+        .beauty-category-link {
+            color: var(--beauty-pink);
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+        }
+
+        .beauty-category-link i {
+            margin-left: 5px;
+            transition: transform 0.2s;
+        }
+
+        .beauty-category-link:hover i {
+            transform: translateX(3px);
+        }
+
+        /* Beauty Products */
+        .beauty-products-section {
+            margin-bottom: 60px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--beauty-pink);
+        }
+
+        .view-all-link {
+            color: var(--beauty-pink);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+
+        .view-all-link i {
+            margin-left: 5px;
+            transition: transform 0.2s;
+        }
+
+        .view-all-link:hover i {
+            transform: translateX(3px);
+        }
+
+        /* Product Cards */
+        .product-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            border: 1px solid #f0f0f0;
+            cursor: pointer;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card:hover {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+            transform: translateY(-5px);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: var(--beauty-pink);
+            color: var(--secondary);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            z-index: 2;
+        }
+
+        .product-image {
+            height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: #ffffff;
+            position: relative;
+            padding: 20px;
+        }
+
+        .product-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.05);
+        }
+
+        .product-info {
+            padding: 16px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-title {
+            font-size: 15px;
+            line-height: 1.4;
+            height: 42px;
+            overflow: hidden;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .product-rating {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .rating-stars {
+            color: var(--warning);
+            margin-right: 8px;
+        }
+
+        .rating-value {
+            font-size: 13px;
+            font-weight: 600;
+            color: #4b5563;
+        }
+
+        .product-price {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .current-price {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .original-price {
+            font-size: 14px;
+            color: #9ca3af;
+            text-decoration: line-through;
+            margin-left: 8px;
+        }
+
+        .discount {
+            color: var(--success);
+            font-size: 13px;
+            margin-left: 8px;
+            font-weight: 600;
+        }
+
+        .delivery-badge {
+            display: inline-flex;
+            align-items: center;
+            color: var(--success);
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+
+        .add-to-cart {
+            background: var(--primary);
+            color: var(--secondary);
+            border: none;
+            width: 100%;
+            padding: 10px 0;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: auto;
+        }
+
+        .add-to-cart:hover {
+            background: #333333;
+        }
+
+        /* Beauty Inspiration */
+        .beauty-inspiration {
+            margin-bottom: 60px;
+        }
+
+        .inspiration-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .inspiration-item {
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            height: 400px;
+        }
+
+        .inspiration-item.large {
+            grid-column: span 2;
+        }
+
+        .inspiration-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .inspiration-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 30px;
+            color: white;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .inspiration-item:hover .inspiration-overlay {
+            opacity: 1;
+        }
+
+        .inspiration-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .inspiration-description {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .inspiration-button {
+            background: white;
+            color: var(--primary);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            align-self: flex-start;
+            transition: all 0.2s;
+        }
+
+        .inspiration-button:hover {
+            background: var(--beauty-pink);
+            color: white;
+        }
+
+        /* Beauty Brands */
+        .beauty-brands {
+            margin-bottom: 60px;
+        }
+
+        .brands-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 20px;
+        }
+
+        .brand-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .brand-card:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: translateY(-3px);
+        }
+
+        .brand-logo {
+            max-width: 100%;
+            max-height: 60px;
+            filter: grayscale(100%);
+            transition: filter 0.3s ease;
+        }
+
+        .brand-card:hover .brand-logo {
+            filter: grayscale(0%);
+        }
+
+        /* Beauty Newsletter */
+        .beauty-newsletter {
+            background: linear-gradient(135deg, #fdf2f8 0%, #faf5ff 100%);
+            padding: 60px 0;
+            border-radius: 12px;
+            margin-bottom: 60px;
+            text-align: center;
+        }
+
+        .newsletter-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--primary);
+        }
+
+        .newsletter-description {
+            font-size: 18px;
+            color: #6b7280;
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .newsletter-form {
+            display: flex;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            border: 1px solid #d1d5db;
+            border-radius: 6px 0 0 6px;
+            padding: 12px 15px;
+            font-size: 16px;
+        }
+
+        .newsletter-input:focus {
+            outline: none;
+            border-color: var(--beauty-pink);
+        }
+
+        .newsletter-button {
+            background: var(--beauty-pink);
+            color: white;
+            border: none;
+            border-radius: 0 6px 6px 0;
+            padding: 12px 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .newsletter-button:hover {
+            background: var(--beauty-purple);
+        }
+
+        /* Beauty Features */
+        .beauty-features {
+            background: #fdf2f8;
+            padding: 40px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+        }
+
+        .features-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+        }
+
+        .feature-icon {
+            background: var(--beauty-pink);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .feature-content h4 {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .feature-content p {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        /* Skincare Routine */
+        .skincare-routine {
+            margin-bottom: 60px;
+        }
+
+        .routine-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .routine-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .routine-card:hover {
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            transform: translateY(-5px);
+        }
+
+        .routine-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--beauty-pink);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 24px;
+        }
+
+        .routine-name {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--primary);
+        }
+
+        .routine-description {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        /* Makeup Categories */
+        .makeup-categories {
+            margin-bottom: 60px;
+        }
+
+        .category-tabs {
+            display: flex;
+            overflow-x: auto;
+            margin-bottom: 25px;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .category-tab {
+            padding: 12px 20px;
+            background: none;
+            border: none;
+            font-weight: 500;
+            color: #6b7280;
+            cursor: pointer;
+            white-space: nowrap;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .category-tab.active {
+            color: var(--beauty-pink);
+            border-bottom-color: var(--beauty-pink);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--primary);
+            color: white;
+        }
+
+        .footer-top {
+            background: #0f0f0f;
+            padding: 40px 0;
+        }
+
+        .footer-bottom {
+            background: #0a0a0a;
+            padding: 30px 0;
+            text-align: center;
+            font-size: 14px;
+            color: #9ca3af;
+        }
+
+        .back-to-top {
+            background: #374151;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .back-to-top:hover {
+            background: #4b5563;
+        }
+
+        /* Mobile Navigation */
+        .mobile-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid #e5e5e5;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            z-index: 90;
+        }
+
+        .mobile-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .mobile-nav-item.active {
+            color: var(--primary);
+        }
+
+        .mobile-nav-icon {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .beauty-hero-title {
+                font-size: 36px;
+            }
+
+            .beauty-hero-subtitle {
+                font-size: 18px;
+            }
+
+            .inspiration-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .inspiration-item.large {
+                grid-column: span 1;
+            }
+
+            .brands-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .routine-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .newsletter-form {
+                flex-direction: column;
+            }
+
+            .newsletter-input {
+                border-radius: 6px;
+                margin-bottom: 10px;
+            }
+
+            .newsletter-button {
+                border-radius: 6px;
+            }
+
+            .desktop-only {
+                display: none;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .mobile-only {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo and Menu Button -->
+                <div class="flex items-center">
+                    <button id="menuButton" class="mr-4 p-2 rounded-lg bg-gray-100">
+                        <i class="fas fa-bars text-lg"></i>
+                    </button>
+                    <a href="landing page.html" class="flex items-center">
+                        <img src="ANewlogo.png" alt="Hills Market" class="h-8 sm:h-10 md:h-12 lg:h-16 w-auto object-contain">
+                        <span class="ml-2 text-xl font-bold text-black"></span>
+                    </a>
+                </div>
+
+                <!-- Search Bar - Desktop -->
+                <div class="search-bar mx-4 flex desktop-only">
+                    <input type="text" placeholder="Search for beauty products, skincare and more">
+                    <button class="bg-black text-white px-4 py-2 rounded-lg">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+
+                <!-- Right Menu - Desktop -->
+                <div class="flex items-center space-x-4 desktop-only">
+                    <div class="relative">
+                        <a href="#" class="nav-link flex flex-col items-start">
+                            <span class="text-xs text-gray-500">Hello, Sign in</span>
+                            <span class="text-sm font-medium">Account & Lists</span>
+                        </a>
+                    </div>
+                    <div class="relative">
+                        <a href="#" class="nav-link flex flex-col items-start">
+                            <span class="text-xs text-gray-500">Returns</span>
+                            <span class="text-sm font-medium">& Orders</span>
+                        </a>
+                    </div>
+                    <div class="relative">
+                        <a href="#" class="nav-link flex items-center">
+                            <i class="fas fa-shopping-cart text-xl"></i>
+                            <span class="ml-1 font-medium">Cart</span>
+                            <span class="cart-count">0</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="mobile-only">
+                    <button class="p-2 rounded-lg bg-gray-100">
+                        <i class="fas fa-bars text-lg"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Beauty & Personal Care Navigation - Desktop -->
+            <div class="mt-4 desktop-only">
+                <div class="flex items-center space-x-6 overflow-x-auto">
+                    <a href="landing page.html" class="nav-link">Home</a>
+                    <a href="beauty.html" class="beauty-nav-link active">Beauty & Personal Care</a>
+                    <a href="#" class="beauty-nav-link">Skincare</a>
+                    <a href="#" class="beauty-nav-link">Makeup</a>
+                    <a href="#" class="beauty-nav-link">Haircare</a>
+                    <a href="#" class="beauty-nav-link">Fragrance</a>
+                    <a href="#" class="beauty-nav-link">Bath & Body</a>
+                    <a href="#" class="beauty-nav-link">Men's Grooming</a>
+                    <a href="#" class="beauty-nav-link">Tools & Accessories</a>
+                    <a href="#" class="beauty-nav-link">Wellness</a>
+                </div>
+            </div>
+
+            <!-- Search Bar - Mobile -->
+            <div class="mt-4 mobile-only">
+                <div class="search-bar flex">
+                    <input type="text" placeholder="Search for beauty products, skincare and more">
+                    <button class="bg-black text-white px-4 py-2 rounded-lg ml-2">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Beauty & Personal Care Hero Section -->
+    <section class="beauty-hero">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="beauty-hero-content">
+                <h1 class="beauty-hero-title">Discover Your Beauty</h1>
+                <p class="beauty-hero-subtitle">Explore our curated collection of premium skincare, makeup, haircare, and personal care products for your complete beauty routine.</p>
+                <div>
+                    <span class="beauty-tag">New Arrivals</span>
+                    <span class="beauty-tag">Clean Beauty</span>
+                    <span class="beauty-tag">Up to 30% Off</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4">
+        <!-- Beauty Categories -->
+        <section class="beauty-categories">
+            <h2 class="section-title">Shop by Category</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Category 1 -->
+                <div class="beauty-category-card">
+                    <div class="beauty-category-image">
+                        <img src="https://images.unsplash.com/photo-1556228578-8c89e6adf883?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Skincare">
+                    </div>
+                    <div class="beauty-category-content">
+                        <h3 class="beauty-category-name">Skincare</h3>
+                        <p class="beauty-category-description">Cleansers, serums, moisturizers, and treatments for healthy, glowing skin.</p>
+                        <a href="#" class="beauty-category-link">
+                            Shop Now <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Category 2 -->
+                <div class="beauty-category-card">
+                    <div class="beauty-category-image">
+                        <img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Makeup">
+                    </div>
+                    <div class="beauty-category-content">
+                        <h3 class="beauty-category-name">Makeup</h3>
+                        <p class="beauty-category-description">Foundation, lipstick, eyeshadow, and everything for a flawless look.</p>
+                        <a href="#" class="beauty-category-link">
+                            Shop Now <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Category 3 -->
+                <div class="beauty-category-card">
+                    <div class="beauty-category-image">
+                        <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Haircare">
+                    </div>
+                    <div class="beauty-category-content">
+                        <h3 class="beauty-category-name">Haircare</h3>
+                        <p class="beauty-category-description">Shampoos, conditioners, treatments, and styling products for beautiful hair.</p>
+                        <a href="#" class="beauty-category-link">
+                            Shop Now <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Category 4 -->
+                <div class="beauty-category-card">
+                    <div class="beauty-category-image">
+                        <img src="https://images.unsplash.com/photo-1541643600914-78b084683601?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Fragrance">
+                    </div>
+                    <div class="beauty-category-content">
+                        <h3 class="beauty-category-name">Fragrance</h3>
+                        <p class="beauty-category-description">Perfumes, colognes, and body mists for every occasion and personality.</p>
+                        <a href="#" class="beauty-category-link">
+                            Shop Now <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Beauty Features -->
+        <section class="beauty-features">
+            <h2 class="features-title">Why Choose Hills Beauty?</h2>
+            <div class="features-grid">
+                <!-- Feature 1 -->
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h4>Clean Beauty</h4>
+                        <p>Curated selection of clean, cruelty-free, and sustainable products</p>
+                    </div>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-shipping-fast"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h4>Fast Delivery</h4>
+                        <p>Free shipping on orders over R300 with careful packaging</p>
+                    </div>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h4>Expert Advice</h4>
+                        <p>Beauty consultations and personalized recommendations</p>
+                    </div>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-undo"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h4>Easy Returns</h4>
+                        <p>30-day return policy for most beauty and personal care items</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skincare Routine -->
+        <section class="skincare-routine">
+            <h2 class="section-title">Complete Your Skincare Routine</h2>
+            <div class="routine-grid">
+                <!-- Step 1 -->
+                <div class="routine-card">
+                    <div class="routine-icon">
+                        <i class="fas fa-pump-soap"></i>
+                    </div>
+                    <h3 class="routine-name">Cleanse</h3>
+                    <p class="routine-description">Remove impurities and prepare skin</p>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="routine-card">
+                    <div class="routine-icon">
+                        <i class="fas fa-tint"></i>
+                    </div>
+                    <h3 class="routine-name">Tone</h3>
+                    <p class="routine-description">Balance and refresh your skin</p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="routine-card">
+                    <div class="routine-icon">
+                        <i class="fas fa-vial"></i>
+                    </div>
+                    <h3 class="routine-name">Treat</h3>
+                    <p class="routine-description">Target specific skin concerns</p>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="routine-card">
+                    <div class="routine-icon">
+                        <i class="fas fa-cloud"></i>
+                    </div>
+                    <h3 class="routine-name">Moisturize</h3>
+                    <p class="routine-description">Hydrate and protect your skin</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Makeup Categories -->
+        <section class="makeup-categories">
+            <h2 class="section-title">Makeup Essentials</h2>
+            <div class="category-tabs">
+                <button class="category-tab active">Face</button>
+                <button class="category-tab">Eyes</button>
+                <button class="category-tab">Lips</button>
+                <button class="category-tab">Cheeks</button>
+                <button class="category-tab">Brushes & Tools</button>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <!-- Product 1 -->
+                <div class="product-card">
+                    <div class="product-badge">Bestseller</div>
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1586495777744-4413f21062fa?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Foundation">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">Liquid Foundation - Natural Finish, 30 Shades</div>
+                        <div class="product-rating">
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="rating-value">4.5</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">R499.99</span>
+                        </div>
+                        <div class="delivery-badge">
+                            <i class="fas fa-shipping-fast mr-1"></i>
+                            FREE Delivery
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Lipstick">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">Matte Lipstick - Long Lasting, 12 Colors</div>
+                        <div class="product-rating">
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                            <span class="rating-value">4.0</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">R299.99</span>
+                        </div>
+                        <div class="delivery-badge">
+                            <i class="fas fa-shipping-fast mr-1"></i>
+                            FREE Delivery
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="product-card">
+                    <div class="product-badge">-20%</div>
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1512496015859-f55b646b6d2b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Eyeshadow Palette">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">Eyeshadow Palette - 12 Neutral Shades</div>
+                        <div class="product-rating">
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <span class="rating-value">5.0</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">R799.99</span>
+                            <span class="original-price">R999.99</span>
+                            <span class="discount">(20% off)</span>
+                        </div>
+                        <div class="delivery-badge">
+                            <i class="fas fa-shipping-fast mr-1"></i>
+                            FREE Delivery
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1571781926291-c477ebfd024b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Mascara">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">Volumizing Mascara - Waterproof Formula</div>
+                        <div class="product-rating">
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                            <span class="rating-value">4.0</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">R349.99</span>
+                        </div>
+                        <div class="delivery-badge">
+                            <i class="fas fa-shipping-fast mr-1"></i>
+                            FREE Delivery
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- New Arrivals -->
+        <section class="beauty-products-section">
+            <div class="section-header">
+                <h2 class="section-title">New Arrivals</h2>
+                <a href="#" class="view-all-link">
+                    View All <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <!-- Product 1 -->
+                <div class="product-card">
+                    <div class="product-badge">New</div>
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1556228578-8c89e6adf883?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Vitamin C Serum">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">Vitamin C Serum - Brightening & Anti-Aging</div>
+                        <div class="product-rating">
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="rating-value">4.5</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">R899.99</span>
+                        </div>
+                        <div class="delivery-badge">
+                            <i class="fas fa-shipping-fast mr-1"></i>
+                            FREE Delivery
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="product-card">
+                    <div class="product-badge">Limited</div>
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Hair Treatment">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">Hair Repair Treatment - For Damaged Hair</div>
+                        <div class="product-rating">
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <span class="rating-value">5.0</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">R649.99</span>
+                        </div>
+                        <div class="delivery-badge">
+                            <i class="fas fa-shipping-fast mr-1"></i>
+                            FREE Delivery
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1541643600914-78b084683601?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Perfume">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">Eau de Parfum - Floral & Woody Notes</div>
+                        <div class="product-rating">
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                            <span class="rating-value">4.0</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">R1,299.99</span>
+                        </div>
+                        <div class="delivery-badge">
+                            <i class="fas fa-shipping-fast mr-1"></i>
+                            FREE Delivery
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="product-card">
+                    <div class="product-badge">-15%</div>
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1571781926291-c477ebfd024b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Face Cream">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">Hydrating Face Cream - With Hyaluronic Acid</div>
+                        <div class="product-rating">
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="rating-value">4.5</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">R599.99</span>
+                            <span class="original-price">R705.87</span>
+                            <span class="discount">(15% off)</span>
+                        </div>
+                        <div class="delivery-badge">
+                            <i class="fas fa-shipping-fast mr-1"></i>
+                            FREE Delivery
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Beauty Inspiration -->
+        <section class="beauty-inspiration">
+            <h2 class="section-title">Beauty Inspiration</h2>
+            <div class="inspiration-grid">
+                <!-- Inspiration Item 1 -->
+                <div class="inspiration-item large">
+                    <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" alt="Skincare Routine" class="inspiration-image">
+                    <div class="inspiration-overlay">
+                        <h3 class="inspiration-title">The Perfect Skincare Routine</h3>
+                        <p class="inspiration-description">Discover our step-by-step guide to glowing, healthy skin</p>
+                        <button class="inspiration-button">Learn More</button>
+                    </div>
+                </div>
+
+                <!-- Inspiration Item 2 -->
+                <div class="inspiration-item">
+                    <img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Makeup Looks" class="inspiration-image">
+                    <div class="inspiration-overlay">
+                        <h3 class="inspiration-title">Seasonal Makeup Looks</h3>
+                        <p class="inspiration-description">Trending makeup styles for every season</p>
+                        <button class="inspiration-button">Explore Looks</button>
+                    </div>
+                </div>
+
+                <!-- Inspiration Item 3 -->
+                <div class="inspiration-item">
+                    <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Hair Care" class="inspiration-image">
+                    <div class="inspiration-overlay">
+                        <h3 class="inspiration-title">Hair Care Solutions</h3>
+                        <p class="inspiration-description">Expert tips for your specific hair type and concerns</p>
+                        <button class="inspiration-button">Get Advice</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Trending Now -->
+        <section class="beauty-products-section">
+            <div class="section-header">
+                <h2 class="section-title">Trending Now</h2>
+                <a href="#" class="view-all-link">
+                    View All <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <!-- Product 1 -->
+                <div class="product-card">
+                    <div class="product-badge">Bestseller</div>
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Sunscreen">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">Mineral Sunscreen - SPF 50, Non-Greasy</div>
+                        <div class="product-rating">
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="rating-value">4.5</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">R449.99</span>
+                        </div>
+                        <div class="delivery-badge">
+                            <i class="fas fa-shipping-fast mr-1"></i>
+                            FREE Delivery
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1571781926291-c477ebfd024b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Face Mask">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">Clay Face Mask - Detox & Purify</div>
+                        <div class="product-rating">
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                            <span class="rating-value">4.0</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">R299.99</span>
+                        </div>
+                        <div class="delivery-badge">
+                            <i class="fas fa-shipping-fast mr-1"></i>
+                            FREE Delivery
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="product-card">
+                    <div class="product-badge">-25%</div>
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Makeup Brushes">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">Professional Makeup Brush Set - 12 Pieces</div>
+                        <div class="product-rating">
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <span class="rating-value">5.0</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">R899.99</span>
+                            <span class="original-price">R1,199.99</span>
+                            <span class="discount">(25% off)</span>
+                        </div>
+                        <div class="delivery-badge">
+                            <i class="fas fa-shipping-fast mr-1"></i>
+                            FREE Delivery
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1556228578-8c89e6adf883?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Body Lotion">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">Nourishing Body Lotion - Shea Butter</div>
+                        <div class="product-rating">
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                            <span class="rating-value">4.0</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">R349.99</span>
+                        </div>
+                        <div class="delivery-badge">
+                            <i class="fas fa-shipping-fast mr-1"></i>
+                            FREE Delivery
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Beauty Brands -->
+        <section class="beauty-brands">
+            <h2 class="section-title">Featured Brands</h2>
+            <div class="brands-grid">
+                <!-- Brand 1 -->
+                <div class="brand-card">
+                    <img src="https://via.placeholder.com/150x60/FFFFFF?text=GlowSkin" alt="GlowSkin" class="brand-logo">
+                </div>
+
+                <!-- Brand 2 -->
+                <div class="brand-card">
+                    <img src="https://via.placeholder.com/150x60/FFFFFF?text=BeautyPure" alt="BeautyPure" class="brand-logo">
+                </div>
+
+                <!-- Brand 3 -->
+                <div class="brand-card">
+                    <img src="https://via.placeholder.com/150x60/FFFFFF?text=Naturale" alt="Naturale" class="brand-logo">
+                </div>
+
+                <!-- Brand 4 -->
+                <div class="brand-card">
+                    <img src="https://via.placeholder.com/150x60/FFFFFF?text=LuxeBeauty" alt="LuxeBeauty" class="brand-logo">
+                </div>
+
+                <!-- Brand 5 -->
+                <div class="brand-card">
+                    <img src="https://via.placeholder.com/150x60/FFFFFF?text=FaceFirst" alt="FaceFirst" class="brand-logo">
+                </div>
+
+                <!-- Brand 6 -->
+                <div class="brand-card">
+                    <img src="https://via.placeholder.com/150x60/FFFFFF?text=HairEssence" alt="HairEssence" class="brand-logo">
+                </div>
+            </div>
+        </section>
+
+        <!-- Beauty Newsletter -->
+        <section class="beauty-newsletter">
+            <h2 class="newsletter-title">Stay Beautifully Informed</h2>
+            <p class="newsletter-description">Subscribe to our newsletter for beauty tips, new product launches, and exclusive offers for your personal care routine.</p>
+            <form class="newsletter-form">
+                <input type="email" placeholder="Your email address" class="newsletter-input" required>
+                <button type="submit" class="newsletter-button">Subscribe</button>
+            </form>
+        </section>
+    </main>
+
+    <!-- Back to Top -->
+    <div class="back-to-top" id="backToTop">
+        Back to top
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-top">
+            <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Get to Know Us</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">About Us</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Careers</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Press Releases</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Hills Market Science</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Connect with Us</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Facebook</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Twitter</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Instagram</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Make Money with Us</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Sell on Hills Market</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Sell under Hills Market Accelerator</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Become an Affiliate</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Fulfillment by Hills Market</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Let Us Help You</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">COVID-19 and Hills Market</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Your Account</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Returns Centre</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">100% Purchase Protection</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Help</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="flex items-center mb-4 md:mb-0">
+                        <img src="hills-logo.png" alt="Hills Market" class="h-6 mr-2">
+                        <span class="text-white font-bold">Hills Market</span>
+                    </div>
+                    <div class="flex space-x-6">
+                        <a href="#" class="text-gray-400 hover:text-white text-xs">Conditions of Use</a>
+                        <a href="#" class="text-gray-400 hover:text-white text-xs">Privacy Notice</a>
+                        <a href="#" class="text-gray-400 hover:text-white text-xs">Interest-Based Ads</a>
+                    </div>
+                </div>
+                <p class="mt-4">© 1996-2025, HillsMarket.com, Inc. or its affiliates</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Mobile Navigation -->
+    <nav class="mobile-nav mobile-only">
+        <a href="landing page.html" class="mobile-nav-item">
+            <i class="fas fa-home mobile-nav-icon"></i>
+            <span>Home</span>
+        </a>
+        <a href="beauty.html" class="mobile-nav-item active">
+            <i class="fas fa-spa mobile-nav-icon"></i>
+            <span>Beauty</span>
+        </a>
+        <a href="#" class="mobile-nav-item">
+            <i class="fas fa-search mobile-nav-icon"></i>
+            <span>Search</span>
+        </a>
+        <a href="#" class="mobile-nav-item">
+            <i class="fas fa-shopping-cart mobile-nav-icon"></i>
+            <span>Cart</span>
+        </a>
+        <a href="#" class="mobile-nav-item">
+            <i class="fas fa-user mobile-nav-icon"></i>
+            <span>Account</span>
+        </a>
+    </nav>
+
+    <script>
+        // Back to Top
+        document.getElementById('backToTop').addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Add to Cart functionality
+        const addToCartButtons = document.querySelectorAll('.add-to-cart');
+        const cartCount = document.querySelector('.cart-count');
+        let cartItems = 0;
+
+        addToCartButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                cartItems++;
+                cartCount.textContent = cartItems;
+                
+                // Animation effect
+                button.textContent = 'Added!';
+                button.style.background = '#10b981';
+                
+                setTimeout(() => {
+                    button.textContent = 'Add to Cart';
+                    button.style.background = '';
+                }, 1500);
+            });
+        });
+
+        // Category tabs functionality
+        const categoryTabs = document.querySelectorAll('.category-tab');
+        categoryTabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                categoryTabs.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Mobile navigation active state
+        const mobileNavItems = document.querySelectorAll('.mobile-nav-item');
+        mobileNavItems.forEach(item => {
+            item.addEventListener('click', function() {
+                mobileNavItems.forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

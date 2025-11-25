@@ -3,198 +3,472 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hills Market - Fresh Produce & More</title>
+    <title>Hills Market - Premium Online Shopping</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Custom styles for the modal and AR container */
-        .modal-overlay {
+        :root {
+            --primary: #1a1a1a;
+            --secondary: #ffffff;
+            --accent: #4a5568;
+            --light: #f8f9fa;
+            --dark: #0f0f0f;
+            --success: #10b981;
+            --warning: #f59e0b;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #ffffff;
+            color: #1a1a1a;
+        }
+
+        /* Header Styles */
+        .header {
+            background: var(--secondary);
+            border-bottom: 1px solid #e5e5e5;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .search-bar {
+            flex: 1;
+            max-width: 600px;
+        }
+
+        .search-bar input {
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            padding: 10px 15px;
+            font-size: 14px;
+            width: 100%;
+            transition: all 0.2s;
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(26, 26, 26, 0.1);
+        }
+
+        .search-bar button {
+            background: var(--primary);
+            color: var(--secondary);
+            border: none;
+            border-radius: 6px;
+            padding: 10px 20px;
+            margin-left: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .search-bar button:hover {
+            background: #333333;
+        }
+
+        .nav-link {
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: all 0.2s;
+            color: #4a5568;
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            background: #f7f7f7;
+            color: var(--primary);
+        }
+
+        .nav-link.active {
+            color: var(--primary);
+            background: #f0f0f0;
+        }
+
+        .cart-count {
+            background: var(--primary);
+            color: var(--secondary);
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: -5px;
+            right: -5px;
+        }
+
+        /* Side Navigation */
+        .side-nav {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 300px;
+            height: 100vh;
+            background: white;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            transition: left 0.3s ease;
+            overflow-y: auto;
+        }
+
+        .side-nav.open {
+            left: 0;
+        }
+
+        .side-nav-header {
+            padding: 20px;
+            border-bottom: 1px solid #e5e5e5;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .side-nav-content {
+            padding: 20px;
+        }
+
+        .side-nav-item {
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+            text-align: left;
+            background: none;
+            border: none;
+        }
+
+        .side-nav-item:hover {
+            color: var(--primary);
+            background: #f9f9f9;
+            padding-left: 10px;
+        }
+
+        .overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+            display: none;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+        /* Hero Section - Reduced height */
+        .hero-slider {
+            position: relative;
+            height: 300px; /* Reduced from 400px */
+            overflow: hidden;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+
+        .hero-slides-container {
             display: flex;
-            justify-content: center;
+            width: 300%;
+            height: 100%;
+            transition: transform 0.5s ease;
+        }
+
+        .hero-slide {
+            width: 33.333%;
+            height: 100%;
+            display: flex;
             align-items: center;
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
+            padding: 0 50px;
+            flex-shrink: 0;
         }
-        
-        .modal-overlay.active {
-            opacity: 1;
-            visibility: visible;
+
+        .hero-content {
+            max-width: 500px;
+            color: var(--primary);
         }
-        
-        .modal-content {
-            background-color: white;
+
+        .hero-content h2 {
+            font-size: 30px; /* Slightly reduced */
+            font-weight: 700;
+            margin-bottom: 15px;
+            line-height: 1.2;
+        }
+
+        .hero-content p {
+            font-size: 16px; /* Slightly reduced */
+            margin-bottom: 25px;
+            color: #4a5568;
+        }
+
+        .hero-btn {
+            background: var(--primary);
+            color: var(--secondary);
+            padding: 12px 30px;
+            border-radius: 6px;
+            font-weight: 600;
+            display: inline-block;
+            transition: all 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .hero-btn:hover {
+            background: #333333;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        /* Product Cards - Updated for pure white background */
+        .product-card {
+            background: #ffffff; /* Pure white */
             border-radius: 8px;
-            width: 90%;
-            max-width: 900px;
-            max-height: 90vh;
-            overflow-y: auto;
-            transform: scale(0.9);
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            border: 1px solid #f0f0f0;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+            transform: translateY(-5px);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: var(--primary);
+            color: var(--secondary);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            z-index: 2;
+        }
+
+        .product-image {
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: #ffffff; /* Pure white */
+            position: relative;
+        }
+
+        .product-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
             transition: transform 0.3s ease;
         }
-        
-        .modal-overlay.active .modal-content {
-            transform: scale(1);
+
+        .product-card:hover .product-image img {
+            transform: scale(1.05);
         }
-        
-        .image-gallery {
-            position: relative;
-            height: 300px;
+
+        .product-info {
+            padding: 16px;
+            background: #ffffff; /* Pure white */
+        }
+
+        .product-title {
+            font-size: 15px;
+            line-height: 1.4;
+            height: 42px;
             overflow: hidden;
+            margin-bottom: 8px;
+            font-weight: 500;
         }
-        
-        .gallery-image {
-            position: absolute;
-            top: 0;
-            left: 0;
+
+        /* New Rating System */
+        .product-rating {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .rating-bar {
+            height: 4px;
+            background: #e5e7eb;
+            border-radius: 2px;
+            overflow: hidden;
+            flex: 1;
+            margin-right: 8px;
+        }
+
+        .rating-fill {
+            height: 100%;
+            background: var(--warning);
+            border-radius: 2px;
+        }
+
+        .rating-value {
+            font-size: 13px;
+            font-weight: 600;
+            color: #4b5563;
+        }
+
+        .product-price {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .current-price {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .original-price {
+            font-size: 14px;
+            color: #9ca3af;
+            text-decoration: line-through;
+            margin-left: 8px;
+        }
+
+        .discount {
+            color: var(--success);
+            font-size: 13px;
+            margin-left: 8px;
+            font-weight: 600;
+        }
+
+        .delivery-badge {
+            display: inline-flex;
+            align-items: center;
+            color: var(--success);
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+
+        .add-to-cart {
+            background: var(--primary);
+            color: var(--secondary);
+            border: none;
+            width: 100%;
+            padding: 10px 0;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .add-to-cart:hover {
+            background: #333333;
+        }
+
+        /* Category Cards */
+        .category-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            border: 1px solid #f0f0f0;
+            position: relative;
+        }
+
+        .category-card:hover {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+            transform: translateY(-5px);
+        }
+
+        .category-image {
+            height: 140px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .category-image img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            opacity: 0;
-            transition: opacity 0.3s ease;
+            transition: transform 0.3s ease;
         }
-        
-        .gallery-image.active {
-            opacity: 1;
+
+        .category-card:hover .category-image img {
+            transform: scale(1.05);
         }
-        
-        .gallery-nav {
+
+        .category-content {
             position: absolute;
-            bottom: 10px;
+            top: 0;
             left: 0;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            gap: 5px;
-        }
-        
-        .gallery-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.5);
-            cursor: pointer;
-        }
-        
-        .gallery-dot.active {
-            background-color: white;
-        }
-        
-        .ar-container {
-            display: none;
-            height: 300px;
-            background-color: #f3f4f6;
-            border-radius: 8px;
-            overflow: hidden;
-            position: relative;
-        }
-        
-        .ar-container.active {
-            display: block;
-        }
-        
-        .ar-placeholder {
+            right: 0;
+            bottom: 0;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100%;
-            text-align: center;
-            padding: 20px;
-        }
-        
-        .view-toggle {
-            display: flex;
-            border-bottom: 1px solid #e5e7eb;
-        }
-        
-        .view-toggle button {
-            flex: 1;
-            padding: 10px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-weight: 500;
-        }
-        
-        .view-toggle button.active {
-            border-bottom: 2px solid #10b981;
-            color: #10b981;
-        }
-        
-        .product-info {
-            padding: 20px;
-        }
-        
-        .close-modal {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(0, 0, 0, 0.5);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            z-index: 10;
-        }
-        
-        /* Home page specific styles */
-        .hero-section {
-            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1542838132-92c53300491e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
-            background-size: cover;
-            background-position: center;
-            height: 60vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             text-align: center;
             color: white;
+            background: rgba(0,0,0,0.4);
+            padding: 20px;
         }
-        
-        .category-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+        .category-name {
+            font-weight: 700;
+            font-size: 18px;
+            margin-bottom: 5px;
         }
-        
-        .category-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+
+        .category-subtitle {
+            font-size: 14px;
+            opacity: 0.9;
         }
-        
-        /* Advertisement Space Styles */
+
+        /* Deals Section */
+        .deals-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .deals-timer {
+            background: var(--primary);
+            color: var(--secondary);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-weight: 600;
+            margin-left: 15px;
+            font-size: 14px;
+        }
+
+        /* Advertisement Space */
         .ad-carousel-container {
             position: relative;
             overflow: hidden;
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
         }
-        
+
         .ad-carousel {
             display: flex;
             transition: transform 0.5s ease-in-out;
         }
-        
+
         .ad-slide {
             min-width: 100%;
             position: relative;
         }
-        
+
         .ad-slide img {
             width: 100%;
             height: 300px;
             object-fit: cover;
         }
-        
+
         .ad-content {
             position: absolute;
             top: 0;
@@ -206,24 +480,24 @@
             padding: 2rem;
             color: white;
         }
-        
+
         .ad-content.left {
             justify-content: flex-start;
             background: linear-gradient(to right, rgba(0,0,0,0.7), transparent);
         }
-        
+
         .ad-content.right {
             justify-content: flex-end;
             background: linear-gradient(to left, rgba(0,0,0,0.7), transparent);
             text-align: right;
         }
-        
+
         .ad-content.center {
             justify-content: center;
             background: rgba(0,0,0,0.5);
             text-align: center;
         }
-        
+
         .carousel-dot {
             width: 10px;
             height: 10px;
@@ -232,11 +506,11 @@
             cursor: pointer;
             transition: background-color 0.3s;
         }
-        
+
         .carousel-dot.active {
             background-color: white;
         }
-        
+
         .carousel-control {
             position: absolute;
             top: 50%;
@@ -253,845 +527,1535 @@
             cursor: pointer;
             transition: background-color 0.3s;
         }
-        
+
         .carousel-control:hover {
             background-color: rgba(0, 0, 0, 0.5);
         }
-        
+
         .carousel-control.prev {
             left: 10px;
         }
-        
+
         .carousel-control.next {
             right: 10px;
         }
-        
-        /* AI Assistant Styles */
-        .ai-assistant {
+
+        /* Split Layout */
+        .split-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .split-section {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        .split-header {
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e5e5e5;
+            font-weight: 600;
+        }
+
+        .split-content {
+            padding: 20px;
+        }
+
+        /* Product Detail Page Styles - Updated for overlay positioning */
+        .product-detail-overlay {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
             z-index: 1000;
+            display: none;
+            overflow-y: auto;
+            padding: 20px 0;
         }
-        
-        .ai-toggle {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: white;
-            border: none;
+
+        .product-detail-overlay.active {
             display: flex;
-            align-items: center;
             justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            transition: transform 0.3s ease;
+            align-items: flex-start;
         }
-        
-        .ai-toggle:hover {
-            transform: scale(1.05);
-        }
-        
-        .ai-toggle.listening {
-            animation: pulse 1.5s infinite;
-        }
-        
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
-            70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
-        }
-        
-        .ai-chat {
-            position: absolute;
-            bottom: 70px;
-            right: 0;
-            width: 350px;
-            height: 450px;
+
+        .product-detail-container {
+            max-width: 1200px;
+            width: 95%;
             background: white;
             border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-            display: flex;
-            flex-direction: column;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(10px);
-            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+            position: relative;
+            margin: 20px auto;
         }
-        
-        .ai-chat.active {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
+
+        .product-detail {
+            background: white;
         }
-        
-        .ai-header {
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: white;
-            padding: 15px;
-            border-radius: 12px 12px 0 0;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        
-        .ai-messages {
-            flex: 1;
-            padding: 15px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        
-        .message {
-            max-width: 80%;
-            padding: 10px 15px;
-            border-radius: 18px;
-            font-size: 14px;
-            line-height: 1.4;
-        }
-        
-        .message.ai {
-            align-self: flex-start;
-            background: #f1f5f9;
-            color: #334155;
-            border-bottom-left-radius: 5px;
-        }
-        
-        .message.user {
-            align-self: flex-end;
-            background: #10b981;
-            color: white;
-            border-bottom-right-radius: 5px;
-        }
-        
-        .ai-input {
-            display: flex;
-            padding: 15px;
-            border-top: 1px solid #e5e7eb;
-        }
-        
-        .ai-input input {
-            flex: 1;
-            padding: 10px 15px;
-            border: 1px solid #d1d5db;
-            border-radius: 20px;
-            outline: none;
-        }
-        
-        .ai-input button {
-            background: #10b981;
+
+        .product-detail-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.5);
             color: white;
             border: none;
             border-radius: 50%;
             width: 40px;
             height: 40px;
-            margin-left: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
+            z-index: 10;
+            font-size: 18px;
+            transition: background 0.3s;
         }
-        
-        .ai-input button:disabled {
-            background: #9ca3af;
-            cursor: not-allowed;
+
+        .product-detail-close:hover {
+            background: rgba(0, 0, 0, 0.7);
         }
-        
-        .close-ai {
-            background: none;
-            border: none;
-            color: white;
-            cursor: pointer;
+
+        .product-detail-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 30px;
         }
-        
-        /* Responsive category images */
-        .category-image-container {
-            width: 100%;
-            height: 0;
-            padding-bottom: 75%; /* 4:3 aspect ratio */
+
+        .product-detail-images {
             position: relative;
-            overflow: hidden;
         }
-        
-        .category-image {
-            position: absolute;
-            top: 0;
-            left: 0;
+
+        .product-main-image {
+            width: 100%;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #ffffff;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            border: 1px solid #f0f0f0;
+        }
+
+        .product-main-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .product-thumbnails {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+        }
+
+        .product-thumbnail {
+            width: 80px;
+            height: 80px;
+            border: 2px solid #e5e5e5;
+            border-radius: 6px;
+            overflow: hidden;
+            cursor: pointer;
+            flex-shrink: 0;
+            background: #ffffff;
+        }
+
+        .product-thumbnail.active {
+            border-color: var(--primary);
+        }
+
+        .product-thumbnail img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-        
+
+        .product-detail-info {
+            padding: 10px 0;
+        }
+
+        .product-detail-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+
+        .product-detail-rating {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .product-detail-price {
+            margin-bottom: 20px;
+        }
+
+        .product-detail-current-price {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .product-detail-original-price {
+            font-size: 18px;
+            color: #9ca3af;
+            text-decoration: line-through;
+            margin-left: 10px;
+        }
+
+        .product-detail-discount {
+            color: var(--success);
+            font-size: 16px;
+            margin-left: 10px;
+            font-weight: 600;
+        }
+
+        .product-detail-description {
+            margin-bottom: 25px;
+            line-height: 1.6;
+            color: #4b5563;
+        }
+
+        .product-detail-features {
+            margin-bottom: 25px;
+        }
+
+        .product-detail-features ul {
+            list-style-type: disc;
+            padding-left: 20px;
+        }
+
+        .product-detail-features li {
+            margin-bottom: 8px;
+        }
+
+        .product-detail-actions {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .quantity-btn {
+            background: #f8f9fa;
+            border: none;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .quantity-input {
+            width: 50px;
+            height: 40px;
+            border: none;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .buy-now-btn {
+            background: var(--primary);
+            color: var(--secondary);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            flex: 1;
+        }
+
+        .buy-now-btn:hover {
+            background: #333333;
+        }
+
+        .product-detail-delivery {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 25px;
+        }
+
+        .delivery-option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .delivery-option:last-child {
+            margin-bottom: 0;
+        }
+
+        .delivery-option i {
+            margin-right: 10px;
+            color: var(--success);
+        }
+
+        .related-products {
+            margin-top: 50px;
+            padding: 0 30px 30px;
+        }
+
+        .related-products h3 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--primary);
+            color: white;
+            margin-top: 50px;
+        }
+
+        .footer-top {
+            background: #0f0f0f;
+            padding: 40px 0;
+        }
+
+        .footer-bottom {
+            background: #0a0a0a;
+            padding: 30px 0;
+            text-align: center;
+            font-size: 14px;
+            color: #9ca3af;
+        }
+
+        .back-to-top {
+            background: #374151;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .back-to-top:hover {
+            background: #4b5563;
+        }
+
+        /* Mobile Navigation */
+        .mobile-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid #e5e5e5;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            z-index: 90;
+        }
+
+        .mobile-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .mobile-nav-item.active {
+            color: var(--primary);
+        }
+
+        .mobile-nav-icon {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
+            .hero-slider {
+                height: 250px; /* Reduced for mobile */
+            }
+
+            .hero-slide {
+                padding: 0 20px;
+            }
+
+            .hero-content h2 {
+                font-size: 24px; /* Reduced for mobile */
+            }
+
+            .hero-content p {
+                font-size: 14px; /* Reduced for mobile */
+            }
+
+            .desktop-only {
+                display: none;
+            }
+
             .ad-slide img {
                 height: 200px;
             }
-            
+
             .ad-content {
                 padding: 1rem;
             }
-            
-            .ai-chat {
-                width: 300px;
-                height: 400px;
+
+            .split-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .product-detail-content {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+
+            .product-main-image {
+                height: 300px;
+            }
+
+            .product-detail-actions {
+                flex-direction: column;
+            }
+
+            .product-detail-overlay {
+                padding: 10px 0;
+            }
+
+            .product-detail-container {
+                width: 98%;
+                margin: 10px auto;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .mobile-only {
+                display: none;
             }
         }
     </style>
 </head>
-<body class="bg-gray-50">
-    <!-- Mobile-friendly Navigation -->
-    <nav class="bg-white shadow-lg sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex items-center">
-                    <a href="home.html">
-                        <img src="ANewlogo.png" alt="Hills Market Logo" class="logo" width="150" height="auto">
-                    </a>
-                </div>
-                <!-- Mobile menu button -->
-                <div class="md:hidden">
-                    <button type="button" class="text-gray-700 hover:text-green-600" id="mobileMenuButton">
-                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        </svg>
-                    </button>
-                </div>
-                <!-- Desktop menu (hidden on mobile) -->
-                <div class="hidden md:flex space-x-8">
-                    <a href="home.html" class="text-green-600 font-medium">Home</a>
-                    <a href="mainpage.html" class="text-gray-700 hover:text-green-600">Shop</a>
-                    <a href="AboutUs.html" class="text-gray-700 hover:text-green-600">About Us</a>
-                    <a href="sign-in.html" class="text-gray-700 hover:text-green-600">Log In</a>
-                    <a href="hills-market-signup.html" class="bg-red-600 text-white px-3 py-1 rounded-lg hover:bg-red-700 text-sm">Sign Up</a>
-                </div>
-                <div class="flex items-center">
-                    <button class="bg-green-600 text-white px-3 py-1 rounded-lg hover:bg-green-700 text-sm">
-                        Cart (0)
-                    </button>
-                </div>
-            </div>
+<body>
+    <!-- Side Navigation -->
+    <div class="side-nav" id="sideNav">
+        <div class="side-nav-header">
+            <h3 class="font-bold text-lg">All Categories</h3>
+            <button id="closeSideNav">
+                <i class="fas fa-times text-xl"></i>
+            </button>
         </div>
-        <!-- Mobile menu (hidden by default) -->
-        <div class="md:hidden hidden bg-white border-t" id="mobileMenu">
-            <div class="px-4 py-2 space-y-2">
-                <a href="home.html" class="block py-2 text-green-600 font-medium">Home</a>
-                <a href="mainpage.html" class="block py-2 text-gray-700 hover:text-green-600">Shop</a>
-                <a href="#" class="block py-2 text-gray-700 hover:text-green-600"></a>
-                <a href="#" class="block py-2 text-gray-700 hover:text-green-600">Log In</a>
-                <a href="hills-market-signup.html" class="block py-2 bg-red-600 text-white px-3 py-1 rounded-lg hover:bg-red-700 text-sm text-center">Sign Up</a>
-            </div>
+        <div class="side-nav-content">
+            <button class="side-nav-item" onclick="navigateToCategory('electronics')">Electronics</button>
+            <button class="side-nav-item" onclick="navigateToCategory('home-kitchen')">Home & Kitchen</button>
+            <button class="side-nav-item" onclick="navigateToCategory('fashion')">Fashion</button>
+            <button class="side-nav-item" onclick="navigateToCategory('beauty')">Beauty & Personal Care</button>
+            <button class="side-nav-item" onclick="navigateToCategory('sports')">Sports & Outdoors</button>
+            <button class="side-nav-item" onclick="navigateToCategory('books')">Books</button>
+            <button class="side-nav-item" onclick="navigateToCategory('toys')">Toys & Games</button>
+            <button class="side-nav-item" onclick="navigateToCategory('automotive')">Automotive</button>
+            <button class="side-nav-item" onclick="navigateToCategory('health')">Health & Household</button>
+            <button class="side-nav-item" onclick="navigateToCategory('grocery')">Grocery</button>
         </div>
-    </nav>
+    </div>
+    <div class="overlay" id="overlay"></div>
 
-    <!-- Advertisement Space -->
-    <div class="bg-white py-8">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="ad-carousel-container">
-                <!-- Ad Carousel -->
-                <div class="ad-carousel" id="adCarousel">
-                    <!-- Ad Slide 1 (Image) -->
-                    <div class="ad-slide">
-                        <img src="sanlumadvert.webp" alt="Special Offer">
-                        <div class="ad-content left">
-                            <div>
-                                <h3 class="text-2xl md:text-3xl font-bold mb-2">Special Investment Offer</h3>
-                                <p class="text-base md:text-lg mb-4 max-w-md">Secure your future with our exclusive investment plans</p>
-                                <a href="#" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 inline-block">Invest Today</a>
-                            </div>
+    <!-- Product Detail Overlay -->
+    <div class="product-detail-overlay" id="productDetailOverlay">
+        <div class="product-detail-container">
+            <button class="product-detail-close" id="productDetailClose">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="product-detail">
+                <div class="product-detail-content">
+                    <div class="product-detail-images">
+                        <div class="product-main-image">
+                            <img id="productMainImage" src="" alt="Product Image">
+                        </div>
+                        <div class="product-thumbnails" id="productThumbnails">
+                            <!-- Thumbnails will be dynamically added here -->
                         </div>
                     </div>
-                    <!-- Ad Slide 2 (Video Placeholder) -->
-                    <div class="ad-slide">
-                        <img src="https://images.unsplash.com/photo-1607082350899-7e105aa886ae?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="New Arrivals">
-                        <div class="ad-content center">
-                            <div>
-                                <div class="bg-white/30 rounded-full p-3 mb-4 inline-block">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
+                    <div class="product-detail-info">
+                        <h1 class="product-detail-title" id="productDetailTitle"></h1>
+                        <div class="product-detail-rating">
+                            <div class="rating-bar">
+                                <div class="rating-fill" id="productDetailRatingFill"></div>
+                            </div>
+                            <span class="rating-value" id="productDetailRatingValue"></span>
+                            <span class="ml-2 text-gray-500" id="productDetailReviews"></span>
+                        </div>
+                        <div class="product-detail-price">
+                            <span class="product-detail-current-price" id="productDetailCurrentPrice"></span>
+                            <span class="product-detail-original-price" id="productDetailOriginalPrice"></span>
+                            <span class="product-detail-discount" id="productDetailDiscount"></span>
+                        </div>
+                        <div class="product-detail-description" id="productDetailDescription"></div>
+                        <div class="product-detail-features" id="productDetailFeatures"></div>
+                        <div class="product-detail-actions">
+                            <div class="quantity-selector">
+                                <button class="quantity-btn" id="decreaseQuantity">-</button>
+                                <input type="text" class="quantity-input" id="quantityInput" value="1" readonly>
+                                <button class="quantity-btn" id="increaseQuantity">+</button>
+                            </div>
+                            <button class="buy-now-btn" id="buyNowBtn">Buy Now</button>
+                        </div>
+                        <div class="product-detail-delivery">
+                            <div class="delivery-option">
+                                <i class="fas fa-shipping-fast"></i>
+                                <div>
+                                    <div class="font-medium">Free Delivery</div>
+                                    <div class="text-sm text-gray-600">Order now and get free delivery</div>
                                 </div>
-                                <h3 class="text-2xl md:text-3xl font-bold mb-2">New Arrivals Video</h3>
-                                <p class="text-base md:text-lg">See what's new at Hills Market this week</p>
                             </div>
-                        </div>
-                    </div>
-                    <!-- Ad Slide 3 (Image) -->
-                    <div class="ad-slide">
-                        <img src="sanlam-1.png" alt="Weekend Sale">
-                        <div class="ad-content right">
-                            <div>
-                                <h3 class="text-2xl md:text-3xl font-bold mb-2">Weekend Sale</h3>
-                                <p class="text-base md:text-lg mb-4">Up to 30% off on selected home accessories</p>
-                                <a href="#" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 inline-block">View Deals</a>
+                            <div class="delivery-option">
+                                <i class="fas fa-undo"></i>
+                                <div>
+                                    <div class="font-medium">Easy Returns</div>
+                                    <div class="text-sm text-gray-600">30-day return policy</div>
+                                </div>
+                            </div>
+                            <div class="delivery-option">
+                                <i class="fas fa-shield-alt"></i>
+                                <div>
+                                    <div class="font-medium">Warranty</div>
+                                    <div class="text-sm text-gray-600">1-year manufacturer warranty</div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                
-                <!-- Carousel Navigation Dots -->
-                <div class="absolute bottom-4 left-0 right-0 flex justify-center space-x-2">
-                    <button class="carousel-dot active" data-slide="0"></button>
-                    <button class="carousel-dot" data-slide="1"></button>
-                    <button class="carousel-dot" data-slide="2"></button>
+                <div class="related-products">
+                    <h3>Related Products</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="relatedProductsContainer">
+                        <!-- Related products will be dynamically added here -->
+                    </div>
                 </div>
-                
-                <!-- Carousel Controls -->
-                <button class="carousel-control prev" id="prevBtn">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                    </svg>
-                </button>
-                <button class="carousel-control next" id="nextBtn">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                    </svg>
-                </button>
             </div>
         </div>
     </div>
 
-    <!-- Featured Categories -->
-    <section class="max-w-7xl mx-auto py-8 px-4">
-        <h2 class="text-2xl font-bold mb-6">Shop by Category</h2>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <a href="Art-page.html" class="category-card bg-white rounded-lg shadow-sm overflow-hidden">
-                <div class="category-image-container">
-                    <img src="paintings.jpg" alt="Art" class="category-image">
+    <!-- Header -->
+    <header class="header">
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo and Menu Button -->
+                <div class="flex items-center">
+                    <button id="menuButton" class="mr-4 p-2 rounded-lg bg-gray-100">
+                        <i class="fas fa-bars text-lg"></i>
+                    </button>
+                    <a href="#" class="flex items-center">
+                        <img src="ANewlogo.png" alt="Hills Market" class="h-8 sm:h-10 md:h-12 lg:h-16 w-auto object-contain">
+                        <span class="ml-2 text-xl font-bold text-black"></span>
+                    </a>
                 </div>
-                <div class="p-4 text-center">
-                    <h3 class="font-medium">Art</h3>
-                    <p class="text-sm text-gray-500 mt-1">12 products</p>
-                </div>
-            </a>
-            <a href="Nails.html" class="category-card bg-white rounded-lg shadow-sm overflow-hidden">
-                <div class="category-image-container">
-                    <img src="nails.jpg" alt="Nails" class="category-image">
-                </div>
-                <div class="p-4 text-center">
-                    <h3 class="font-medium">Nails</h3>
-                    <p class="text-sm text-gray-500 mt-1">15 products</p>
-                </div>
-            </a>
-            <a href="phones.html" class="category-card bg-white rounded-lg shadow-sm overflow-hidden">
-                <div class="category-image-container">
-                    <img src="phone.webp" alt="Phones" class="category-image">
-                </div>
-                <div class="p-4 text-center">
-                    <h3 class="font-medium">Phones</h3>
-                    <p class="text-sm text-gray-500 mt-1">9 products</p>
-                </div>
-            </a>
-            <a href="home-accessories-page.html" class="category-card bg-white rounded-lg shadow-sm overflow-hidden">
-                <div class="category-image-container">
-                    <img src="accessories.webp" alt="Home Accessories" class="category-image">
-                </div>
-                <div class="p-4 text-center">
-                    <h3 class="font-medium">Home Accessories</h3>
-                    <p class="text-sm text-gray-500 mt-1">14 products</p>
-                </div>
-            </a>
-        </div>
-    </section>
 
-    <!-- Featured Products -->
-    <section class="max-w-7xl mx-auto py-8 px-4">
-        <div class="flex justify-between items-center mb-6">
-            <h2 class="text-2xl font-bold">Featured Products</h2>
-            <a href="mainpage.html" class="text-green-600 hover:text-green-700 font-medium">View All</a>
+                <!-- Search Bar - Desktop -->
+                <div class="search-bar mx-4 flex desktop-only">
+                    <input type="text" placeholder="Search for products, brands and more">
+                    <button class="bg-black text-white px-4 py-2 rounded-lg">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+
+                <!-- Right Menu - Desktop -->
+                <div class="flex items-center space-x-4 desktop-only">
+                    <div class="relative">
+                        <a href="#" class="nav-link flex flex-col items-start">
+                            <span class="text-xs text-gray-500">Hello, Sign in</span>
+                            <span class="text-sm font-medium">Account & Lists</span>
+                        </a>
+                    </div>
+                    <div class="relative">
+                        <a href="#" class="nav-link flex flex-col items-start">
+                            <span class="text-xs text-gray-500">Returns</span>
+                            <span class="text-sm font-medium">& Orders</span>
+                        </a>
+                    </div>
+                    <div class="relative">
+                        <a href="#" class="nav-link flex items-center">
+                            <i class="fas fa-shopping-cart text-xl"></i>
+                            <span class="ml-1 font-medium">Cart</span>
+                            <span class="cart-count">0</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="mobile-only">
+                    <button class="p-2 rounded-lg bg-gray-100">
+                        <i class="fas fa-bars text-lg"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Navigation - Desktop -->
+            <div class="mt-4 desktop-only">
+                <div class="flex items-center space-x-6 overflow-x-auto">
+                    <a href="#" class="nav-link active">All Categories</a>
+                    <a href="todays-Deal.html" class="nav-link">Today's Deals</a>
+                    <a href="Best-Seller.html" class="nav-link">Best Sellers</a>
+                    <a href="new Realease.html" class="nav-link">New Releases</a>
+                    <a href="customer service.html" class="nav-link">Customer Service</a>
+                    <a href="electronics.html" class="nav-link">Electronics</a>
+                    <a href="home-kitchenware.html" class="nav-link">Home & Kitchen</a>
+                    <a href="fashion-page.html" class="nav-link">Fashion</a>
+                </div>
+            </div>
+
+            <!-- Search Bar - Mobile -->
+            <div class="mt-4 mobile-only">
+                <div class="search-bar flex">
+                    <input type="text" placeholder="Search for products, brands and more">
+                    <button class="bg-black text-white px-4 py-2 rounded-lg ml-2">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
         </div>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-            <!-- Product 1 -->
-            <div class="product-container bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow cursor-pointer" data-product-id="1">
-                <img src="art.png" alt="Sun Set Art" class="w-full h-33 object-cover">
-                <div class="p-3">
-                    <span class="text-xs text-white bg-red-500 px-2 py-0.5 rounded-full">Sale</span>
-                    <h3 class="font-medium text-sm mt-1">Sun Set</h3>
-                    <p class="text-xs text-gray-500">Golden, tranquil, reflective, serene, timeless.</p>
-                    <div class="flex justify-between items-center mt-2">
+    </header>
+
+    <!-- Advertisement Space -->
+    <div class="max-w-7xl mx-auto px-4 py-6">
+        <div class="ad-carousel-container">
+            <!-- Ad Carousel -->
+            <div class="ad-carousel" id="adCarousel">
+                <!-- Ad Slide 1 (Image) -->
+                <div class="ad-slide">
+                    <img src="macbook-life.jpg" alt="Special Offer">
+                    <div class="ad-content left">
                         <div>
-                            <span class="text-green-600 font-bold text-sm">R1299.99</span>
-                            <span class="text-gray-400 text-xs line-through ml-1">R3000.99</span>
+                            <h3 class="text-2xl md:text-3xl font-bold mb-2">Special Investment Offer</h3>
+                            <p class="text-base md:text-lg mb-4 max-w-md">Secure your future with our exclusive investment plans</p>
+                            <a href="#" class="bg-black text-white px-4 py-2 rounded hover:bg-gray-800 inline-block">Invest Today</a>
                         </div>
-                        <button class="bg-green-600 text-white rounded-full p-1 hover:bg-green-700">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                            </svg>
-                        </button>
+                    </div>
+                </div>
+                <!-- Ad Slide 2 (Video Placeholder) -->
+                <div class="ad-slide">
+                    <img src="kfc.jpg" alt="New Arrivals">
+                    <div class="ad-content center">
+                        <div>
+                            <div class="bg-white/30 rounded-full p-3 mb-4 inline-block">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                            <h3 class="text-2xl md:text-3xl font-bold mb-2">New Arrivals Video</h3>
+                            <p class="text-base md:text-lg">See what's new at Hills Market this week</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Ad Slide 3 (Image) -->
+                <div class="ad-slide">
+                    <img src="apple-macbook-air.webp" alt="Weekend Sale">
+                    <div class="ad-content right">
+                        <div>
+                            <h3 class="text-2xl md:text-3xl font-bold mb-2">Weekend Sale</h3>
+                            <p class="text-base md:text-lg mb-4">Up to 30% off on selected home accessories</p>
+                            <a href="#" class="bg-black text-white px-4 py-2 rounded hover:bg-gray-800 inline-block">View Deals</a>
+                        </div>
                     </div>
                 </div>
             </div>
+            
+            <!-- Carousel Navigation Dots -->
+            <div class="absolute bottom-4 left-0 right-0 flex justify-center space-x-2">
+                <button class="carousel-dot active" data-slide="0"></button>
+                <button class="carousel-dot" data-slide="1"></button>
+                <button class="carousel-dot" data-slide="2"></button>
+            </div>
+            
+            <!-- Carousel Controls -->
+            <button class="carousel-control prev" id="prevBtn">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+            </button>
+            <button class="carousel-control next" id="nextBtn">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+            </button>
+        </div>
+    </div>
 
-            <!-- Product 2 -->
-            <div class="product-container bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow cursor-pointer" data-product-id="2">
-                <img src="Art3.png" alt="Walk in the Night Art" class="w-full h-33 object-cover">
-                <div class="p-3">
-                    <h3 class="font-medium text-sm mt-1">Walk in the Night</h3>
-                    <p class="text-xs text-gray-500">Under moonlit skies, two souls walk</p>
-                    <div class="flex justify-between items-center mt-2">
-                        <div>
-                            <span class="text-green-600 font-bold text-sm">R999.59</span>
+    <!-- Hero Slider - Desktop - Updated for equal size slides -->
+    <div class="hero-slider desktop-only">
+        <div class="hero-slides-container" id="heroSlidesContainer">
+            <div class="hero-slide">
+                <div class="hero-content">
+                    <h2>Premium Quality Art Collection</h2>
+                    <p>Discover unique artworks that transform your space</p>
+                    <button class="hero-btn">Shop Now</button>
+                </div>
+            </div>
+            <div class="hero-slide">
+                <div class="hero-content">
+                    <h2>Weekend Special Offers</h2>
+                    <p>Up to 50% off on selected items</p>
+                    <button class="hero-btn">View Deals</button>
+                </div>
+            </div>
+            <div class="hero-slide">
+                <div class="hero-content">
+                    <h2>New Tech Arrivals</h2>
+                    <p>Latest smartphones and accessories</p>
+                    <button class="hero-btn">Explore</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Split Layout - Desktop -->
+    <div class="max-w-7xl mx-auto px-4 py-6 desktop-only">
+        <div class="split-layout">
+            <!-- Left Section -->
+            <div class="split-section">
+                <div class="split-header">
+                    Popular Categories
+                </div>
+                <div class="split-content">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="category-card">
+                            <div class="category-image">
+                                <img src="paintings.jpg" alt="Art">
+                                <div class="category-content">
+                                    <div class="category-name">Art</div>
+                                    <div class="category-subtitle">Premium Collection</div>
+                                </div>
+                            </div>
                         </div>
-                        <button class="bg-green-600 text-white rounded-full p-1 hover:bg-green-700">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                            </svg>
-                        </button>
+                        <div class="category-card">
+                            <div class="category-image">
+                                <img src="nails.jpg" alt="Nails">
+                                <div class="category-content">
+                                    <div class="category-name">Nails</div>
+                                    <div class="category-subtitle">Beauty & Care</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="category-card">
+                            <div class="category-image">
+                                <img src="phone.webp" alt="Phones">
+                                <div class="category-content">
+                                    <div class="category-name">Phones</div>
+                                    <div class="category-subtitle">Latest Models</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="category-card">
+                            <div class="category-image">
+                                <img src="accessories.webp" alt="Home Accessories">
+                                <div class="category-content">
+                                    <div class="category-name">Home Accessories</div>
+                                    <div class="category-subtitle">Modern Designs</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-
-            <!-- Product 3 -->
-            <div class="product-container bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow cursor-pointer" data-product-id="3">
-                <img src="Art4.png" alt="Chaos meets rhythm Art" class="w-full h-33 object-cover">
-                <div class="p-3">
-                    <h3 class="font-medium text-sm mt-1">Chaos meets rhythm</h3>
-                    <p class="text-xs text-gray-500">Random paints swirl in lines and circles</p>
-                    <div class="flex justify-between items-center mt-2">
-                        <div>
-                            <span class="text-green-600 font-bold text-sm">R899.99</span>
-                        </div>
-                        <button class="bg-green-600 text-white rounded-full p-1 hover:bg-green-700">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                            </svg>
-                        </button>
-                    </div>
+            
+            <!-- Right Section -->
+            <div class="split-section">
+                <div class="split-header">
+                    Featured Deals
                 </div>
-            </div>
-
-            <!-- Product 4 -->
-            <div class="product-container bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow cursor-pointer" data-product-id="4">
-                <img src="art5.png" alt="Colorful Art" class="w-full h-33 object-cover">
-                <div class="p-3">
-                    <span class="text-xs text-white bg-green-500 px-2 py-0.5 rounded-full">Organic</span>
-                    <h3 class="font-medium text-sm mt-1">A vivid dance of color and calm</h3>
-                    <p class="text-xs text-gray-500">Beneath umbrellas, people stroll as trees burst with color</p>
-                    <div class="flex justify-between items-center mt-2">
-                        <div>
-                            <span class="text-green-600 font-bold text-sm">R400.99</span>
+                <div class="split-content">
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                            <div class="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-tag text-gray-600"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium">Flash Sale</h4>
+                                <p class="text-sm text-gray-600">Up to 60% off on electronics</p>
+                            </div>
                         </div>
-                        <button class="bg-green-600 text-white rounded-full p-1 hover:bg-green-700">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                            </svg>
-                        </button>
+                        <div class="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                            <div class="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-shipping-fast text-gray-600"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium">Free Delivery</h4>
+                                <p class="text-sm text-gray-600">On orders over R500</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                            <div class="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-gift text-gray-600"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium">Member Benefits</h4>
+                                <p class="text-sm text-gray-600">Exclusive deals for members</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 
-    <!-- Additional Featured Products by Category -->
-    <section class="max-w-7xl mx-auto py-8 px-4">
-        <h2 class="text-2xl font-bold mb-6">More Featured Products</h2>
-        
-        <!-- Art Category -->
-        <div class="mb-10">
-            <h3 class="text-xl font-semibold mb-4 text-green-700">Art Collection</h3>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                <!-- Art Product 1 -->
-                <div class="product-container bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow cursor-pointer" data-product-id="5">
-                    <img src="https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Abstract Art" class="w-full h-33 object-cover">
-                    <div class="p-3">
-                        <h3 class="font-medium text-sm mt-1">Abstract Harmony</h3>
-                        <p class="text-xs text-gray-500">Vibrant colors in perfect chaos</p>
-                        <div class="flex justify-between items-center mt-2">
-                            <div>
-                                <span class="text-green-600 font-bold text-sm">R1200.00</span>
-                            </div>
-                            <button class="bg-green-600 text-white rounded-full p-1 hover:bg-green-700">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                </svg>
-                            </button>
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 py-6" id="mainContent">
+        <!-- Categories -->
+        <section class="mb-8">
+            <h2 class="text-2xl font-bold mb-4">Shop by Category</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <a href="Art-page.html" class="category-card">
+                    <div class="category-image">
+                        <img src="paintings.jpg" alt="Art">
+                        <div class="category-content">
+                            <div class="category-name">Art</div>
+                            <div class="category-subtitle">Premium Collection</div>
                         </div>
                     </div>
-                </div>
-                
-                <!-- Art Product 2 -->
-                <div class="product-container bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow cursor-pointer" data-product-id="6">
-                    <img src="https://images.unsplash.com/photo-1541961017774-22349e4a1262?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Portrait Art" class="w-full h-33 object-cover">
-                    <div class="p-3">
-                        <span class="text-xs text-white bg-purple-500 px-2 py-0.5 rounded-full">New</span>
-                        <h3 class="font-medium text-sm mt-1">Portrait Elegance</h3>
-                        <p class="text-xs text-gray-500">Detailed charcoal portrait</p>
-                        <div class="flex justify-between items-center mt-2">
-                            <div>
-                                <span class="text-green-600 font-bold text-sm">R1800.00</span>
-                            </div>
-                            <button class="bg-green-600 text-white rounded-full p-1 hover:bg-green-700">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                </svg>
-                            </button>
+                </a>
+                <a href="Nails.html" class="category-card">
+                    <div class="category-image">
+                        <img src="nails.jpg" alt="Nails">
+                        <div class="category-content">
+                            <div class="category-name">Nails</div>
+                            <div class="category-subtitle">Beauty & Care</div>
                         </div>
+                    </div>
+                </a>
+                <a href="phones.html" class="category-card">
+                    <div class="category-image">
+                        <img src="phone.webp" alt="Phones">
+                        <div class="category-content">
+                            <div class="category-name">Phones</div>
+                            <div class="category-subtitle">Latest Models</div>
+                        </div>
+                    </div>
+                </a>
+                <a href="home-accessories-page.html" class="category-card">
+                    <div class="category-image">
+                        <img src="accessories.webp" alt="Home Accessories">
+                        <div class="category-content">
+                            <div class="category-name">Home Accessories</div>
+                            <div class="category-subtitle">Modern Designs</div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- Today's Deals -->
+        <section class="mb-8">
+            <div class="deals-header">
+                <h2 class="text-2xl font-bold">Today's Deals</h2>
+                <div class="deals-timer">
+                    <span id="deal-hours">12</span>:<span id="deal-minutes">45</span>:<span id="deal-seconds">30</span>
+                </div>
+                <a href="#" class="ml-auto text-black hover:underline font-medium">See all deals</a>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                <!-- Deal Product 1 -->
+                <div class="product-card" data-product-id="1">
+                    <div class="product-badge">-40%</div>
+                    <div class="product-image">
+                        <img src="art.png" alt="Sun Set Art">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">Sun Set - Golden Tranquil Reflective Art</div>
+                        <div class="product-rating">
+                            <div class="rating-bar">
+                                <div class="rating-fill" style="width: 90%"></div>
+                            </div>
+                            <span class="rating-value">4.5</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">R1299.99</span>
+                            <span class="original-price">R3000.99</span>
+                            <span class="discount">(40% off)</span>
+                        </div>
+                        <div class="delivery-badge">
+                            <i class="fas fa-shipping-fast mr-1"></i>
+                            FREE Delivery
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Deal Product 2 -->
+                <div class="product-card" data-product-id="2">
+                    <div class="product-badge">Limited</div>
+                    <div class="product-image">
+                        <img src="Art3.png" alt="Walk in the Night Art">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">Walk in the Night - Moonlit Art</div>
+                        <div class="product-rating">
+                            <div class="rating-bar">
+                                <div class="rating-fill" style="width: 80%"></div>
+                            </div>
+                            <span class="rating-value">4.0</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">R999.59</span>
+                        </div>
+                        <div class="delivery-badge">
+                            <i class="fas fa-shipping-fast mr-1"></i>
+                            FREE Delivery
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Deal Product 3 -->
+                <div class="product-card" data-product-id="3">
+                    <div class="product-badge">-20%</div>
+                    <div class="product-image">
+                        <img src="Art4.png" alt="Chaos meets rhythm Art">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">Chaos meets rhythm - Abstract Art</div>
+                        <div class="product-rating">
+                            <div class="rating-bar">
+                                <div class="rating-fill" style="width: 100%"></div>
+                            </div>
+                            <span class="rating-value">5.0</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">R899.99</span>
+                            <span class="original-price">R1124.99</span>
+                            <span class="discount">(20% off)</span>
+                        </div>
+                        <div class="delivery-badge">
+                            <i class="fas fa-shipping-fast mr-1"></i>
+                            FREE Delivery
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Deal Product 4 -->
+                <div class="product-card" data-product-id="4">
+                    <div class="product-badge">New</div>
+                    <div class="product-image">
+                        <img src="art5.png" alt="Colorful Art">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">Vivid Dance of Color - Abstract Art</div>
+                        <div class="product-rating">
+                            <div class="rating-bar">
+                                <div class="rating-fill" style="width: 70%"></div>
+                            </div>
+                            <span class="rating-value">3.5</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">R400.99</span>
+                        </div>
+                        <div class="delivery-badge">
+                            <i class="fas fa-shipping-fast mr-1"></i>
+                            FREE Delivery
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Deal Product 5 -->
+                <div class="product-card" data-product-id="5">
+                    <div class="product-badge">-15%</div>
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Abstract Art">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">Abstract Harmony - Colorful Art</div>
+                        <div class="product-rating">
+                            <div class="rating-bar">
+                                <div class="rating-fill" style="width: 80%"></div>
+                            </div>
+                            <span class="rating-value">4.0</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">R1200.00</span>
+                            <span class="original-price">R1411.76</span>
+                            <span class="discount">(15% off)</span>
+                        </div>
+                        <div class="delivery-badge">
+                            <i class="fas fa-shipping-fast mr-1"></i>
+                            FREE Delivery
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Deal Product 6 -->
+                <div class="product-card" data-product-id="6">
+                    <div class="product-badge">-25%</div>
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1541961017774-22349e4a1262?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Portrait Art">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">Portrait Elegance - Charcoal Art</div>
+                        <div class="product-rating">
+                            <div class="rating-bar">
+                                <div class="rating-fill" style="width: 90%"></div>
+                            </div>
+                            <span class="rating-value">4.5</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">R1800.00</span>
+                            <span class="original-price">R2400.00</span>
+                            <span class="discount">(25% off)</span>
+                        </div>
+                        <div class="delivery-badge">
+                            <i class="fas fa-shipping-fast mr-1"></i>
+                            FREE Delivery
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
                     </div>
                 </div>
             </div>
-        </div>
-        
-        <!-- Nails Category -->
-        <div class="mb-10">
-            <h3 class="text-xl font-semibold mb-4 text-pink-600">Nail Products</h3>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                <!-- Nails Product 1 -->
-                <div class="product-container bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow cursor-pointer" data-product-id="7">
-                    <img src="https://images.unsplash.com/photo-1607778833979-44d9f39cfb70?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Nail Polish Set" class="w-full h-33 object-cover">
-                    <div class="p-3">
-                        <h3 class="font-medium text-sm mt-1">Gel Polish Set</h3>
-                        <p class="text-xs text-gray-500">Long-lasting gel polish collection</p>
-                        <div class="flex justify-between items-center mt-2">
-                            <div>
-                                <span class="text-green-600 font-bold text-sm">R350.00</span>
+        </section>
+
+        <!-- Featured Products -->
+        <section class="mb-8">
+            <h2 class="text-2xl font-bold mb-4">Featured Products</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <!-- Featured Product 1 -->
+                <div class="product-card" data-product-id="7">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1607778833979-44d9f39cfb70?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Nail Polish Set">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">Gel Polish Set - Long Lasting Colors</div>
+                        <div class="product-rating">
+                            <div class="rating-bar">
+                                <div class="rating-fill" style="width: 90%"></div>
                             </div>
-                            <button class="bg-green-600 text-white rounded-full p-1 hover:bg-green-700">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                </svg>
-                            </button>
+                            <span class="rating-value">4.5</span>
                         </div>
+                        <div class="product-price">
+                            <span class="current-price">R350.00</span>
+                        </div>
+                        <div class="delivery-badge">
+                            <i class="fas fa-shipping-fast mr-1"></i>
+                            FREE Delivery
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
                     </div>
                 </div>
-                
-                <!-- Nails Product 2 -->
-                <div class="product-container bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow cursor-pointer" data-product-id="8">
-                    <img src="https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Nail Art Kit" class="w-full h-33 object-cover">
-                    <div class="p-3">
-                        <span class="text-xs text-white bg-red-500 px-2 py-0.5 rounded-full">Sale</span>
-                        <h3 class="font-medium text-sm mt-1">Nail Art Kit</h3>
-                        <p class="text-xs text-gray-500">Complete nail art design set</p>
-                        <div class="flex justify-between items-center mt-2">
-                            <div>
-                                <span class="text-green-600 font-bold text-sm">R280.00</span>
-                                <span class="text-gray-400 text-xs line-through ml-1">R350.00</span>
+
+                <!-- Featured Product 2 -->
+                <div class="product-card" data-product-id="8">
+                    <div class="product-badge">Sale</div>
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Nail Art Kit">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">Nail Art Kit - Complete Design Set</div>
+                        <div class="product-rating">
+                            <div class="rating-bar">
+                                <div class="rating-fill" style="width: 100%"></div>
                             </div>
-                            <button class="bg-green-600 text-white rounded-full p-1 hover:bg-green-700">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                </svg>
-                            </button>
+                            <span class="rating-value">5.0</span>
                         </div>
+                        <div class="product-price">
+                            <span class="current-price">R280.00</span>
+                            <span class="original-price">R350.00</span>
+                            <span class="discount">(20% off)</span>
+                        </div>
+                        <div class="delivery-badge">
+                            <i class="fas fa-shipping-fast mr-1"></i>
+                            FREE Delivery
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Featured Product 3 -->
+                <div class="product-card" data-product-id="9">
+                    <div class="product-image">
+                        <img src="phone.webp" alt="Smartphone">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">Latest Smartphone - High Performance</div>
+                        <div class="product-rating">
+                            <div class="rating-bar">
+                                <div class="rating-fill" style="width: 80%"></div>
+                            </div>
+                            <span class="rating-value">4.0</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">R8999.99</span>
+                        </div>
+                        <div class="delivery-badge">
+                            <i class="fas fa-shipping-fast mr-1"></i>
+                            FREE Delivery
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Featured Product 4 -->
+                <div class="product-card" data-product-id="10">
+                    <div class="product-badge">New</div>
+                    <div class="product-image">
+                        <img src="accessories.webp" alt="Home Accessories">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">Home Decor Set - Modern Design</div>
+                        <div class="product-rating">
+                            <div class="rating-bar">
+                                <div class="rating-fill" style="width: 70%"></div>
+                            </div>
+                            <span class="rating-value">3.5</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">R1250.00</span>
+                        </div>
+                        <div class="delivery-badge">
+                            <i class="fas fa-shipping-fast mr-1"></i>
+                            FREE Delivery
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    </main>
+
+    <!-- Back to Top -->
+    <div class="back-to-top" id="backToTop">
+        Back to top
+    </div>
 
     <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-8">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+    <footer class="footer">
+        <div class="footer-top">
+            <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
                 <div>
-                    <h3 class="text-lg font-bold mb-4 flex items-center">
-                       <img src="hills-logo.png" alt="Hills Market Logo" class="w-8 h-10 mr-2">
-                           
-                    </h3>
-                    <p class="text-gray-400">Your one-stop shop for quality products at affordable prices.</p>
-                </div>
-                <div>
-                    <h3 class="text-lg font-bold mb-4">Quick Links</h3>
+                    <h3 class="text-lg font-bold mb-4">Get to Know Us</h3>
                     <ul class="space-y-2">
-                        <li><a href="home.html" class="text-gray-400 hover:text-white">Home</a></li>
-                        <li><a href="mainpage.html" class="text-gray-400 hover:text-white">Shop</a></li>
                         <li><a href="#" class="text-gray-400 hover:text-white">About Us</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Contact</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Careers</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Press Releases</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Hills Market Science</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h3 class="text-lg font-bold mb-4">Customer Service</h3>
+                    <h3 class="text-lg font-bold mb-4">Connect with Us</h3>
                     <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-white">Shipping Info</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Returns</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">FAQ</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Privacy Policy</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Facebook</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Twitter</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Instagram</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h3 class="text-lg font-bold mb-4">Contact Us</h3>
-                    <p class="text-gray-400">Email: info@hillsmarket.com</p>
-                    <p class="text-gray-400">Phone: +27 72 211 0805</p>
-                    <div class="flex space-x-4 mt-4">
-                        <a href="#" class="text-gray-400 hover:text-white">
-                            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M18.77 7.46H14.5v-1.9c0-.9.6-1.1 1-1.1h3V.5h-4.33C10.24.5 9.5 3.44 9.5 5.32v2.15h-3v4h3v12h5v-12h3.85l.42-4z"/></svg>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-white">
-                            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M23.44 4.83c-.8.37-1.5.38-2.22.02.93-.56.98-.96 1.32-2.02-.88.52-1.86.9-2.9 1.1-.82-.88-2-1.43-3.3-1.43-2.5 0-4.55 2.04-4.55 4.54 0 .36.03.7.1 1.04-3.77-.2-7.12-2-9.36-4.75-.4.67-.6 1.45-.6 2.3 0 1.56.8 2.95 2 3.77-.74-.03-1.44-.23-2.05-.57v.06c0 2.2 1.56 4.03 3.64 4.44-.67.2-1.37.2-2.06.08.58 1.8 2.26 3.12 4.25 3.16C5.78 18.1 3.37 18.74 1 18.46c2 1.3 4.4 2.04 6.97 2.04 8.35 0 12.92-6.92 12.92-12.93 0-.2 0-.4-.02-.6.9-.63 1.96-1.22 2.56-2.14z"/></svg>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-white">
-                            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z"/></svg>
-                        </a>
-                    </div>
+                    <h3 class="text-lg font-bold mb-4">Make Money with Us</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Sell on Hills Market</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Sell under Hills Market Accelerator</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Become an Affiliate</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Fulfillment by Hills Market</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Let Us Help You</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">COVID-19 and Hills Market</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Your Account</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Returns Centre</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">100% Purchase Protection</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Help</a></li>
+                    </ul>
                 </div>
             </div>
-            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
-                <p>&copy; 2025 Hills Market. All rights reserved.</p>
+        </div>
+        <div class="footer-bottom">
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="flex items-center mb-4 md:mb-0">
+                        <img src="hills-logo.png" alt="Hills Market" class="h-6 mr-2">
+                        <span class="text-white font-bold">Hills Market</span>
+                    </div>
+                    <div class="flex space-x-6">
+                        <a href="#" class="text-gray-400 hover:text-white text-xs">Conditions of Use</a>
+                        <a href="#" class="text-gray-400 hover:text-white text-xs">Privacy Notice</a>
+                        <a href="#" class="text-gray-400 hover:text-white text-xs">Interest-Based Ads</a>
+                    </div>
+                </div>
+                <p class="mt-4">© 1996-2025, HillsMarket.com, Inc. or its affiliates</p>
             </div>
         </div>
     </footer>
 
-    <!-- Product Detail Modal -->
-    <div class="modal-overlay" id="productModal">
-        <div class="modal-content">
-            <button class="close-modal" id="closeModal">×</button>
-            <div class="flex flex-col md:flex-row">
-                <div class="md:w-1/2">
-                    <div class="image-gallery" id="imageGallery">
-                        <!-- Images will be loaded dynamically -->
-                    </div>
-                    <div class="view-toggle">
-                        <button class="active" id="productImagesBtn">Product Images</button>
-                        <button id="arViewBtn">AR View</button>
-                    </div>
-                    <div class="ar-container" id="arContainer">
-                        <div class="ar-placeholder">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
-                            </svg>
-                            <h3 class="text-xl font-bold mb-2">AR View</h3>
-                            <p class="text-gray-600 mb-4">View this product in your space using augmented reality</p>
-                            <button class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Launch AR Experience</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="md:w-1/2">
-                    <div class="product-info">
-                        <h2 id="productTitle" class="text-2xl font-bold mb-2"></h2>
-                        <div class="flex items-center mb-4">
-                            <div class="flex text-yellow-400">
-                                <!-- Stars will be loaded dynamically -->
-                            </div>
-                            <span id="reviewCount" class="text-gray-500 ml-2"></span>
-                        </div>
-                        <p id="productDescription" class="text-gray-700 mb-4"></p>
-                        <div class="mb-4">
-                            <span id="productPrice" class="text-2xl font-bold text-green-600"></span>
-                            <span id="originalPrice" class="text-gray-400 line-through ml-2"></span>
-                        </div>
-                        <div class="mb-6">
-                            <h3 class="font-semibold mb-2">Available Sizes:</h3>
-                            <div class="flex space-x-2" id="sizeOptions">
-                                <!-- Size options will be loaded dynamically -->
-                            </div>
-                        </div>
-                        <div class="mb-6">
-                            <h3 class="font-semibold mb-2">Available Colors:</h3>
-                            <div class="flex space-x-2" id="colorOptions">
-                                <!-- Color options will be loaded dynamically -->
-                            </div>
-                        </div>
-                        <div class="flex items-center mb-6">
-                            <span class="mr-4">Quantity:</span>
-                            <div class="flex items-center border rounded">
-                                <button class="px-3 py-1" id="decreaseQty">-</button>
-                                <span class="px-3 py-1 border-l border-r" id="quantity">1</span>
-                                <button class="px-3 py-1" id="increaseQty">+</button>
-                            </div>
-                        </div>
-                        <div class="flex space-x-4">
-                            <button class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 flex-1">Add to Cart</button>
-                            <button class="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 flex-1">Buy Now</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- AI Assistant -->
-    <div class="ai-assistant">
-        <div class="ai-chat" id="aiChat">
-            <div class="ai-header">
-                <div class="flex items-center">
-                    <div class="w-3 h-3 bg-green-400 rounded-full mr-2"></div>
-                    <span>Hills Assistant</span>
-                </div>
-                <button class="close-ai" id="closeAi">×</button>
-            </div>
-            <div class="ai-messages" id="aiMessages">
-                <div class="message ai">
-                    Hi! I'm your Hills Market assistant. How can I help you find the perfect product today?
-                </div>
-            </div>
-            <div class="ai-input">
-                <input type="text" placeholder="Type your message..." id="aiInput">
-                <button id="sendMessage">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                    </svg>
-                </button>
-            </div>
-        </div>
-        <button class="ai-toggle" id="aiToggle">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
-            </svg>
-        </button>
-    </div>
+    <!-- Mobile Navigation -->
+    <nav class="mobile-nav mobile-only">
+        <a href="#" class="mobile-nav-item active">
+            <i class="fas fa-home mobile-nav-icon"></i>
+            <span>Home</span>
+        </a>
+        <a href="#" class="mobile-nav-item">
+            <i class="fas fa-search mobile-nav-icon"></i>
+            <span>Search</span>
+        </a>
+        <a href="#" class="mobile-nav-item">
+            <i class="fas fa-shopping-cart mobile-nav-icon"></i>
+            <span>Cart</span>
+        </a>
+        <a href="#" class="mobile-nav-item">
+            <i class="fas fa-user mobile-nav-icon"></i>
+            <span>Account</span>
+        </a>
+        <a href="#" class="mobile-nav-item">
+            <i class="fas fa-bars mobile-nav-icon"></i>
+            <span>More</span>
+        </a>
+    </nav>
 
     <script>
         // Product data
         const products = {
             1: {
-                title: "Sun Set Art",
-                description: "A beautiful depiction of a golden sunset over tranquil waters. This piece captures the serene moment when day transitions to night, with warm tones that create a calming atmosphere in any room.",
-                price: "R1299.99",
-                originalPrice: "R3000.99",
+                title: "Sun Set - Golden Tranquil Reflective Art",
                 images: [
                     "art.png",
-                    "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
-                    "https://images.unsplash.com/photo-1507608616759-54f48f0af0ee?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
-                ],
-                sizes: ["Small (20x30cm)", "Medium (40x60cm)", "Large (60x90cm)"],
-                colors: ["#f59e0b", "#ef4444", "#3b82f6"],
-                rating: 4.5,
-                reviews: 24,
-                category: "Art"
-            },
-            2: {
-                title: "Walk in the Night Art",
-                description: "This captivating piece shows two figures walking under a moonlit sky. The artist masterfully uses dark tones and subtle highlights to create a mysterious and romantic atmosphere.",
-                price: "R999.59",
-                originalPrice: null,
-                images: [
-                    "Art3.png",
-                    "https://images.unsplash.com/photo-1541961017774-22349e4a1262?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
-                ],
-                sizes: ["Small (20x30cm)", "Medium (40x60cm)"],
-                colors: ["#1e293b", "#475569", "#64748b"],
-                rating: 4.2,
-                reviews: 18,
-                category: "Art"
-            },
-            3: {
-                title: "Chaos meets rhythm Art",
-                description: "An abstract composition where random paints swirl in lines and circles, creating a dynamic visual experience. This piece represents the beautiful chaos of creativity and the underlying rhythm that connects all things.",
-                price: "R899.99",
-                originalPrice: null,
-                images: [
-                    "Art4.png",
-                    "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
-                ],
-                sizes: ["Small (20x30cm)", "Medium (40x60cm)", "Large (60x90cm)"],
-                colors: ["#ec4899", "#8b5cf6", "#06b6d4"],
-                rating: 4.7,
-                reviews: 31,
-                category: "Art"
-            },
-            4: {
-                title: "A vivid dance of color and calm",
-                description: "This vibrant artwork shows people strolling beneath colorful umbrellas as trees burst with autumn hues. The contrast between the peaceful figures and the explosive colors creates a unique visual harmony.",
-                price: "R400.99",
-                originalPrice: null,
-                images: [
-                    "art5.png",
-                    "https://images.unsplash.com/photo-1549289524-06cf8837ace5?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
-                ],
-                sizes: ["Small (20x30cm)", "Medium (40x60cm)"],
-                colors: ["#f59e0b", "#10b981", "#3b82f6"],
-                rating: 4.0,
-                reviews: 15,
-                category: "Art"
-            },
-            5: {
-                title: "Abstract Harmony",
-                description: "A vibrant explosion of colors in perfect chaos. This abstract piece uses bold brushstrokes and contrasting hues to create a dynamic composition that energizes any space.",
-                price: "R1200.00",
-                originalPrice: null,
-                images: [
                     "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
                     "https://images.unsplash.com/photo-1541961017774-22349e4a1262?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
                 ],
-                sizes: ["Small (20x30cm)", "Medium (40x60cm)", "Large (60x90cm)"],
-                colors: ["#ef4444", "#f59e0b", "#10b981"],
-                rating: 4.3,
-                reviews: 22,
-                category: "Art"
+                rating: 4.5,
+                reviews: "(128 reviews)",
+                currentPrice: "R1299.99",
+                originalPrice: "R3000.99",
+                discount: "(40% off)",
+                description: "This stunning sunset artwork captures the golden hour in all its glory. The reflective surface adds depth and dimension, creating a mesmerizing visual experience that transforms any space. Perfect for living rooms, offices, or as a focal point in your home decor.",
+                features: [
+                    "Premium quality canvas with UV-resistant coating",
+                    "Handcrafted wooden frame for durability",
+                    "Reflective surface for enhanced visual appeal",
+                    "Ready to hang with included hardware",
+                    "Made with eco-friendly materials"
+                ],
+                relatedProducts: [2, 3, 4]
+            },
+            2: {
+                title: "Walk in the Night - Moonlit Art",
+                images: [
+                    "Art3.png",
+                    "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1541961017774-22349e4a1262?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                ],
+                rating: 4.0,
+                reviews: "(96 reviews)",
+                currentPrice: "R999.59",
+                originalPrice: "",
+                discount: "",
+                description: "Experience the serene beauty of a moonlit night with this captivating artwork. The subtle play of light and shadow creates a peaceful atmosphere that's perfect for bedrooms or meditation spaces. Limited edition print with certificate of authenticity.",
+                features: [
+                    "Limited edition with certificate of authenticity",
+                    "High-quality archival paper",
+                    "Fade-resistant inks for long-lasting vibrancy",
+                    "Elegant matte finish",
+                    "Professionally framed option available"
+                ],
+                relatedProducts: [1, 3, 5]
+            },
+            3: {
+                title: "Chaos meets rhythm - Abstract Art",
+                images: [
+                    "Art4.png",
+                    "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1541961017774-22349e4a1262?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                ],
+                rating: 5.0,
+                reviews: "(64 reviews)",
+                currentPrice: "R899.99",
+                originalPrice: "R1124.99",
+                discount: "(20% off)",
+                description: "This vibrant abstract piece explores the intersection of chaos and rhythm through bold colors and dynamic brushstrokes. Each viewing reveals new details and interpretations, making it a conversation starter in any setting. Created by acclaimed contemporary artist.",
+                features: [
+                    "Original acrylic on canvas",
+                    "Artist-signed certificate of authenticity",
+                    "Gallery-wrapped edges for frameless display",
+                    "Varnished for protection and enhanced colors",
+                    "Custom sizing available upon request"
+                ],
+                relatedProducts: [1, 2, 6]
+            },
+            4: {
+                title: "Vivid Dance of Color - Abstract Art",
+                images: [
+                    "art5.png",
+                    "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1541961017774-22349e4a1262?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                ],
+                rating: 3.5,
+                reviews: "(42 reviews)",
+                currentPrice: "R400.99",
+                originalPrice: "",
+                discount: "",
+                description: "A burst of vibrant colors dances across the canvas in this energetic abstract piece. The dynamic composition creates a sense of movement and joy, perfect for adding a pop of color to any room. Affordable art without compromising on quality.",
+                features: [
+                    "High-quality digital print on canvas",
+                    "Stretched on durable wooden frame",
+                    "Water and fade-resistant",
+                    "Easy to clean with damp cloth",
+                    "Available in multiple sizes"
+                ],
+                relatedProducts: [1, 3, 5]
+            },
+            5: {
+                title: "Abstract Harmony - Colorful Art",
+                images: [
+                    "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "art.png",
+                    "Art3.png"
+                ],
+                rating: 4.0,
+                reviews: "(78 reviews)",
+                currentPrice: "R1200.00",
+                originalPrice: "R1411.76",
+                discount: "(15% off)",
+                description: "Find balance in this harmonious abstract composition that blends soft curves with geometric precision. The soothing color palette creates a calming atmosphere while maintaining visual interest. Perfect for modern interiors and office spaces.",
+                features: [
+                    "Mixed media on canvas",
+                    "Textured surface for tactile appeal",
+                    "Neutral color palette complements any decor",
+                    "Professional framing available",
+                    "Includes hanging hardware"
+                ],
+                relatedProducts: [2, 4, 6]
             },
             6: {
-                title: "Portrait Elegance",
-                description: "A detailed charcoal portrait capturing the subtle expressions and emotions of the subject. The artist's mastery of light and shadow creates a lifelike representation with emotional depth.",
-                price: "R1800.00",
-                originalPrice: null,
+                title: "Portrait Elegance - Charcoal Art",
                 images: [
                     "https://images.unsplash.com/photo-1541961017774-22349e4a1262?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
-                    "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                    "Art4.png",
+                    "art5.png"
                 ],
-                sizes: ["Medium (40x60cm)", "Large (60x90cm)"],
-                colors: ["#1e293b", "#475569", "#64748b"],
-                rating: 4.8,
-                reviews: 19,
-                category: "Art"
+                rating: 4.5,
+                reviews: "(112 reviews)",
+                currentPrice: "R1800.00",
+                originalPrice: "R2400.00",
+                discount: "(25% off)",
+                description: "This exquisite charcoal portrait captures the subtle nuances of human expression with remarkable precision. The artist's mastery of light and shadow creates a lifelike representation that seems to breathe with emotion. A timeless piece for art collectors.",
+                features: [
+                    "Original charcoal on archival paper",
+                    "Hand-signed by the artist",
+                    "Professionally matted and framed",
+                    "Acid-free materials for preservation",
+                    "Limited edition of 50 prints"
+                ],
+                relatedProducts: [1, 3, 5]
             },
             7: {
-                title: "Gel Polish Set",
-                description: "A complete set of long-lasting gel polishes in trendy colors. These polishes provide a professional finish that lasts for weeks without chipping.",
-                price: "R350.00",
-                originalPrice: null,
+                title: "Gel Polish Set - Long Lasting Colors",
                 images: [
                     "https://images.unsplash.com/photo-1607778833979-44d9f39cfb70?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
-                    "https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                    "https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "nails.jpg"
                 ],
-                sizes: ["6 Colors", "12 Colors", "18 Colors"],
-                colors: ["#ef4444", "#ec4899", "#8b5cf6", "#3b82f6", "#10b981", "#f59e0b"],
                 rating: 4.5,
-                reviews: 47,
-                category: "Nails"
+                reviews: "(215 reviews)",
+                currentPrice: "R350.00",
+                originalPrice: "",
+                discount: "",
+                description: "Achieve salon-quality nails at home with this professional gel polish set. The long-lasting formula provides up to 3 weeks of chip-free wear with high-shine finish. Easy application and removal with included tools.",
+                features: [
+                    "Set of 6 trendy colors",
+                    "LED/UV lamp compatible",
+                    "Includes base coat, top coat, and cleanser",
+                    "Non-damaging to natural nails",
+                    "Cruelty-free and vegan formula"
+                ],
+                relatedProducts: [8, 9, 10]
             },
             8: {
-                title: "Nail Art Kit",
-                description: "A complete nail art design set with everything you need to create stunning nail designs at home. Includes brushes, dotting tools, gems, and stickers.",
-                price: "R280.00",
-                originalPrice: "R350.00",
+                title: "Nail Art Kit - Complete Design Set",
                 images: [
                     "https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
-                    "https://images.unsplash.com/photo-1607778833979-44d9f39cfb70?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                    "https://images.unsplash.com/photo-1607778833979-44d9f39cfb70?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "nails.jpg"
                 ],
-                sizes: ["Basic Kit", "Deluxe Kit", "Professional Kit"],
-                colors: ["#f3f4f6", "#1e293b"],
-                rating: 4.7,
-                reviews: 38,
-                category: "Nails"
+                rating: 5.0,
+                reviews: "(189 reviews)",
+                currentPrice: "R280.00",
+                originalPrice: "R350.00",
+                discount: "(20% off)",
+                description: "Unleash your creativity with this comprehensive nail art kit. Everything you need to create stunning nail designs at home, from simple patterns to intricate artwork. Perfect for beginners and professionals alike.",
+                features: [
+                    "Includes dotting tools, brushes, and stamper",
+                    "24 nail art stickers and decals",
+                    "5 glitter powders and rhinestones",
+                    "Instruction booklet with design ideas",
+                    "Portable case for easy storage"
+                ],
+                relatedProducts: [7, 9, 10]
+            },
+            9: {
+                title: "Latest Smartphone - High Performance",
+                images: [
+                    "phone.webp",
+                    "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1541961017774-22349e4a1262?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                ],
+                rating: 4.0,
+                reviews: "(342 reviews)",
+                currentPrice: "R8999.99",
+                originalPrice: "",
+                discount: "",
+                description: "Experience cutting-edge technology with our latest smartphone. Featuring a powerful processor, stunning display, and professional-grade camera system, this device delivers exceptional performance for work and entertainment.",
+                features: [
+                    "6.7-inch Super AMOLED display",
+                    "Triple camera system with 108MP main sensor",
+                    "5G connectivity for blazing-fast speeds",
+                    "All-day battery with fast charging",
+                    "128GB storage with expandable option"
+                ],
+                relatedProducts: [1, 3, 10]
+            },
+            10: {
+                title: "Home Decor Set - Modern Design",
+                images: [
+                    "accessories.webp",
+                    "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1541961017774-22349e4a1262?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                ],
+                rating: 3.5,
+                reviews: "(76 reviews)",
+                currentPrice: "R1250.00",
+                originalPrice: "",
+                discount: "",
+                description: "Transform your living space with this elegant home decor set. The modern design features clean lines and neutral tones that complement any interior style. Crafted from high-quality materials for lasting beauty.",
+                features: [
+                    "Set includes vase, candle holders, and tray",
+                    "Ceramic construction with matte finish",
+                    "Handcrafted with attention to detail",
+                    "Easy to clean and maintain",
+                    "Versatile design for various room styles"
+                ],
+                relatedProducts: [1, 4, 7]
             }
         };
 
-        // DOM Elements
-        const productModal = document.getElementById('productModal');
-        const closeModal = document.getElementById('closeModal');
-        const productImagesBtn = document.getElementById('productImagesBtn');
-        const arViewBtn = document.getElementById('arViewBtn');
-        const imageGallery = document.getElementById('imageGallery');
-        const arContainer = document.getElementById('arContainer');
-        const productTitle = document.getElementById('productTitle');
-        const productDescription = document.getElementById('productDescription');
-        const productPrice = document.getElementById('productPrice');
-        const originalPrice = document.getElementById('originalPrice');
-        const sizeOptions = document.getElementById('sizeOptions');
-        const colorOptions = document.getElementById('colorOptions');
-        const reviewCount = document.getElementById('reviewCount');
-        const decreaseQty = document.getElementById('decreaseQty');
-        const increaseQty = document.getElementById('increaseQty');
-        const quantity = document.getElementById('quantity');
-        const productContainers = document.querySelectorAll('.product-container');
-        const mobileMenuButton = document.getElementById('mobileMenuButton');
-        const mobileMenu = document.getElementById('mobileMenu');
-        const aiToggle = document.getElementById('aiToggle');
-        const aiChat = document.getElementById('aiChat');
-        const closeAi = document.getElementById('closeAi');
-        const aiMessages = document.getElementById('aiMessages');
-        const aiInput = document.getElementById('aiInput');
-        const sendMessage = document.getElementById('sendMessage');
-        const adCarousel = document.getElementById('adCarousel');
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
-        const carouselDots = document.querySelectorAll('.carousel-dot');
+        // Side Navigation
+        const menuButton = document.getElementById('menuButton');
+        const closeSideNav = document.getElementById('closeSideNav');
+        const sideNav = document.getElementById('sideNav');
+        const overlay = document.getElementById('overlay');
+
+        menuButton.addEventListener('click', () => {
+            sideNav.classList.add('open');
+            overlay.classList.add('active');
+        });
+
+        closeSideNav.addEventListener('click', () => {
+            sideNav.classList.remove('open');
+            overlay.classList.remove('active');
+        });
+
+        overlay.addEventListener('click', () => {
+            sideNav.classList.remove('open');
+            overlay.classList.remove('active');
+        });
+
+        // Function to navigate to category pages
+        function navigateToCategory(category) {
+            // Close side navigation
+            sideNav.classList.remove('open');
+            overlay.classList.remove('active');
+            
+            // Show a simple alert for demonstration
+            // In a real implementation, this would redirect to the category page
+            alert(`Navigating to ${category} category page`);
+            
+            // Example of actual navigation (commented out for demo)
+            // window.location.href = `${category}.html`;
+        }
+
+        // Hero Slider - Updated for equal size slides
+        const heroSlidesContainer = document.getElementById('heroSlidesContainer');
+        let currentHeroSlide = 0;
+        const heroSlideCount = 3;
+
+        function showHeroSlide(index) {
+            heroSlidesContainer.style.transform = `translateX(-${index * 33.333}%)`;
+        }
+
+        function nextHeroSlide() {
+            currentHeroSlide = (currentHeroSlide + 1) % heroSlideCount;
+            showHeroSlide(currentHeroSlide);
+        }
+
+        // Auto-advance hero slider
+        setInterval(nextHeroSlide, 5000);
+
+        // Deal Timer
+        function updateDealTimer() {
+            const now = new Date();
+            const endOfDay = new Date();
+            endOfDay.setHours(23, 59, 59, 999);
+            
+            const diff = endOfDay - now;
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            document.getElementById('deal-hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('deal-minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('deal-seconds').textContent = seconds.toString().padStart(2, '0');
+        }
+
+        setInterval(updateDealTimer, 1000);
+        updateDealTimer();
+
+        // Back to Top
+        document.getElementById('backToTop').addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Add to Cart functionality
+        const addToCartButtons = document.querySelectorAll('.add-to-cart');
+        const cartCount = document.querySelector('.cart-count');
+        let cartItems = 0;
+
+        addToCartButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevent triggering product detail page
+                cartItems++;
+                cartCount.textContent = cartItems;
+                
+                // Animation effect
+                button.textContent = 'Added!';
+                button.style.background = '#10b981';
+                
+                setTimeout(() => {
+                    button.textContent = 'Add to Cart';
+                    button.style.background = '';
+                }, 1500);
+            });
+        });
 
         // Advertisement Carousel
         let currentSlide = 0;
         const totalSlides = document.querySelectorAll('.ad-slide').length;
+        const adCarousel = document.getElementById('adCarousel');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const carouselDots = document.querySelectorAll('.carousel-dot');
 
         function showSlide(index) {
             if (index >= totalSlides) {
@@ -1145,279 +2109,226 @@
             });
         });
 
-        // Mobile menu toggle
-        mobileMenuButton.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
+        // Mobile navigation active state
+        const mobileNavItems = document.querySelectorAll('.mobile-nav-item');
+        mobileNavItems.forEach(item => {
+            item.addEventListener('click', function() {
+                mobileNavItems.forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+            });
         });
 
-        // Product modal functionality
-        function openProductModal(productId) {
+        // Product Detail Page Functionality
+        const productCards = document.querySelectorAll('.product-card');
+        const productDetailOverlay = document.getElementById('productDetailOverlay');
+        const productDetailClose = document.getElementById('productDetailClose');
+        const productMainImage = document.getElementById('productMainImage');
+        const productThumbnails = document.getElementById('productThumbnails');
+        const productDetailTitle = document.getElementById('productDetailTitle');
+        const productDetailRatingFill = document.getElementById('productDetailRatingFill');
+        const productDetailRatingValue = document.getElementById('productDetailRatingValue');
+        const productDetailReviews = document.getElementById('productDetailReviews');
+        const productDetailCurrentPrice = document.getElementById('productDetailCurrentPrice');
+        const productDetailOriginalPrice = document.getElementById('productDetailOriginalPrice');
+        const productDetailDiscount = document.getElementById('productDetailDiscount');
+        const productDetailDescription = document.getElementById('productDetailDescription');
+        const productDetailFeatures = document.getElementById('productDetailFeatures');
+        const relatedProductsContainer = document.getElementById('relatedProductsContainer');
+        const decreaseQuantity = document.getElementById('decreaseQuantity');
+        const increaseQuantity = document.getElementById('increaseQuantity');
+        const quantityInput = document.getElementById('quantityInput');
+        const buyNowBtn = document.getElementById('buyNowBtn');
+
+        let currentProductId = null;
+        let currentQuantity = 1;
+
+        // Open product detail page when product card is clicked
+        productCards.forEach(card => {
+            card.addEventListener('click', function() {
+                const productId = this.getAttribute('data-product-id');
+                if (productId) {
+                    openProductDetail(productId);
+                }
+            });
+        });
+
+        // Function to open product detail page
+        function openProductDetail(productId) {
             const product = products[productId];
             if (!product) return;
 
-            // Set product details
-            productTitle.textContent = product.title;
-            productDescription.textContent = product.description;
-            productPrice.textContent = product.price;
+            currentProductId = productId;
+
+            // Update product details
+            productDetailTitle.textContent = product.title;
+            productDetailRatingFill.style.width = `${product.rating * 20}%`;
+            productDetailRatingValue.textContent = product.rating;
+            productDetailReviews.textContent = product.reviews;
+            productDetailCurrentPrice.textContent = product.currentPrice;
             
             if (product.originalPrice) {
-                originalPrice.textContent = product.originalPrice;
-                originalPrice.style.display = 'inline';
+                productDetailOriginalPrice.textContent = product.originalPrice;
+                productDetailOriginalPrice.style.display = 'inline';
             } else {
-                originalPrice.style.display = 'none';
-            }
-
-            // Set rating stars
-            const ratingContainer = document.querySelector('.product-info .flex.text-yellow-400');
-            ratingContainer.innerHTML = '';
-            const fullStars = Math.floor(product.rating);
-            const hasHalfStar = product.rating % 1 !== 0;
-            
-            for (let i = 0; i < fullStars; i++) {
-                ratingContainer.innerHTML += '<svg class="h-5 w-5 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>';
+                productDetailOriginalPrice.style.display = 'none';
             }
             
-            if (hasHalfStar) {
-                ratingContainer.innerHTML += '<svg class="h-5 w-5 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4V6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z"/></svg>';
+            if (product.discount) {
+                productDetailDiscount.textContent = product.discount;
+                productDetailDiscount.style.display = 'inline';
+            } else {
+                productDetailDiscount.style.display = 'none';
             }
             
-            const emptyStars = 5 - Math.ceil(product.rating);
-            for (let i = 0; i < emptyStars; i++) {
-                ratingContainer.innerHTML += '<svg class="h-5 w-5 fill-current text-gray-300" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z"/></svg>';
-            }
+            productDetailDescription.textContent = product.description;
             
-            reviewCount.textContent = `(${product.reviews} reviews)`;
-
-            // Set size options
-            sizeOptions.innerHTML = '';
-            product.sizes.forEach(size => {
-                const button = document.createElement('button');
-                button.textContent = size;
-                button.className = 'border border-gray-300 px-3 py-1 rounded text-sm hover:bg-gray-100';
-                sizeOptions.appendChild(button);
+            // Update product features
+            productDetailFeatures.innerHTML = '';
+            const featuresList = document.createElement('ul');
+            product.features.forEach(feature => {
+                const li = document.createElement('li');
+                li.textContent = feature;
+                featuresList.appendChild(li);
             });
-
-            // Set color options
-            colorOptions.innerHTML = '';
-            product.colors.forEach(color => {
-                const button = document.createElement('button');
-                button.className = 'w-8 h-8 rounded-full border border-gray-300';
-                button.style.backgroundColor = color;
-                colorOptions.appendChild(button);
-            });
-
-            // Set image gallery
-            imageGallery.innerHTML = '';
+            productDetailFeatures.appendChild(featuresList);
+            
+            // Update product images
+            productMainImage.src = product.images[0];
+            productThumbnails.innerHTML = '';
+            
             product.images.forEach((image, index) => {
+                const thumbnail = document.createElement('div');
+                thumbnail.className = `product-thumbnail ${index === 0 ? 'active' : ''}`;
+                thumbnail.addEventListener('click', () => {
+                    productMainImage.src = image;
+                    document.querySelectorAll('.product-thumbnail').forEach(thumb => {
+                        thumb.classList.remove('active');
+                    });
+                    thumbnail.classList.add('active');
+                });
+                
                 const img = document.createElement('img');
                 img.src = image;
-                img.alt = product.title;
-                img.className = `gallery-image ${index === 0 ? 'active' : ''}`;
-                imageGallery.appendChild(img);
+                img.alt = `Thumbnail ${index + 1}`;
+                
+                thumbnail.appendChild(img);
+                productThumbnails.appendChild(thumbnail);
             });
-
-            // Add gallery navigation dots
-            const galleryNav = document.createElement('div');
-            galleryNav.className = 'gallery-nav';
-            product.images.forEach((_, index) => {
-                const dot = document.createElement('div');
-                dot.className = `gallery-dot ${index === 0 ? 'active' : ''}`;
-                dot.addEventListener('click', () => {
-                    showGalleryImage(index);
-                });
-                galleryNav.appendChild(dot);
+            
+            // Update related products
+            relatedProductsContainer.innerHTML = '';
+            product.relatedProducts.forEach(relatedId => {
+                const relatedProduct = products[relatedId];
+                if (relatedProduct) {
+                    const productCard = document.createElement('div');
+                    productCard.className = 'product-card';
+                    productCard.setAttribute('data-product-id', relatedId);
+                    
+                    productCard.innerHTML = `
+                        <div class="product-image">
+                            <img src="${relatedProduct.images[0]}" alt="${relatedProduct.title}">
+                        </div>
+                        <div class="product-info">
+                            <div class="product-title">${relatedProduct.title}</div>
+                            <div class="product-rating">
+                                <div class="rating-bar">
+                                    <div class="rating-fill" style="width: ${relatedProduct.rating * 20}%"></div>
+                                </div>
+                                <span class="rating-value">${relatedProduct.rating}</span>
+                            </div>
+                            <div class="product-price">
+                                <span class="current-price">${relatedProduct.currentPrice}</span>
+                                ${relatedProduct.originalPrice ? `<span class="original-price">${relatedProduct.originalPrice}</span>` : ''}
+                                ${relatedProduct.discount ? `<span class="discount">${relatedProduct.discount}</span>` : ''}
+                            </div>
+                            <div class="delivery-badge">
+                                <i class="fas fa-shipping-fast mr-1"></i>
+                                FREE Delivery
+                            </div>
+                            <button class="add-to-cart">Add to Cart</button>
+                        </div>
+                    `;
+                    
+                    productCard.addEventListener('click', function() {
+                        openProductDetail(relatedId);
+                    });
+                    
+                    // Add to cart functionality for related products
+                    const addToCartBtn = productCard.querySelector('.add-to-cart');
+                    addToCartBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        cartItems++;
+                        cartCount.textContent = cartItems;
+                        
+                        // Animation effect
+                        addToCartBtn.textContent = 'Added!';
+                        addToCartBtn.style.background = '#10b981';
+                        
+                        setTimeout(() => {
+                            addToCartBtn.textContent = 'Add to Cart';
+                            addToCartBtn.style.background = '';
+                        }, 1500);
+                    });
+                    
+                    relatedProductsContainer.appendChild(productCard);
+                }
             });
-            imageGallery.appendChild(galleryNav);
-
+            
             // Reset quantity
-            quantity.textContent = '1';
-
-            // Show modal
-            productModal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function showGalleryImage(index) {
-            const images = imageGallery.querySelectorAll('.gallery-image');
-            const dots = imageGallery.querySelectorAll('.gallery-dot');
+            currentQuantity = 1;
+            quantityInput.value = currentQuantity;
             
-            images.forEach(img => img.classList.remove('active'));
-            dots.forEach(dot => dot.classList.remove('active'));
+            // Show product detail overlay
+            productDetailOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling behind overlay
             
-            images[index].classList.add('active');
-            dots[index].classList.add('active');
+            // Scroll to top of overlay
+            productDetailOverlay.scrollTop = 0;
         }
 
-        function closeProductModal() {
-            productModal.classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-
-        // Event listeners for product modals
-        productContainers.forEach(container => {
-            container.addEventListener('click', () => {
-                const productId = container.getAttribute('data-product-id');
-                openProductModal(productId);
-            });
+        // Close product detail overlay
+        productDetailClose.addEventListener('click', () => {
+            productDetailOverlay.classList.remove('active');
+            document.body.style.overflow = ''; // Restore scrolling
         });
 
-        closeModal.addEventListener('click', closeProductModal);
-
-        productModal.addEventListener('click', (e) => {
-            if (e.target === productModal) {
-                closeProductModal();
+        // Close product detail when clicking outside the container
+        productDetailOverlay.addEventListener('click', (e) => {
+            if (e.target === productDetailOverlay) {
+                productDetailOverlay.classList.remove('active');
+                document.body.style.overflow = ''; // Restore scrolling
             }
-        });
-
-        // View toggle functionality
-        productImagesBtn.addEventListener('click', () => {
-            productImagesBtn.classList.add('active');
-            arViewBtn.classList.remove('active');
-            imageGallery.style.display = 'block';
-            arContainer.classList.remove('active');
-        });
-
-        arViewBtn.addEventListener('click', () => {
-            arViewBtn.classList.add('active');
-            productImagesBtn.classList.remove('active');
-            imageGallery.style.display = 'none';
-            arContainer.classList.add('active');
         });
 
         // Quantity controls
-        decreaseQty.addEventListener('click', () => {
-            let qty = parseInt(quantity.textContent);
-            if (qty > 1) {
-                quantity.textContent = qty - 1;
+        decreaseQuantity.addEventListener('click', () => {
+            if (currentQuantity > 1) {
+                currentQuantity--;
+                quantityInput.value = currentQuantity;
             }
         });
 
-        increaseQty.addEventListener('click', () => {
-            let qty = parseInt(quantity.textContent);
-            quantity.textContent = qty + 1;
+        increaseQuantity.addEventListener('click', () => {
+            currentQuantity++;
+            quantityInput.value = currentQuantity;
         });
 
-        // AI Assistant functionality
-        function toggleAiChat() {
-            aiChat.classList.toggle('active');
-        }
-
-        function addMessage(text, isUser = false) {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${isUser ? 'user' : 'ai'}`;
-            messageDiv.textContent = text;
-            aiMessages.appendChild(messageDiv);
-            aiMessages.scrollTop = aiMessages.scrollHeight;
-        }
-
-        function processUserMessage(message) {
-            // Simple response logic - in a real app, this would connect to an AI service
-            const lowerMessage = message.toLowerCase();
-            
-            if (lowerMessage.includes('hello') || lowerMessage.includes('hi')) {
-                return "Hello! I'm your Hills Market assistant. How can I help you find the perfect product today?";
-            } else if (lowerMessage.includes('art') || lowerMessage.includes('painting')) {
-                return "We have a beautiful collection of art pieces! From abstract works to detailed portraits, there's something for every taste. Would you like me to show you our featured art pieces?";
-            } else if (lowerMessage.includes('nails') || lowerMessage.includes('polish')) {
-                return "Our nail products include long-lasting gel polishes and complete nail art kits. They're perfect for creating salon-quality looks at home. Would you like to see our best-selling nail products?";
-            } else if (lowerMessage.includes('price') || lowerMessage.includes('cost')) {
-                return "Our products range from R400 to R1800, with regular sales and discounts. Is there a specific product category you're interested in?";
-            } else if (lowerMessage.includes('delivery') || lowerMessage.includes('shipping')) {
-                return "We offer free delivery on orders over R500. Standard delivery takes 3-5 business days, and express delivery is available for an additional fee.";
-            } else if (lowerMessage.includes('help') || lowerMessage.includes('support')) {
-                return "I'm here to help! You can ask me about our products, prices, delivery options, or anything else about Hills Market.";
-            } else {
-                return "I'm not sure I understand. Could you please rephrase your question? I can help you find products, check prices, or answer questions about our services.";
+        // Buy Now button
+        buyNowBtn.addEventListener('click', () => {
+            if (currentProductId) {
+                cartItems += currentQuantity;
+                cartCount.textContent = cartItems;
+                
+                // Show confirmation message
+                const originalText = buyNowBtn.textContent;
+                buyNowBtn.textContent = 'Added to Cart!';
+                buyNowBtn.style.background = '#10b981';
+                
+                setTimeout(() => {
+                    buyNowBtn.textContent = originalText;
+                    buyNowBtn.style.background = '';
+                }, 1500);
             }
-        }
-
-        function sendAiMessage() {
-            const message = aiInput.value.trim();
-            if (message === '') return;
-            
-            addMessage(message, true);
-            aiInput.value = '';
-            
-            // Simulate AI thinking
-            setTimeout(() => {
-                const response = processUserMessage(message);
-                addMessage(response);
-            }, 1000);
-        }
-
-        // Voice recognition
-        function startVoiceRecognition() {
-            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-                addMessage("Sorry, your browser doesn't support voice recognition. Please type your message instead.");
-                return;
-            }
-            
-            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-            const recognition = new SpeechRecognition();
-            
-            recognition.lang = 'en-US';
-            recognition.interimResults = false;
-            recognition.maxAlternatives = 1;
-            
-            aiToggle.classList.add('listening');
-            
-            recognition.start();
-            
-            recognition.onresult = (event) => {
-                const transcript = event.results[0][0].transcript;
-                aiInput.value = transcript;
-                sendAiMessage();
-                aiToggle.classList.remove('listening');
-            };
-            
-            recognition.onerror = () => {
-                aiToggle.classList.remove('listening');
-                addMessage("Sorry, I couldn't understand your voice. Please try again or type your message.");
-            };
-            
-            recognition.onend = () => {
-                aiToggle.classList.remove('listening');
-            };
-        }
-
-        // Event listeners for AI assistant
-        aiToggle.addEventListener('click', toggleAiChat);
-        closeAi.addEventListener('click', toggleAiChat);
-        sendMessage.addEventListener('click', sendAiMessage);
-        aiInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                sendAiMessage();
-            }
-        });
-
-        // Long press for voice recognition
-        let pressTimer;
-        aiToggle.addEventListener('mousedown', () => {
-            pressTimer = window.setTimeout(startVoiceRecognition, 500);
-        });
-        
-        aiToggle.addEventListener('touchstart', () => {
-            pressTimer = window.setTimeout(startVoiceRecognition, 500);
-        });
-        
-        aiToggle.addEventListener('mouseup', () => {
-            clearTimeout(pressTimer);
-        });
-        
-        aiToggle.addEventListener('touchend', () => {
-            clearTimeout(pressTimer);
-        });
-        
-        aiToggle.addEventListener('mouseleave', () => {
-            clearTimeout(pressTimer);
-        });
-
-        // Initialize the page
-        document.addEventListener('DOMContentLoaded', () => {
-            // Add some sample AI messages for demonstration
-            setTimeout(() => {
-                addMessage("Need help finding something? I can help you browse our products or answer any questions!");
-            }, 2000);
         });
     </script>
 </body>

@@ -1,0 +1,1442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Today's Deals - Hills Market</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a1a1a;
+            --secondary: #ffffff;
+            --accent: #4a5568;
+            --light: #f8f9fa;
+            --dark: #0f0f0f;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --deal-red: #e53e3e;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #ffffff;
+            color: #1a1a1a;
+        }
+
+        /* Header Styles - Same as landing page */
+        .header {
+            background: var(--secondary);
+            border-bottom: 1px solid #e5e5e5;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .search-bar {
+            flex: 1;
+            max-width: 600px;
+        }
+
+        .search-bar input {
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            padding: 10px 15px;
+            font-size: 14px;
+            width: 100%;
+            transition: all 0.2s;
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(26, 26, 26, 0.1);
+        }
+
+        .search-bar button {
+            background: var(--primary);
+            color: var(--secondary);
+            border: none;
+            border-radius: 6px;
+            padding: 10px 20px;
+            margin-left: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .search-bar button:hover {
+            background: #333333;
+        }
+
+        .nav-link {
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: all 0.2s;
+            color: #4a5568;
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            background: #f7f7f7;
+            color: var(--primary);
+        }
+
+        .nav-link.active {
+            color: var(--primary);
+            background: #f0f0f0;
+        }
+
+        .cart-count {
+            background: var(--primary);
+            color: var(--secondary);
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: -5px;
+            right: -5px;
+        }
+
+        /* Side Navigation */
+        .side-nav {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 300px;
+            height: 100vh;
+            background: white;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            transition: left 0.3s ease;
+            overflow-y: auto;
+        }
+
+        .side-nav.open {
+            left: 0;
+        }
+
+        .side-nav-header {
+            padding: 20px;
+            border-bottom: 1px solid #e5e5e5;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .side-nav-content {
+            padding: 20px;
+        }
+
+        .side-nav-item {
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .side-nav-item:hover {
+            color: var(--primary);
+            background: #f9f9f9;
+            padding-left: 10px;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+            display: none;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+        /* Today's Deals Hero */
+        .deals-hero {
+            background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%);
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .deals-hero h1 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .deals-hero p {
+            font-size: 18px;
+            color: #fed7d7;
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+
+        .deal-badge {
+            background: #f59e0b;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        /* Deal Countdown */
+        .deal-countdown {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            padding: 15px;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .countdown-title {
+            font-size: 14px;
+            margin-bottom: 8px;
+            opacity: 0.9;
+        }
+
+        .countdown-timer {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .countdown-unit {
+            text-align: center;
+        }
+
+        .countdown-value {
+            font-size: 24px;
+            font-weight: 700;
+            background: white;
+            color: #e53e3e;
+            border-radius: 4px;
+            padding: 5px 10px;
+            min-width: 40px;
+        }
+
+        .countdown-label {
+            font-size: 12px;
+            margin-top: 4px;
+            opacity: 0.8;
+        }
+
+        /* Product Cards - Updated for deals */
+        .product-card {
+            background: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            border: 1px solid #f0f0f0;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+            transform: translateY(-5px);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: var(--deal-red);
+            color: var(--secondary);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            z-index: 2;
+        }
+
+        .deal-badge-product {
+            background: var(--deal-red);
+        }
+
+        .product-image {
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: #ffffff;
+            position: relative;
+        }
+
+        .product-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.05);
+        }
+
+        .product-info {
+            padding: 16px;
+            background: #ffffff;
+        }
+
+        .product-title {
+            font-size: 15px;
+            line-height: 1.4;
+            height: 42px;
+            overflow: hidden;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        /* Deal Progress Bar */
+        .deal-progress {
+            margin-bottom: 10px;
+        }
+
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #4a5568;
+            margin-bottom: 4px;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #e5e7eb;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--deal-red);
+            border-radius: 3px;
+        }
+
+        /* Rating System */
+        .product-rating {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .rating-bar {
+            height: 4px;
+            background: #e5e7eb;
+            border-radius: 2px;
+            overflow: hidden;
+            flex: 1;
+            margin-right: 8px;
+        }
+
+        .rating-fill {
+            height: 100%;
+            background: var(--warning);
+            border-radius: 2px;
+        }
+
+        .rating-value {
+            font-size: 13px;
+            font-weight: 600;
+            color: #4b5563;
+        }
+
+        .product-price {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .current-price {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--deal-red);
+        }
+
+        .original-price {
+            font-size: 14px;
+            color: #9ca3af;
+            text-decoration: line-through;
+            margin-left: 8px;
+        }
+
+        .discount {
+            color: var(--success);
+            font-size: 13px;
+            margin-left: 8px;
+            font-weight: 600;
+        }
+
+        .delivery-badge {
+            display: inline-flex;
+            align-items: center;
+            color: var(--success);
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+
+        .add-to-cart {
+            background: var(--deal-red);
+            color: var(--secondary);
+            border: none;
+            width: 100%;
+            padding: 10px 0;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .add-to-cart:hover {
+            background: #c53030;
+        }
+
+        /* Category Filters */
+        .category-filters {
+            background: #f8f9fa;
+            padding: 20px 0;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .filter-tabs {
+            display: flex;
+            overflow-x: auto;
+            gap: 10px;
+            padding-bottom: 10px;
+        }
+
+        .filter-tab {
+            padding: 8px 16px;
+            background: white;
+            border: 1px solid #e5e5e5;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .filter-tab:hover {
+            border-color: var(--deal-red);
+        }
+
+        .filter-tab.active {
+            background: var(--deal-red);
+            color: white;
+            border-color: var(--deal-red);
+        }
+
+        /* Flash Deal Banner */
+        .flash-deal-banner {
+            background: linear-gradient(90deg, #e53e3e 0%, #f59e0b 100%);
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .flash-deal-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .flash-deal-icon {
+            font-size: 24px;
+        }
+
+        .flash-deal-text {
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        .flash-deal-timer {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            padding: 5px 10px;
+            font-weight: 700;
+        }
+
+        /* Deal of the Day */
+        .deal-of-the-day {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 40px;
+            border: 2px solid #fed7d7;
+        }
+
+        .deal-day-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .deal-day-image {
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .deal-day-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .deal-day-info {
+            padding: 40px;
+        }
+
+        .deal-day-badge {
+            background: var(--deal-red);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .deal-day-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            line-height: 1.2;
+        }
+
+        .deal-day-description {
+            font-size: 16px;
+            color: #4a5568;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .deal-day-progress {
+            margin-bottom: 25px;
+        }
+
+        .deal-day-price {
+            margin-bottom: 25px;
+        }
+
+        .deal-day-current-price {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--deal-red);
+        }
+
+        .deal-day-original-price {
+            font-size: 20px;
+            color: #9ca3af;
+            text-decoration: line-through;
+            margin-left: 10px;
+        }
+
+        .deal-day-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .buy-now-btn {
+            background: var(--deal-red);
+            color: var(--secondary);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .buy-now-btn:hover {
+            background: #c53030;
+        }
+
+        .view-details-btn {
+            background: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            padding: 12px 30px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .view-details-btn:hover {
+            background: #f0f0f0;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--primary);
+            color: white;
+            margin-top: 50px;
+        }
+
+        .footer-top {
+            background: #0f0f0f;
+            padding: 40px 0;
+        }
+
+        .footer-bottom {
+            background: #0a0a0a;
+            padding: 30px 0;
+            text-align: center;
+            font-size: 14px;
+            color: #9ca3af;
+        }
+
+        .back-to-top {
+            background: #374151;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .back-to-top:hover {
+            background: #4b5563;
+        }
+
+        /* Mobile Navigation */
+        .mobile-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid #e5e5e5;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            z-index: 90;
+        }
+
+        .mobile-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .mobile-nav-item.active {
+            color: var(--primary);
+        }
+
+        .mobile-nav-icon {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .deals-hero {
+                padding: 40px 0;
+            }
+
+            .deals-hero h1 {
+                font-size: 32px;
+            }
+
+            .deals-hero p {
+                font-size: 16px;
+            }
+
+            .countdown-value {
+                font-size: 18px;
+                min-width: 30px;
+            }
+
+            .deal-day-content {
+                grid-template-columns: 1fr;
+            }
+
+            .deal-day-image {
+                height: 300px;
+            }
+
+            .deal-day-info {
+                padding: 20px;
+            }
+
+            .deal-day-title {
+                font-size: 24px;
+            }
+
+            .deal-day-actions {
+                flex-direction: column;
+            }
+
+            .flash-deal-content {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .desktop-only {
+                display: none;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .mobile-only {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Side Navigation -->
+    <div class="side-nav" id="sideNav">
+        <div class="side-nav-header">
+            <h3 class="font-bold text-lg">All Categories</h3>
+            <button id="closeSideNav">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+        <div class="side-nav-content">
+            <div class="side-nav-item">Electronics</div>
+            <div class="side-nav-item">Home & Kitchen</div>
+            <div class="side-nav-item">Fashion</div>
+            <div class="side-nav-item">Beauty & Personal Care</div>
+            <div class="side-nav-item">Sports & Outdoors</div>
+            <div class="side-nav-item">Books</div>
+            <div class="side-nav-item">Toys & Games</div>
+            <div class="side-nav-item">Automotive</div>
+            <div class="side-nav-item">Health & Household</div>
+            <div class="side-nav-item">Grocery</div>
+        </div>
+    </div>
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo and Menu Button -->
+                <div class="flex items-center">
+                    <button id="menuButton" class="mr-4 p-2 rounded-lg bg-gray-100">
+                        <i class="fas fa-bars text-lg"></i>
+                    </button>
+                    <a href="landing page.html" class="flex items-center">
+                        <img src="ANewlogo.png" alt="Hills Market" class="h-8 sm:h-10 md:h-12 lg:h-16 w-auto object-contain">
+                        <span class="ml-2 text-xl font-bold text-black"></span>
+                    </a>
+                </div>
+
+                <!-- Search Bar - Desktop -->
+                <div class="search-bar mx-4 flex desktop-only">
+                    <input type="text" placeholder="Search for products, brands and more">
+                    <button class="bg-black text-white px-4 py-2 rounded-lg">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+
+                <!-- Right Menu - Desktop -->
+                <div class="flex items-center space-x-4 desktop-only">
+                    <div class="relative">
+                        <a href="#" class="nav-link flex flex-col items-start">
+                            <span class="text-xs text-gray-500">Hello, Sign in</span>
+                            <span class="text-sm font-medium">Account & Lists</span>
+                        </a>
+                    </div>
+                    <div class="relative">
+                        <a href="#" class="nav-link flex flex-col items-start">
+                            <span class="text-xs text-gray-500">Returns</span>
+                            <span class="text-sm font-medium">& Orders</span>
+                        </a>
+                    </div>
+                    <div class="relative">
+                        <a href="#" class="nav-link flex items-center">
+                            <i class="fas fa-shopping-cart text-xl"></i>
+                            <span class="ml-1 font-medium">Cart</span>
+                            <span class="cart-count">0</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="mobile-only">
+                    <button class="p-2 rounded-lg bg-gray-100">
+                        <i class="fas fa-bars text-lg"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Navigation - Desktop -->
+            <div class="mt-4 desktop-only">
+                <div class="flex items-center space-x-6 overflow-x-auto">
+                    <a href="landing page.html" class="nav-link">All Categories</a>
+                    <a href="todays-deals.html" class="nav-link active">Today's Deals</a>
+                    <a href="#" class="nav-link">Best Sellers</a>
+                    <a href="new-releases.html" class="nav-link">New Releases</a>
+                    <a href="customer-service.html" class="nav-link">Customer Service</a>
+                    <a href="electronics.html" class="nav-link">Electronics</a>
+                    <a href="home-kitchenware.html" class="nav-link">Home & Kitchen</a>
+                    <a href="fashion-page.html" class="nav-link">Fashion</a>
+                </div>
+            </div>
+
+            <!-- Search Bar - Mobile -->
+            <div class="mt-4 mobile-only">
+                <div class="search-bar flex">
+                    <input type="text" placeholder="Search for products, brands and more">
+                    <button class="bg-black text-white px-4 py-2 rounded-lg ml-2">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Flash Deal Banner -->
+    <section class="flash-deal-banner">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flash-deal-content">
+                <div class="flash-deal-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <div class="flash-deal-text">
+                    FLASH SALE! Up to 70% off - Limited time offer
+                </div>
+                <div class="flash-deal-timer" id="flashDealTimer">
+                    02:15:33
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Today's Deals Hero -->
+    <section class="deals-hero">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="deal-badge">Limited Time Offers</div>
+            <h1>Today's Best Deals</h1>
+            <p>Don't miss out on these exclusive offers. Shop now before they're gone!</p>
+            
+            <div class="deal-countdown">
+                <div class="countdown-title">Deals end in:</div>
+                <div class="countdown-timer">
+                    <div class="countdown-unit">
+                        <div class="countdown-value" id="deal-hours">12</div>
+                        <div class="countdown-label">HOURS</div>
+                    </div>
+                    <div class="countdown-unit">
+                        <div class="countdown-value" id="deal-minutes">45</div>
+                        <div class="countdown-label">MINS</div>
+                    </div>
+                    <div class="countdown-unit">
+                        <div class="countdown-value" id="deal-seconds">30</div>
+                        <div class="countdown-label">SECS</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Category Filters -->
+    <section class="category-filters">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="filter-tabs">
+                <div class="filter-tab active" data-category="all">All Deals</div>
+                <div class="filter-tab" data-category="electronics">Electronics</div>
+                <div class="filter-tab" data-category="home">Home & Kitchen</div>
+                <div class="filter-tab" data-category="fashion">Fashion</div>
+                <div class="filter-tab" data-category="beauty">Beauty</div>
+                <div class="filter-tab" data-category="sports">Sports</div>
+                <div class="filter-tab" data-category="books">Books</div>
+                <div class="filter-tab" data-category="toys">Toys & Games</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 py-8">
+        <!-- Deal of the Day -->
+        <section class="deal-of-the-day">
+            <div class="deal-day-content">
+                <div class="deal-day-image">
+                    <img src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" alt="4K Smart TV">
+                </div>
+                <div class="deal-day-info">
+                    <div class="deal-day-badge">Deal of the Day</div>
+                    <h2 class="deal-day-title">UltraView 55" 4K Smart TV with HDR</h2>
+                    <p class="deal-day-description">Experience stunning picture quality with this 55-inch 4K Ultra HD Smart TV. Features HDR for enhanced contrast and colors, built-in streaming apps, and voice control.</p>
+                    
+                    <div class="deal-day-progress">
+                        <div class="progress-text">
+                            <span>Already claimed: 78%</span>
+                            <span>Limited stock</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 78%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="deal-day-price">
+                        <span class="deal-day-current-price">R6,999.99</span>
+                        <span class="deal-day-original-price">R9,999.99</span>
+                    </div>
+                    <div class="deal-day-actions">
+                        <button class="buy-now-btn">Buy Now</button>
+                        <button class="view-details-btn">View Details</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Today's Deals Grid -->
+        <section>
+            <h2 class="text-2xl font-bold mb-6">Today's Hot Deals</h2>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6" id="dealsGrid">
+                <!-- Deal 1 -->
+                <div class="product-card" data-category="electronics">
+                    <div class="product-badge deal-badge-product">60% OFF</div>
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Wireless Headphones">
+                    </div>
+                    <div class="product-info">
+                        <div class="deal-progress">
+                            <div class="progress-text">
+                                <span>82% claimed</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 82%"></div>
+                            </div>
+                        </div>
+                        <div class="product-title">SoundMax Pro Wireless Noise Cancelling Headphones</div>
+                        <div class="product-rating">
+                            <div class="rating-bar">
+                                <div class="rating-fill" style="width: 90%"></div>
+                            </div>
+                            <span class="rating-value">4.5</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">R899.99</span>
+                            <span class="original-price">R2,249.99</span>
+                            <span class="discount">(60% off)</span>
+                        </div>
+                        <div class="delivery-badge">
+                            <i class="fas fa-shipping-fast mr-1"></i>
+                            FREE Delivery
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Deal 2 -->
+                <div class="product-card" data-category="home">
+                    <div class="product-badge deal-badge-product">45% OFF</div>
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Air Fryer">
+                    </div>
+                    <div class="product-info">
+                        <div class="deal-progress">
+                            <div class="progress-text">
+                                <span>65% claimed</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 65%"></div>
+                            </div>
+                        </div>
+                        <div class="product-title">RapidCook Digital Air Fryer - 5.5L Capacity</div>
+                        <div class="product-rating">
+                            <div class="rating-bar">
+                                <div class="rating-fill" style="width: 80%"></div>
+                            </div>
+                            <span class="rating-value">4.0</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">R799.99</span>
+                            <span class="original-price">R1,454.99</span>
+                            <span class="discount">(45% off)</span>
+                        </div>
+                        <div class="delivery-badge">
+                            <i class="fas fa-shipping-fast mr-1"></i>
+                            FREE Delivery
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Deal 3 -->
+                <div class="product-card" data-category="fashion">
+                    <div class="product-badge deal-badge-product">55% OFF</div>
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Smart Watch">
+                    </div>
+                    <div class="product-info">
+                        <div class="deal-progress">
+                            <div class="progress-text">
+                                <span>91% claimed</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 91%"></div>
+                            </div>
+                        </div>
+                        <div class="product-title">FitTrack Pro Smartwatch with Heart Rate Monitor</div>
+                        <div class="product-rating">
+                            <div class="rating-bar">
+                                <div class="rating-fill" style="width: 100%"></div>
+                            </div>
+                            <span class="rating-value">5.0</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">R1,299.99</span>
+                            <span class="original-price">R2,888.99</span>
+                            <span class="discount">(55% off)</span>
+                        </div>
+                        <div class="delivery-badge">
+                            <i class="fas fa-shipping-fast mr-1"></i>
+                            FREE Delivery
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Deal 4 -->
+                <div class="product-card" data-category="beauty">
+                    <div class="product-badge deal-badge-product">40% OFF</div>
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Beauty Device">
+                    </div>
+                    <div class="product-info">
+                        <div class="deal-progress">
+                            <div class="progress-text">
+                                <span>47% claimed</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 47%"></div>
+                            </div>
+                        </div>
+                        <div class="product-title">GlowTech Advanced Facial Cleansing Brush</div>
+                        <div class="product-rating">
+                            <div class="rating-bar">
+                                <div class="rating-fill" style="width: 70%"></div>
+                            </div>
+                            <span class="rating-value">3.5</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">R599.99</span>
+                            <span class="original-price">R999.99</span>
+                            <span class="discount">(40% off)</span>
+                        </div>
+                        <div class="delivery-badge">
+                            <i class="fas fa-shipping-fast mr-1"></i>
+                            FREE Delivery
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Deal 5 -->
+                <div class="product-card" data-category="electronics">
+                    <div class="product-badge deal-badge-product">35% OFF</div>
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Smartphone">
+                    </div>
+                    <div class="product-info">
+                        <div class="deal-progress">
+                            <div class="progress-text">
+                                <span>72% claimed</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 72%"></div>
+                            </div>
+                        </div>
+                        <div class="product-title">Nexus X5 5G Smartphone - 128GB Storage</div>
+                        <div class="product-rating">
+                            <div class="rating-bar">
+                                <div class="rating-fill" style="width: 90%"></div>
+                            </div>
+                            <span class="rating-value">4.5</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">R6,499.99</span>
+                            <span class="original-price">R9,999.99</span>
+                            <span class="discount">(35% off)</span>
+                        </div>
+                        <div class="delivery-badge">
+                            <i class="fas fa-shipping-fast mr-1"></i>
+                            FREE Delivery
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Deal 6 -->
+                <div class="product-card" data-category="home">
+                    <div class="product-badge deal-badge-product">50% OFF</div>
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1581093458791-8a6b5e219b09?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Coffee Maker">
+                    </div>
+                    <div class="product-info">
+                        <div class="deal-progress">
+                            <div class="progress-text">
+                                <span>58% claimed</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 58%"></div>
+                            </div>
+                        </div>
+                        <div class="product-title">BrewMaster Pro Smart Coffee Maker with Grinder</div>
+                        <div class="product-rating">
+                            <div class="rating-bar">
+                                <div class="rating-fill" style="width: 80%"></div>
+                            </div>
+                            <span class="rating-value">4.0</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">R1,199.99</span>
+                            <span class="original-price">R2,399.99</span>
+                            <span class="discount">(50% off)</span>
+                        </div>
+                        <div class="delivery-badge">
+                            <i class="fas fa-shipping-fast mr-1"></i>
+                            FREE Delivery
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Deal 7 -->
+                <div class="product-card" data-category="sports">
+                    <div class="product-badge deal-badge-product">30% OFF</div>
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Fitness Equipment">
+                    </div>
+                    <div class="product-info">
+                        <div class="deal-progress">
+                            <div class="progress-text">
+                                <span>34% claimed</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 34%"></div>
+                            </div>
+                        </div>
+                        <div class="product-title">FitCore Pro Compact Home Gym System</div>
+                        <div class="product-rating">
+                            <div class="rating-bar">
+                                <div class="rating-fill" style="width: 100%"></div>
+                            </div>
+                            <span class="rating-value">5.0</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">R2,449.99</span>
+                            <span class="original-price">R3,499.99</span>
+                            <span class="discount">(30% off)</span>
+                        </div>
+                        <div class="delivery-badge">
+                            <i class="fas fa-shipping-fast mr-1"></i>
+                            FREE Delivery
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Deal 8 -->
+                <div class="product-card" data-category="books">
+                    <div class="product-badge deal-badge-product">60% OFF</div>
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Book">
+                    </div>
+                    <div class="product-info">
+                        <div class="deal-progress">
+                            <div class="progress-text">
+                                <span>89% claimed</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 89%"></div>
+                            </div>
+                        </div>
+                        <div class="product-title">Bestseller Collection - 5 Book Set</div>
+                        <div class="product-rating">
+                            <div class="rating-bar">
+                                <div class="rating-fill" style="width: 90%"></div>
+                            </div>
+                            <span class="rating-value">4.5</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">R199.99</span>
+                            <span class="original-price">R499.99</span>
+                            <span class="discount">(60% off)</span>
+                        </div>
+                        <div class="delivery-badge">
+                            <i class="fas fa-shipping-fast mr-1"></i>
+                            FREE Delivery
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Limited Stock Section -->
+        <section class="mt-12">
+            <h2 class="text-2xl font-bold mb-6">Limited Stock - Selling Fast!</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Limited Stock 1 -->
+                <div class="bg-red-50 border border-red-200 rounded-lg p-6 flex items-center">
+                    <div class="w-24 h-24 bg-red-100 rounded-lg flex items-center justify-center mr-4">
+                        <i class="fas fa-fire text-red-500 text-2xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-lg mb-2">Only 3 left in stock!</h3>
+                        <p class="text-red-700 mb-2">Premium Wireless Speaker - 75% claimed</p>
+                        <div class="text-sm text-red-600">Hurry before it's gone</div>
+                    </div>
+                </div>
+
+                <!-- Limited Stock 2 -->
+                <div class="bg-red-50 border border-red-200 rounded-lg p-6 flex items-center">
+                    <div class="w-24 h-24 bg-red-100 rounded-lg flex items-center justify-center mr-4">
+                        <i class="fas fa-bolt text-red-500 text-2xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-lg mb-2">Last chance to save!</h3>
+                        <p class="text-red-700 mb-2">Gaming Laptop - 92% claimed</p>
+                        <div class="text-sm text-red-600">Almost sold out</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Back to Top -->
+    <div class="back-to-top" id="backToTop">
+        Back to top
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-top">
+            <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Get to Know Us</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">About Us</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Careers</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Press Releases</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Hills Market Science</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Connect with Us</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Facebook</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Twitter</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Instagram</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Make Money with Us</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Sell on Hills Market</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Sell under Hills Market Accelerator</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Become an Affiliate</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Fulfillment by Hills Market</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Let Us Help You</h3>
+                    <ul class="space-y-2">
+                        <li><a href="customer-service.html" class="text-gray-400 hover:text-white">Customer Service</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Your Account</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Returns Centre</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">100% Purchase Protection</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Help</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="flex items-center mb-4 md:mb-0">
+                        <img src="hills-logo.png" alt="Hills Market" class="h-6 mr-2">
+                        <span class="text-white font-bold">Hills Market</span>
+                    </div>
+                    <div class="flex space-x-6">
+                        <a href="#" class="text-gray-400 hover:text-white text-xs">Conditions of Use</a>
+                        <a href="#" class="text-gray-400 hover:text-white text-xs">Privacy Notice</a>
+                        <a href="#" class="text-gray-400 hover:text-white text-xs">Interest-Based Ads</a>
+                    </div>
+                </div>
+                <p class="mt-4">© 1996-2025, HillsMarket.com, Inc. or its affiliates</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Mobile Navigation -->
+    <nav class="mobile-nav mobile-only">
+        <a href="landing page.html" class="mobile-nav-item">
+            <i class="fas fa-home mobile-nav-icon"></i>
+            <span>Home</span>
+        </a>
+        <a href="#" class="mobile-nav-item">
+            <i class="fas fa-search mobile-nav-icon"></i>
+            <span>Search</span>
+        </a>
+        <a href="#" class="mobile-nav-item">
+            <i class="fas fa-shopping-cart mobile-nav-icon"></i>
+            <span>Cart</span>
+        </a>
+        <a href="#" class="mobile-nav-item">
+            <i class="fas fa-user mobile-nav-icon"></i>
+            <span>Account</span>
+        </a>
+        <a href="todays-deals.html" class="mobile-nav-item active">
+            <i class="fas fa-tag mobile-nav-icon"></i>
+            <span>Deals</span>
+        </a>
+    </nav>
+
+    <script>
+        // Side Navigation
+        const menuButton = document.getElementById('menuButton');
+        const closeSideNav = document.getElementById('closeSideNav');
+        const sideNav = document.getElementById('sideNav');
+        const overlay = document.getElementById('overlay');
+
+        menuButton.addEventListener('click', () => {
+            sideNav.classList.add('open');
+            overlay.classList.add('active');
+        });
+
+        closeSideNav.addEventListener('click', () => {
+            sideNav.classList.remove('open');
+            overlay.classList.remove('active');
+        });
+
+        overlay.addEventListener('click', () => {
+            sideNav.classList.remove('open');
+            overlay.classList.remove('active');
+        });
+
+        // Back to Top
+        document.getElementById('backToTop').addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Deal Timer
+        function updateDealTimer() {
+            const now = new Date();
+            const endOfDay = new Date();
+            endOfDay.setHours(23, 59, 59, 999);
+            
+            const diff = endOfDay - now;
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            document.getElementById('deal-hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('deal-minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('deal-seconds').textContent = seconds.toString().padStart(2, '0');
+        }
+
+        // Flash Deal Timer
+        function updateFlashDealTimer() {
+            const now = new Date();
+            const endTime = new Date();
+            endTime.setHours(now.getHours() + 2, 15, 33, 0);
+            
+            const diff = endTime - now;
+            if (diff <= 0) {
+                document.getElementById('flashDealTimer').textContent = "EXPIRED";
+                return;
+            }
+            
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            document.getElementById('flashDealTimer').textContent = 
+                `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        setInterval(updateDealTimer, 1000);
+        setInterval(updateFlashDealTimer, 1000);
+        updateDealTimer();
+        updateFlashDealTimer();
+
+        // Category Filtering
+        const filterTabs = document.querySelectorAll('.filter-tab');
+        const dealCards = document.querySelectorAll('.product-card');
+
+        filterTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs
+                filterTabs.forEach(t => t.classList.remove('active'));
+                // Add active class to clicked tab
+                tab.classList.add('active');
+                
+                const category = tab.getAttribute('data-category');
+                
+                // Show/hide deals based on category
+                dealCards.forEach(card => {
+                    if (category === 'all' || card.getAttribute('data-category') === category) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Add to Cart functionality
+        const addToCartButtons = document.querySelectorAll('.add-to-cart');
+        const cartCount = document.querySelector('.cart-count');
+        let cartItems = 0;
+
+        addToCartButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevent triggering product detail page
+                cartItems++;
+                cartCount.textContent = cartItems;
+                
+                // Animation effect
+                button.textContent = 'Added!';
+                button.style.background = '#10b981';
+                
+                setTimeout(() => {
+                    button.textContent = 'Add to Cart';
+                    button.style.background = '';
+                }, 1500);
+            });
+        });
+
+        // Mobile navigation active state
+        const mobileNavItems = document.querySelectorAll('.mobile-nav-item');
+        mobileNavItems.forEach(item => {
+            item.addEventListener('click', function() {
+                mobileNavItems.forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fashion - Hills Market</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a1a1a;
+            --secondary: #ffffff;
+            --accent: #4a5568;
+            --light: #f8f9fa;
+            --dark: #0f0f0f;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --fashion-pink: #ec4899;
+            --fashion-purple: #8b5cf6;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #ffffff;
+            color: #1a1a1a;
+        }
+
+        /* Header Styles */
+        .header {
+            background: var(--secondary);
+            border-bottom: 1px solid #e5e5e5;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .search-bar {
+            flex: 1;
+            max-width: 600px;
+        }
+
+        .search-bar input {
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            padding: 10px 15px;
+            font-size: 14px;
+            width: 100%;
+            transition: all 0.2s;
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(26, 26, 26, 0.1);
+        }
+
+        .search-bar button {
+            background: var(--primary);
+            color: var(--secondary);
+            border: none;
+            border-radius: 6px;
+            padding: 10px 20px;
+            margin-left: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .search-bar button:hover {
+            background: #333333;
+        }
+
+        .nav-link {
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: all 0.2s;
+            color: #4a5568;
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            background: #f7f7f7;
+            color: var(--primary);
+        }
+
+        .nav-link.active {
+            color: var(--primary);
+            background: #f0f0f0;
+        }
+
+        .fashion-nav-link {
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: all 0.2s;
+            color: #4a5568;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .fashion-nav-link.active {
+            color: var(--fashion-pink);
+            font-weight: 600;
+        }
+
+        .fashion-nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 12px;
+            right: 12px;
+            height: 2px;
+            background: var(--fashion-pink);
+        }
+
+        .cart-count {
+            background: var(--primary);
+            color: var(--secondary);
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: -5px;
+            right: -5px;
+        }
+
+        /* Fashion Hero Section */
+        .fashion-hero {
+            background: linear-gradient(135deg, #fdf2f8 0%, #f3e8ff 100%);
+            padding: 60px 0;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .fashion-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" opacity="0.05"><path fill="%23ec4899" d="M500,150c138.07,0,250,111.93,250,250s-111.93,250-250,250s-250-111.93-250-250S361.93,150,500,150z"/></svg>') repeat;
+        }
+
+        .fashion-hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .fashion-hero-title {
+            font-size: 48px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--fashion-pink), var(--fashion-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 16px;
+        }
+
+        .fashion-hero-subtitle {
+            font-size: 20px;
+            color: #6b7280;
+            margin-bottom: 30px;
+            max-width: 600px;
+        }
+
+        .fashion-tag {
+            display: inline-block;
+            background: var(--fashion-pink);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+
+        /* Fashion Categories */
+        .fashion-categories {
+            margin-bottom: 50px;
+        }
+
+        .fashion-category-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            position: relative;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .fashion-category-card:hover {
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            transform: translateY(-5px);
+        }
+
+        .fashion-category-image {
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .fashion-category-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .fashion-category-card:hover .fashion-category-image img {
+            transform: scale(1.05);
+        }
+
+        .fashion-category-content {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .fashion-category-name {
+            font-weight: 700;
+            font-size: 18px;
+            margin-bottom: 8px;
+            color: var(--primary);
+        }
+
+        .fashion-category-description {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+
+        .fashion-category-link {
+            color: var(--fashion-pink);
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+        }
+
+        .fashion-category-link i {
+            margin-left: 5px;
+            transition: transform 0.2s;
+        }
+
+        .fashion-category-link:hover i {
+            transform: translateX(3px);
+        }
+
+        /* Fashion Products */
+        .fashion-products-section {
+            margin-bottom: 60px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--fashion-pink);
+        }
+
+        .view-all-link {
+            color: var(--fashion-pink);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+
+        .view-all-link i {
+            margin-left: 5px;
+            transition: transform 0.2s;
+        }
+
+        .view-all-link:hover i {
+            transform: translateX(3px);
+        }
+
+        /* Product Cards */
+        .product-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            border: 1px solid #f0f0f0;
+            cursor: pointer;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card:hover {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+            transform: translateY(-5px);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: var(--fashion-pink);
+            color: var(--secondary);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            z-index: 2;
+        }
+
+        .product-image {
+            height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: #ffffff;
+            position: relative;
+        }
+
+        .product-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.05);
+        }
+
+        .product-info {
+            padding: 16px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-title {
+            font-size: 15px;
+            line-height: 1.4;
+            height: 42px;
+            overflow: hidden;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .product-rating {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .rating-stars {
+            color: var(--warning);
+            margin-right: 8px;
+        }
+
+        .rating-value {
+            font-size: 13px;
+            font-weight: 600;
+            color: #4b5563;
+        }
+
+        .product-price {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .current-price {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .original-price {
+            font-size: 14px;
+            color: #9ca3af;
+            text-decoration: line-through;
+            margin-left: 8px;
+        }
+
+        .discount {
+            color: var(--success);
+            font-size: 13px;
+            margin-left: 8px;
+            font-weight: 600;
+        }
+
+        .delivery-badge {
+            display: inline-flex;
+            align-items: center;
+            color: var(--success);
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+
+        .add-to-cart {
+            background: var(--primary);
+            color: var(--secondary);
+            border: none;
+            width: 100%;
+            padding: 10px 0;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: auto;
+        }
+
+        .add-to-cart:hover {
+            background: #333333;
+        }
+
+        /* Fashion Lookbook */
+        .fashion-lookbook {
+            margin-bottom: 60px;
+        }
+
+        .lookbook-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .lookbook-item {
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            height: 400px;
+        }
+
+        .lookbook-item.large {
+            grid-column: span 2;
+        }
+
+        .lookbook-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .lookbook-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 30px;
+            color: white;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .lookbook-item:hover .lookbook-overlay {
+            opacity: 1;
+        }
+
+        .lookbook-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .lookbook-description {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .lookbook-button {
+            background: white;
+            color: var(--primary);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            align-self: flex-start;
+            transition: all 0.2s;
+        }
+
+        .lookbook-button:hover {
+            background: var(--fashion-pink);
+            color: white;
+        }
+
+        /* Fashion Brands */
+        .fashion-brands {
+            margin-bottom: 60px;
+        }
+
+        .brands-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 20px;
+        }
+
+        .brand-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .brand-card:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: translateY(-3px);
+        }
+
+        .brand-logo {
+            max-width: 100%;
+            max-height: 60px;
+            filter: grayscale(100%);
+            transition: filter 0.3s ease;
+        }
+
+        .brand-card:hover .brand-logo {
+            filter: grayscale(0%);
+        }
+
+        /* Fashion Newsletter */
+        .fashion-newsletter {
+            background: linear-gradient(135deg, #fdf2f8 0%, #f3e8ff 100%);
+            padding: 60px 0;
+            border-radius: 12px;
+            margin-bottom: 60px;
+            text-align: center;
+        }
+
+        .newsletter-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--primary);
+        }
+
+        .newsletter-description {
+            font-size: 18px;
+            color: #6b7280;
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .newsletter-form {
+            display: flex;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            border: 1px solid #d1d5db;
+            border-radius: 6px 0 0 6px;
+            padding: 12px 15px;
+            font-size: 16px;
+        }
+
+        .newsletter-input:focus {
+            outline: none;
+            border-color: var(--fashion-pink);
+        }
+
+        .newsletter-button {
+            background: var(--fashion-pink);
+            color: white;
+            border: none;
+            border-radius: 0 6px 6px 0;
+            padding: 12px 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .newsletter-button:hover {
+            background: var(--fashion-purple);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--primary);
+            color: white;
+        }
+
+        .footer-top {
+            background: #0f0f0f;
+            padding: 40px 0;
+        }
+
+        .footer-bottom {
+            background: #0a0a0a;
+            padding: 30px 0;
+            text-align: center;
+            font-size: 14px;
+            color: #9ca3af;
+        }
+
+        .back-to-top {
+            background: #374151;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .back-to-top:hover {
+            background: #4b5563;
+        }
+
+        /* Mobile Navigation */
+        .mobile-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid #e5e5e5;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            z-index: 90;
+        }
+
+        .mobile-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .mobile-nav-item.active {
+            color: var(--primary);
+        }
+
+        .mobile-nav-icon {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .fashion-hero-title {
+                font-size: 36px;
+            }
+
+            .fashion-hero-subtitle {
+                font-size: 18px;
+            }
+
+            .lookbook-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .lookbook-item.large {
+                grid-column: span 1;
+            }
+
+            .brands-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .newsletter-form {
+                flex-direction: column;
+            }
+
+            .newsletter-input {
+                border-radius: 6px;
+                margin-bottom: 10px;
+            }
+
+            .newsletter-button {
+                border-radius: 6px;
+            }
+
+            .desktop-only {
+                display: none;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .mobile-only {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo and Menu Button -->
+                <div class="flex items-center">
+                    <button id="menuButton" class="mr-4 p-2 rounded-lg bg-gray-100">
+                        <i class="fas fa-bars text-lg"></i>
+                    </button>
+                    <a href="landing page.html" class="flex items-center">
+                        <img src="ANewlogo.png" alt="Hills Market" class="h-8 sm:h-10 md:h-12 lg:h-16 w-auto object-contain">
+                        <span class="ml-2 text-xl font-bold text-black"></span>
+                    </a>
+                </div>
+
+                <!-- Search Bar - Desktop -->
+                <div class="search-bar mx-4 flex desktop-only">
+                    <input type="text" placeholder="Search for fashion items, brands and more">
+                    <button class="bg-black text-white px-4 py-2 rounded-lg">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+
+                <!-- Right Menu - Desktop -->
+                <div class="flex items-center space-x-4 desktop-only">
+                    <div class="relative">
+                        <a href="#" class="nav-link flex flex-col items-start">
+                            <span class="text-xs text-gray-500">Hello, Sign in</span>
+                            <span class="text-sm font-medium">Account & Lists</span>
+                        </a>
+                    </div>
+                    <div class="relative">
+                        <a href="#" class="nav-link flex flex-col items-start">
+                            <span class="text-xs text-gray-500">Returns</span>
+                            <span class="text-sm font-medium">& Orders</span>
+                        </a>
+                    </div>
+                    <div class="relative">
+                        <a href="#" class="nav-link flex items-center">
+                            <i class="fas fa-shopping-cart text-xl"></i>
+                            <span class="ml-1 font-medium">Cart</span>
+                            <span class="cart-count">0</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="mobile-only">
+                    <button class="p-2 rounded-lg bg-gray-100">
+                        <i class="fas fa-bars text-lg"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Fashion Navigation - Desktop -->
+            <div class="mt-4 desktop-only">
+                <div class="flex items-center space-x-6 overflow-x-auto">
+                    <a href="landing page.html" class="nav-link">Home</a>
+                    <a href="fashion.html" class="fashion-nav-link active">Fashion</a>
+                    <a href="#" class="fashion-nav-link">Women</a>
+                    <a href="#" class="fashion-nav-link">Men</a>
+                    <a href="#" class="fashion-nav-link">Kids</a>
+                    <a href="#" class="fashion-nav-link">Accessories</a>
+                    <a href="#" class="fashion-nav-link">Footwear</a>
+                    <a href="#" class="fashion-nav-link">Jewelry</a>
+                    <a href="#" class="fashion-nav-link">Bags</a>
+                    <a href="#" class="fashion-nav-link">Beauty</a>
+                </div>
+            </div>
+
+            <!-- Search Bar - Mobile -->
+            <div class="mt-4 mobile-only">
+                <div class="search-bar flex">
+                    <input type="text" placeholder="Search for fashion items, brands and more">
+                    <button class="bg-black text-white px-4 py-2 rounded-lg ml-2">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Fashion Hero Section -->
+    <section class="fashion-hero">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="fashion-hero-content">
+                <h1 class="fashion-hero-title">Discover Your Style</h1>
+                <p class="fashion-hero-subtitle">Explore the latest trends in fashion with our curated collection of clothing, accessories, and footwear for every occasion.</p>
+                <div>
+                    <span class="fashion-tag">New Arrivals</span>
+                    <span class="fashion-tag">Summer Collection</span>
+                    <span class="fashion-tag">Up to 50% Off</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4">
+        <!-- Fashion Categories -->
+        <section class="fashion-categories">
+            <h2 class="section-title">Shop by Category</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Category 1 -->
+                <div class="fashion-category-card">
+                    <div class="fashion-category-image">
+                        <img src="https://images.unsplash.com/photo-1496747611176-843222e1e57c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Women's Fashion">
+                    </div>
+                    <div class="fashion-category-content">
+                        <h3 class="fashion-category-name">Women's Fashion</h3>
+                        <p class="fashion-category-description">Discover the latest trends in women's clothing, from casual wear to elegant evening dresses.</p>
+                        <a href="#" class="fashion-category-link">
+                            Shop Now <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Category 2 -->
+                <div class="fashion-category-card">
+                    <div class="fashion-category-image">
+                        <img src="https://images.unsplash.com/photo-1617137968427-85924c800a22?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Men's Fashion">
+                    </div>
+                    <div class="fashion-category-content">
+                        <h3 class="fashion-category-name">Men's Fashion</h3>
+                        <p class="fashion-category-description">Elevate your style with our collection of men's clothing, from formal suits to casual wear.</p>
+                        <a href="#" class="fashion-category-link">
+                            Shop Now <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Category 3 -->
+                <div class="fashion-category-card">
+                    <div class="fashion-category-image">
+                        <img src="https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Accessories">
+                    </div>
+                    <div class="fashion-category-content">
+                        <h3 class="fashion-category-name">Accessories</h3>
+                        <p class="fashion-category-description">Complete your look with our selection of bags, jewelry, watches, and other accessories.</p>
+                        <a href="#" class="fashion-category-link">
+                            Shop Now <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Category 4 -->
+                <div class="fashion-category-card">
+                    <div class="fashion-category-image">
+                        <img src="https://images.unsplash.com/photo-1460353581641-37baddab0fa2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Footwear">
+                    </div>
+                    <div class="fashion-category-content">
+                        <h3 class="fashion-category-name">Footwear</h3>
+                        <p class="fashion-category-description">Step out in style with our collection of shoes for every occasion and season.</p>
+                        <a href="#" class="fashion-category-link">
+                            Shop Now <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- New Arrivals -->
+        <section class="fashion-products-section">
+            <div class="section-header">
+                <h2 class="section-title">New Arrivals</h2>
+                <a href="#" class="view-all-link">
+                    View All <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <!-- Product 1 -->
+                <div class="product-card">
+                    <div class="product-badge">New</div>
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1581044777550-4cfa60707c03?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Floral Summer Dress">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">Floral Summer Dress - Flowy Midi Length</div>
+                        <div class="product-rating">
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="rating-value">4.5</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">R899.99</span>
+                        </div>
+                        <div class="delivery-badge">
+                            <i class="fas fa-shipping-fast mr-1"></i>
+                            FREE Delivery
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="product-card">
+                    <div class="product-badge">-20%</div>
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Designer Handbag">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">Designer Leather Handbag - Crossbody Style</div>
+                        <div class="product-rating">
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <span class="rating-value">5.0</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">R1,299.99</span>
+                            <span class="original-price">R1,624.99</span>
+                            <span class="discount">(20% off)</span>
+                        </div>
+                        <div class="delivery-badge">
+                            <i class="fas fa-shipping-fast mr-1"></i>
+                            FREE Delivery
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1520975916090-3105956dac38?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Men's Casual Shirt">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">Men's Casual Shirt - Linen Blend</div>
+                        <div class="product-rating">
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                            <span class="rating-value">4.0</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">R599.99</span>
+                        </div>
+                        <div class="delivery-badge">
+                            <i class="fas fa-shipping-fast mr-1"></i>
+                            FREE Delivery
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="product-card">
+                    <div class="product-badge">Limited</div>
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Running Shoes">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">Premium Running Shoes - Lightweight</div>
+                        <div class="product-rating">
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="rating-value">4.5</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">R1,499.99</span>
+                        </div>
+                        <div class="delivery-badge">
+                            <i class="fas fa-shipping-fast mr-1"></i>
+                            FREE Delivery
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Fashion Lookbook -->
+        <section class="fashion-lookbook">
+            <h2 class="section-title">Style Inspiration</h2>
+            <div class="lookbook-grid">
+                <!-- Lookbook Item 1 -->
+                <div class="lookbook-item large">
+                    <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" alt="Summer Collection" class="lookbook-image">
+                    <div class="lookbook-overlay">
+                        <h3 class="lookbook-title">Summer Collection 2023</h3>
+                        <p class="lookbook-description">Bright colors and lightweight fabrics for the warm season</p>
+                        <button class="lookbook-button">Explore Collection</button>
+                    </div>
+                </div>
+
+                <!-- Lookbook Item 2 -->
+                <div class="lookbook-item">
+                    <img src="https://images.unsplash.com/photo-1445205170230-053b83016050?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Evening Wear" class="lookbook-image">
+                    <div class="lookbook-overlay">
+                        <h3 class="lookbook-title">Evening Elegance</h3>
+                        <p class="lookbook-description">Make a statement at your next event</p>
+                        <button class="lookbook-button">Shop Now</button>
+                    </div>
+                </div>
+
+                <!-- Lookbook Item 3 -->
+                <div class="lookbook-item">
+                    <img src="https://images.unsplash.com/photo-1558769132-cb25e5b8b7b7?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Casual Style" class="lookbook-image">
+                    <div class="lookbook-overlay">
+                        <h3 class="lookbook-title">Casual Comfort</h3>
+                        <p class="lookbook-description">Everyday style with maximum comfort</p>
+                        <button class="lookbook-button">Discover</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Trending Now -->
+        <section class="fashion-products-section">
+            <div class="section-header">
+                <h2 class="section-title">Trending Now</h2>
+                <a href="#" class="view-all-link">
+                    View All <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <!-- Product 1 -->
+                <div class="product-card">
+                    <div class="product-badge">Bestseller</div>
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Denim Jacket">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">Women's Denim Jacket - Classic Fit</div>
+                        <div class="product-rating">
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="rating-value">4.5</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">R799.99</span>
+                        </div>
+                        <div class="delivery-badge">
+                            <i class="fas fa-shipping-fast mr-1"></i>
+                            FREE Delivery
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1595341888016-a392ef81b7de?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Sunglasses">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">Designer Sunglasses - UV Protection</div>
+                        <div class="product-rating">
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                            <span class="rating-value">4.0</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">R449.99</span>
+                        </div>
+                        <div class="delivery-badge">
+                            <i class="fas fa-shipping-fast mr-1"></i>
+                            FREE Delivery
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="product-card">
+                    <div class="product-badge">-15%</div>
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Men's Watch">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">Men's Luxury Watch - Leather Strap</div>
+                        <div class="product-rating">
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <span class="rating-value">5.0</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">R2,199.99</span>
+                            <span class="original-price">R2,588.22</span>
+                            <span class="discount">(15% off)</span>
+                        </div>
+                        <div class="delivery-badge">
+                            <i class="fas fa-shipping-fast mr-1"></i>
+                            FREE Delivery
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1582142306909-195724d1a6ee?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Summer Hat">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">Women's Summer Hat - Wide Brim</div>
+                        <div class="product-rating">
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                            <span class="rating-value">4.0</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">R349.99</span>
+                        </div>
+                        <div class="delivery-badge">
+                            <i class="fas fa-shipping-fast mr-1"></i>
+                            FREE Delivery
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Fashion Brands -->
+        <section class="fashion-brands">
+            <h2 class="section-title">Featured Brands</h2>
+            <div class="brands-grid">
+                <!-- Brand 1 -->
+                <div class="brand-card">
+                    <img src="https://via.placeholder.com/150x60/FFFFFF?text=StyleHouse" alt="StyleHouse" class="brand-logo">
+                </div>
+
+                <!-- Brand 2 -->
+                <div class="brand-card">
+                    <img src="https://via.placeholder.com/150x60/FFFFFF?text=UrbanChic" alt="UrbanChic" class="brand-logo">
+                </div>
+
+                <!-- Brand 3 -->
+                <div class="brand-card">
+                    <img src="https://via.placeholder.com/150x60/FFFFFF?text=EliteWear" alt="EliteWear" class="brand-logo">
+                </div>
+
+                <!-- Brand 4 -->
+                <div class="brand-card">
+                    <img src="https://via.placeholder.com/150x60/FFFFFF?text=ModaStyle" alt="ModaStyle" class="brand-logo">
+                </div>
+
+                <!-- Brand 5 -->
+                <div class="brand-card">
+                    <img src="https://via.placeholder.com/150x60/FFFFFF?text=TrendSetters" alt="TrendSetters" class="brand-logo">
+                </div>
+
+                <!-- Brand 6 -->
+                <div class="brand-card">
+                    <img src="https://via.placeholder.com/150x60/FFFFFF?text=FashionForward" alt="FashionForward" class="brand-logo">
+                </div>
+            </div>
+        </section>
+
+        <!-- Fashion Newsletter -->
+        <section class="fashion-newsletter">
+            <h2 class="newsletter-title">Stay in Style</h2>
+            <p class="newsletter-description">Subscribe to our newsletter and be the first to know about new arrivals, exclusive offers, and style tips.</p>
+            <form class="newsletter-form">
+                <input type="email" placeholder="Your email address" class="newsletter-input" required>
+                <button type="submit" class="newsletter-button">Subscribe</button>
+            </form>
+        </section>
+    </main>
+
+    <!-- Back to Top -->
+    <div class="back-to-top" id="backToTop">
+        Back to top
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-top">
+            <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Get to Know Us</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">About Us</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Careers</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Press Releases</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Hills Market Science</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Connect with Us</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Facebook</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Twitter</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Instagram</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Make Money with Us</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Sell on Hills Market</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Sell under Hills Market Accelerator</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Become an Affiliate</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Fulfillment by Hills Market</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Let Us Help You</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">COVID-19 and Hills Market</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Your Account</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Returns Centre</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">100% Purchase Protection</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Help</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="flex items-center mb-4 md:mb-0">
+                        <img src="hills-logo.png" alt="Hills Market" class="h-6 mr-2">
+                        <span class="text-white font-bold">Hills Market</span>
+                    </div>
+                    <div class="flex space-x-6">
+                        <a href="#" class="text-gray-400 hover:text-white text-xs">Conditions of Use</a>
+                        <a href="#" class="text-gray-400 hover:text-white text-xs">Privacy Notice</a>
+                        <a href="#" class="text-gray-400 hover:text-white text-xs">Interest-Based Ads</a>
+                    </div>
+                </div>
+                <p class="mt-4">© 1996-2025, HillsMarket.com, Inc. or its affiliates</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Mobile Navigation -->
+    <nav class="mobile-nav mobile-only">
+        <a href="landing page.html" class="mobile-nav-item">
+            <i class="fas fa-home mobile-nav-icon"></i>
+            <span>Home</span>
+        </a>
+        <a href="fashion.html" class="mobile-nav-item active">
+            <i class="fas fa-tshirt mobile-nav-icon"></i>
+            <span>Fashion</span>
+        </a>
+        <a href="#" class="mobile-nav-item">
+            <i class="fas fa-search mobile-nav-icon"></i>
+            <span>Search</span>
+        </a>
+        <a href="#" class="mobile-nav-item">
+            <i class="fas fa-shopping-cart mobile-nav-icon"></i>
+            <span>Cart</span>
+        </a>
+        <a href="#" class="mobile-nav-item">
+            <i class="fas fa-user mobile-nav-icon"></i>
+            <span>Account</span>
+        </a>
+    </nav>
+
+    <script>
+        // Back to Top
+        document.getElementById('backToTop').addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Add to Cart functionality
+        const addToCartButtons = document.querySelectorAll('.add-to-cart');
+        const cartCount = document.querySelector('.cart-count');
+        let cartItems = 0;
+
+        addToCartButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                cartItems++;
+                cartCount.textContent = cartItems;
+                
+                // Animation effect
+                button.textContent = 'Added!';
+                button.style.background = '#10b981';
+                
+                setTimeout(() => {
+                    button.textContent = 'Add to Cart';
+                    button.style.background = '';
+                }, 1500);
+            });
+        });
+
+        // Mobile navigation active state
+        const mobileNavItems = document.querySelectorAll('.mobile-nav-item');
+        mobileNavItems.forEach(item => {
+            item.addEventListener('click', function() {
+                mobileNavItems.forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

@@ -169,6 +169,50 @@
             background-color: #14b8a6;
             color: white;
         }
+        
+        /* Slider styles */
+        .slider-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+        
+        .slides-container {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        
+        .slide {
+            min-width: 100%;
+            display: none;
+        }
+        
+        .slide.active {
+            display: flex;
+        }
+        
+        .slider-dots {
+            position: absolute;
+            bottom: 15px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .slider-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .slider-dot.active {
+            background-color: white;
+        }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -220,46 +264,78 @@
         </div>
     </div>
 
-    <!-- Advertisement Slider Section -->
+    <!-- Advertisement Slider Section - Fixed with 4 slides -->
     <div class="max-w-7xl mx-auto mt-4 px-4">
         <div class="bg-white rounded-lg shadow-md overflow-hidden">
             <!-- Slider Container -->
-            <div class="relative">
+            <div class="slider-container">
                 <!-- Slider for Adverts -->
-                <div id="advert-slider" class="overflow-hidden">
-                    <div class="slides">
-                        <!-- Ad Slide 1 -->
-                        <div class="hidden md:flex bg-gradient-to-r from-blue-900 to-black text-white p-8 items-center gap-4">
-                            <!-- Text Section -->
-                            <div class="w-2/3 text-left">
-                                <h2 class="text-3xl font-bold mb-2">iPhone 16 Pro</h2>
-                                <p class="mb-4 text-base">The ultimate iPhone experience with revolutionary camera technology</p>
-                                <button class="bg-white text-gray-800 px-4 py-2 rounded-lg font-medium">
-                                    Shop Now
-                                </button>
-                            </div>
-                            
-                            <!-- Image Section -->
-                            <div class="w-1/3 flex justify-end">
-                                <img src="https://via.placeholder.com/300x300/f3f4f6/374151?text=iPhone+16+Pro" alt="iPhone 16 Pro" class="h-64 object-contain pulse-glow">
-                            </div>
+                <div class="slides-container" id="advert-slider">
+                    <!-- Ad Slide 1 -->
+                    <div class="slide active bg-gradient-to-r from-blue-900 to-black text-white p-8 items-center gap-4">
+                        <!-- Text Section -->
+                        <div class="w-2/3 text-left">
+                            <h2 class="text-3xl font-bold mb-2">iPhone 16 Pro</h2>
+                            <p class="mb-4 text-base">The ultimate iPhone experience with revolutionary camera technology</p>
+                            <button class="bg-white text-gray-800 px-4 py-2 rounded-lg font-medium">
+                                Shop Now
+                            </button>
                         </div>
                         
-                        <!-- Ad Slide 2 -->
-                        <div class="hidden md:flex bg-gradient-to-r from-gray-800 to-black text-white p-8 items-center gap-4">
-                            <!-- Text Section -->
-                            <div class="w-2/3 text-left">
-                                <h2 class="text-3xl font-bold mb-2">Samsung Galaxy Z Fold</h2>
-                                <p class="mb-4 text-base">Unfold your world with revolutionary folding technology</p>
-                                <button class="bg-white text-gray-800 px-4 py-2 rounded-lg font-medium">
-                                    Learn More
-                                </button>
-                            </div>
-                            
-                            <!-- Image Section -->
-                            <div class="w-1/3 flex justify-end">
-                                <img src="https://via.placeholder.com/300x300/1f2937/7c3aed?text=Samsung+Z+Fold" alt="Samsung Galaxy Z Fold" class="h-64 object-contain">
-                            </div>
+                        <!-- Image Section -->
+                        <div class="w-1/3 flex justify-end">
+                            <img src="https://via.placeholder.com/300x300/f3f4f6/374151?text=iPhone+16+Pro" alt="iPhone 16 Pro" class="h-64 object-contain pulse-glow">
+                        </div>
+                    </div>
+                    
+                    <!-- Ad Slide 2 -->
+                    <div class="slide bg-gradient-to-r from-gray-800 to-black text-white p-8 items-center gap-4">
+                        <!-- Text Section -->
+                        <div class="w-2/3 text-left">
+                            <h2 class="text-3xl font-bold mb-2">Samsung Galaxy Z Fold</h2>
+                            <p class="mb-4 text-base">Unfold your world with revolutionary folding technology</p>
+                            <button class="bg-white text-gray-800 px-4 py-2 rounded-lg font-medium">
+                                Learn More
+                            </button>
+                        </div>
+                        
+                        <!-- Image Section -->
+                        <div class="w-1/3 flex justify-end">
+                            <img src="https://via.placeholder.com/300x300/1f2937/7c3aed?text=Samsung+Z+Fold" alt="Samsung Galaxy Z Fold" class="h-64 object-contain">
+                        </div>
+                    </div>
+                    
+                    <!-- Ad Slide 3 -->
+                    <div class="slide bg-gradient-to-r from-purple-900 to-black text-white p-8 items-center gap-4">
+                        <!-- Text Section -->
+                        <div class="w-2/3 text-left">
+                            <h2 class="text-3xl font-bold mb-2">Google Pixel 8 Pro</h2>
+                            <p class="mb-4 text-base">AI-powered photography and the smartest Google experience</p>
+                            <button class="bg-white text-gray-800 px-4 py-2 rounded-lg font-medium">
+                                Explore Features
+                            </button>
+                        </div>
+                        
+                        <!-- Image Section -->
+                        <div class="w-1/3 flex justify-end">
+                            <img src="https://via.placeholder.com/300x300/581c87/8b5cf6?text=Pixel+8+Pro" alt="Google Pixel 8 Pro" class="h-64 object-contain">
+                        </div>
+                    </div>
+                    
+                    <!-- Ad Slide 4 -->
+                    <div class="slide bg-gradient-to-r from-green-900 to-black text-white p-8 items-center gap-4">
+                        <!-- Text Section -->
+                        <div class="w-2/3 text-left">
+                            <h2 class="text-3xl font-bold mb-2">OnePlus 12</h2>
+                            <p class="mb-4 text-base">Never Settle with flagship performance and Hasselblad camera</p>
+                            <button class="bg-white text-gray-800 px-4 py-2 rounded-lg font-medium">
+                                Discover More
+                            </button>
+                        </div>
+                        
+                        <!-- Image Section -->
+                        <div class="w-1/3 flex justify-end">
+                            <img src="https://via.placeholder.com/300x300/065f46/10b981?text=OnePlus+12" alt="OnePlus 12" class="h-64 object-contain">
                         </div>
                     </div>
                 </div>
@@ -275,6 +351,14 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                     </svg>
                 </button>
+                
+                <!-- Slider Dots -->
+                <div class="slider-dots">
+                    <div class="slider-dot active" data-slide="0"></div>
+                    <div class="slider-dot" data-slide="1"></div>
+                    <div class="slider-dot" data-slide="2"></div>
+                    <div class="slider-dot" data-slide="3"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -909,34 +993,63 @@
 
         // Initialize slider functionality
         function initSlider() {
-            const slides = document.querySelectorAll('.slides > div');
+            const slides = document.querySelectorAll('.slide');
+            const dots = document.querySelectorAll('.slider-dot');
             let currentSlide = 0;
+            let slideInterval;
             
-            // Show first slide
-            if (slides.length > 0) {
-                slides[0].classList.remove('hidden');
+            // Function to show a specific slide
+            function showSlide(index) {
+                // Hide all slides
+                slides.forEach(slide => slide.classList.remove('active'));
+                dots.forEach(dot => dot.classList.remove('active'));
+                
+                // Show the selected slide
+                slides[index].classList.add('active');
+                dots[index].classList.add('active');
+                
+                currentSlide = index;
             }
             
-            // Next slide button
+            // Next slide function
+            function nextSlide() {
+                let nextIndex = (currentSlide + 1) % slides.length;
+                showSlide(nextIndex);
+            }
+            
+            // Previous slide function
+            function prevSlide() {
+                let prevIndex = (currentSlide - 1 + slides.length) % slides.length;
+                showSlide(prevIndex);
+            }
+            
+            // Event listeners for next/prev buttons
             document.getElementById('next-slide').addEventListener('click', function() {
-                slides[currentSlide].classList.add('hidden');
-                currentSlide = (currentSlide + 1) % slides.length;
-                slides[currentSlide].classList.remove('hidden');
+                nextSlide();
+                resetInterval();
             });
             
-            // Previous slide button
             document.getElementById('prev-slide').addEventListener('click', function() {
-                slides[currentSlide].classList.add('hidden');
-                currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-                slides[currentSlide].classList.remove('hidden');
+                prevSlide();
+                resetInterval();
             });
             
-            // Auto-advance slides every 5 seconds
-            setInterval(function() {
-                slides[currentSlide].classList.add('hidden');
-                currentSlide = (currentSlide + 1) % slides.length;
-                slides[currentSlide].classList.remove('hidden');
-            }, 5000);
+            // Event listeners for dots
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', function() {
+                    showSlide(index);
+                    resetInterval();
+                });
+            });
+            
+            // Function to reset the auto-advance interval
+            function resetInterval() {
+                clearInterval(slideInterval);
+                slideInterval = setInterval(nextSlide, 5000);
+            }
+            
+            // Start auto-advancing slides
+            slideInterval = setInterval(nextSlide, 5000);
         }
     </script>
 </body>

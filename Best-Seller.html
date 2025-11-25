@@ -1,0 +1,2330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Best Sellers - Hills Market</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a1a1a;
+            --secondary: #ffffff;
+            --accent: #4a5568;
+            --light: #f8f9fa;
+            --dark: #0f0f0f;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --bestseller: #9333ea;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #ffffff;
+            color: #1a1a1a;
+        }
+
+        /* Header Styles */
+        .header {
+            background: var(--secondary);
+            border-bottom: 1px solid #e5e5e5;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .search-bar {
+            flex: 1;
+            max-width: 600px;
+        }
+
+        .search-bar input {
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            padding: 10px 15px;
+            font-size: 14px;
+            width: 100%;
+            transition: all 0.2s;
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(26, 26, 26, 0.1);
+        }
+
+        .search-bar button {
+            background: var(--primary);
+            color: var(--secondary);
+            border: none;
+            border-radius: 6px;
+            padding: 10px 20px;
+            margin-left: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .search-bar button:hover {
+            background: #333333;
+        }
+
+        .nav-link {
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: all 0.2s;
+            color: #4a5568;
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            background: #f7f7f7;
+            color: var(--primary);
+        }
+
+        .nav-link.active {
+            color: var(--primary);
+            background: #f0f0f0;
+        }
+
+        .cart-count {
+            background: var(--primary);
+            color: var(--secondary);
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: -5px;
+            right: -5px;
+        }
+
+        /* Side Navigation */
+        .side-nav {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 300px;
+            height: 100vh;
+            background: white;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            transition: left 0.3s ease;
+            overflow-y: auto;
+        }
+
+        .side-nav.open {
+            left: 0;
+        }
+
+        .side-nav-header {
+            padding: 20px;
+            border-bottom: 1px solid #e5e5e5;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .side-nav-content {
+            padding: 20px;
+        }
+
+        .side-nav-item {
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .side-nav-item:hover {
+            color: var(--primary);
+            background: #f9f9f9;
+            padding-left: 10px;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+            display: none;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+        /* Best Sellers Hero */
+        .bestsellers-hero {
+            background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .bestsellers-hero h1 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .bestsellers-hero p {
+            font-size: 18px;
+            color: #e9d5ff;
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+
+        .bestseller-badge {
+            background: #f59e0b;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        /* Product Cards */
+        .product-card {
+            background: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            border: 1px solid #f0f0f0;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+            transform: translateY(-5px);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: var(--bestseller);
+            color: var(--secondary);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            z-index: 2;
+        }
+
+        .bestseller-badge-product {
+            background: var(--bestseller);
+        }
+
+        .product-image {
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: #ffffff;
+            position: relative;
+        }
+
+        .product-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.05);
+        }
+
+        .product-info {
+            padding: 16px;
+            background: #ffffff;
+        }
+
+        .product-title {
+            font-size: 15px;
+            line-height: 1.4;
+            height: 42px;
+            overflow: hidden;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        /* Sales Badge */
+        .sales-badge {
+            display: inline-flex;
+            align-items: center;
+            background: #fef3c7;
+            color: #92400e;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        /* Rating System */
+        .product-rating {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .rating-stars {
+            color: #f59e0b;
+            margin-right: 8px;
+        }
+
+        .rating-count {
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        .product-price {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .current-price {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .original-price {
+            font-size: 14px;
+            color: #9ca3af;
+            text-decoration: line-through;
+            margin-left: 8px;
+        }
+
+        .discount {
+            color: var(--success);
+            font-size: 13px;
+            margin-left: 8px;
+            font-weight: 600;
+        }
+
+        .delivery-badge {
+            display: inline-flex;
+            align-items: center;
+            color: var(--success);
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+
+        .add-to-cart {
+            background: var(--primary);
+            color: var(--secondary);
+            border: none;
+            width: 100%;
+            padding: 10px 0;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .add-to-cart:hover {
+            background: #333333;
+        }
+
+        /* Category Filters */
+        .category-filters {
+            background: #f8f9fa;
+            padding: 20px 0;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .filter-tabs {
+            display: flex;
+            overflow-x: auto;
+            gap: 10px;
+            padding-bottom: 10px;
+        }
+
+        .filter-tab {
+            padding: 8px 16px;
+            background: white;
+            border: 1px solid #e5e5e5;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .filter-tab:hover {
+            border-color: var(--bestseller);
+        }
+
+        .filter-tab.active {
+            background: var(--bestseller);
+            color: white;
+            border-color: var(--bestseller);
+        }
+
+        /* Top 3 Bestsellers */
+        .top-bestsellers {
+            margin-bottom: 40px;
+        }
+
+        .top-products {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .top-product-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            border: 1px solid #f0f0f0;
+        }
+
+        .top-product-card:hover {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            transform: translateY(-5px);
+        }
+
+        .rank-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 16px;
+            z-index: 2;
+        }
+
+        .rank-1 {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .rank-2 {
+            background: #6b7280;
+            color: white;
+        }
+
+        .rank-3 {
+            background: #92400e;
+            color: white;
+        }
+
+        .top-product-image {
+            height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: #f8f9fa;
+        }
+
+        .top-product-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .top-product-info {
+            padding: 20px;
+        }
+
+        .top-product-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+
+        .top-product-rating {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .top-product-price {
+            margin-bottom: 15px;
+        }
+
+        .top-current-price {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .top-original-price {
+            font-size: 16px;
+            color: #9ca3af;
+            text-decoration: line-through;
+            margin-left: 8px;
+        }
+
+        .top-sales {
+            background: #f0f9ff;
+            color: #0369a1;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        /* Monthly Bestsellers */
+        .monthly-bestsellers {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 40px;
+            padding: 30px;
+        }
+
+        .monthly-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .monthly-title {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .monthly-selector {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .monthly-btn {
+            padding: 8px 16px;
+            background: white;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .monthly-btn.active {
+            background: var(--bestseller);
+            color: white;
+            border-color: var(--bestseller);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--primary);
+            color: white;
+            margin-top: 50px;
+        }
+
+        .footer-top {
+            background: #0f0f0f;
+            padding: 40px 0;
+        }
+
+        .footer-bottom {
+            background: #0a0a0a;
+            padding: 30px 0;
+            text-align: center;
+            font-size: 14px;
+            color: #9ca3af;
+        }
+
+        .back-to-top {
+            background: #374151;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .back-to-top:hover {
+            background: #4b5563;
+        }
+
+        /* Mobile Navigation */
+        .mobile-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid #e5e5e5;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            z-index: 90;
+        }
+
+        .mobile-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .mobile-nav-item.active {
+            color: var(--primary);
+        }
+
+        .mobile-nav-icon {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        /* Product Detail Modal */
+        .product-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .product-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 1000px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+
+        .product-modal.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.2s;
+        }
+
+        .modal-close:hover {
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        .modal-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 30px;
+        }
+
+        .modal-image-gallery {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-main-image {
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        .modal-main-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .modal-thumbnails {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+        }
+
+        .modal-thumbnail {
+            width: 80px;
+            height: 80px;
+            border: 2px solid transparent;
+            border-radius: 6px;
+            overflow: hidden;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .modal-thumbnail.active {
+            border-color: var(--bestseller);
+        }
+
+        .modal-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .modal-product-info {
+            padding-right: 20px;
+        }
+
+        .modal-product-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+
+        .modal-product-rating {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .modal-product-price {
+            margin-bottom: 20px;
+        }
+
+        .modal-current-price {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .modal-original-price {
+            font-size: 18px;
+            color: #9ca3af;
+            text-decoration: line-through;
+            margin-left: 10px;
+        }
+
+        .modal-discount {
+            color: var(--success);
+            font-size: 16px;
+            margin-left: 10px;
+            font-weight: 600;
+        }
+
+        .modal-description {
+            margin-bottom: 20px;
+            line-height: 1.6;
+            color: #4b5563;
+        }
+
+        .modal-features {
+            margin-bottom: 25px;
+        }
+
+        .modal-features ul {
+            list-style-type: disc;
+            padding-left: 20px;
+        }
+
+        .modal-features li {
+            margin-bottom: 8px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .modal-add-to-cart {
+            background: var(--primary);
+            color: var(--secondary);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            flex: 1;
+            transition: all 0.2s;
+        }
+
+        .modal-add-to-cart:hover {
+            background: #333333;
+        }
+
+        .modal-buy-now {
+            background: var(--bestseller);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            flex: 1;
+            transition: all 0.2s;
+        }
+
+        .modal-buy-now:hover {
+            background: #7c3aed;
+        }
+
+        .modal-related-products {
+            margin-top: 30px;
+            border-top: 1px solid #e5e5e5;
+            padding-top: 25px;
+        }
+
+        .modal-related-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .modal-related-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .modal-related-card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .modal-related-card:hover {
+            background: #e9ecef;
+        }
+
+        .modal-related-image {
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        .modal-related-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .modal-related-name {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 5px;
+            line-height: 1.3;
+        }
+
+        .modal-related-price {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* Search Results */
+        .search-results {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            max-height: 400px;
+            overflow-y: auto;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            display: none;
+        }
+
+        .search-results.active {
+            display: block;
+        }
+
+        .search-result-item {
+            padding: 12px 15px;
+            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: background 0.2s;
+        }
+
+        .search-result-item:hover {
+            background: #f8f9fa;
+        }
+
+        .search-result-image {
+            width: 40px;
+            height: 40px;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .search-result-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .search-result-info {
+            flex: 1;
+        }
+
+        .search-result-name {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .search-result-price {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .no-results {
+            padding: 20px;
+            text-align: center;
+            color: #6b7280;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .bestsellers-hero {
+                padding: 40px 0;
+            }
+
+            .bestsellers-hero h1 {
+                font-size: 32px;
+            }
+
+            .bestsellers-hero p {
+                font-size: 16px;
+            }
+
+            .top-products {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .monthly-header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+
+            .monthly-selector {
+                width: 100%;
+                overflow-x: auto;
+            }
+
+            .desktop-only {
+                display: none;
+            }
+
+            .modal-body {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 20px;
+            }
+
+            .modal-product-info {
+                padding-right: 0;
+            }
+
+            .modal-main-image {
+                height: 300px;
+            }
+
+            .modal-related-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 769px) {
+            .mobile-only {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Side Navigation -->
+    <div class="side-nav" id="sideNav">
+        <div class="side-nav-header">
+            <h3 class="font-bold text-lg">All Categories</h3>
+            <button id="closeSideNav">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+        <div class="side-nav-content">
+            <div class="side-nav-item">Electronics</div>
+            <div class="side-nav-item">Home & Kitchen</div>
+            <div class="side-nav-item">Fashion</div>
+            <div class="side-nav-item">Beauty & Personal Care</div>
+            <div class="side-nav-item">Sports & Outdoors</div>
+            <div class="side-nav-item">Books</div>
+            <div class="side-nav-item">Toys & Games</div>
+            <div class="side-nav-item">Automotive</div>
+            <div class="side-nav-item">Health & Household</div>
+            <div class="side-nav-item">Grocery</div>
+        </div>
+    </div>
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo and Menu Button -->
+                <div class="flex items-center">
+                    <button id="menuButton" class="mr-4 p-2 rounded-lg bg-gray-100">
+                        <i class="fas fa-bars text-lg"></i>
+                    </button>
+                    <a href="landing-page.html" class="flex items-center">
+                        <a href="landing page.html" class="flex items-center">
+                        <img src="ANewlogo.png" alt="Hills Market" class="h-8 sm:h-10 md:h-12 lg:h-16 w-auto object-contain">
+                        <span class="ml-2 text-xl font-bold text-black"></span>
+                    </a>
+                    </a>
+                </div>
+
+                <!-- Search Bar - Desktop -->
+                <div class="search-bar mx-4 flex desktop-only relative">
+                    <input type="text" id="searchInput" placeholder="Search for products, brands and more">
+                    <button id="searchButton" class="bg-black text-white px-4 py-2 rounded-lg">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <div class="search-results" id="searchResults">
+                        <!-- Search results will be populated here -->
+                    </div>
+                </div>
+
+                <!-- Right Menu - Desktop -->
+                <div class="flex items-center space-x-4 desktop-only">
+                    <div class="relative">
+                        <a href="#" class="nav-link flex flex-col items-start">
+                            <span class="text-xs text-gray-500">Hello, Sign in</span>
+                            <span class="text-sm font-medium">Account & Lists</span>
+                        </a>
+                    </div>
+                    <div class="relative">
+                        <a href="#" class="nav-link flex flex-col items-start">
+                            <span class="text-xs text-gray-500">Returns</span>
+                            <span class="text-sm font-medium">& Orders</span>
+                        </a>
+                    </div>
+                    <div class="relative">
+                        <a href="#" class="nav-link flex items-center">
+                            <i class="fas fa-shopping-cart text-xl"></i>
+                            <span class="ml-1 font-medium">Cart</span>
+                            <span class="cart-count">0</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="mobile-only">
+                    <button class="p-2 rounded-lg bg-gray-100">
+                        <i class="fas fa-bars text-lg"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Navigation - Desktop -->
+            <div class="mt-4 desktop-only">
+                <div class="flex items-center space-x-6 overflow-x-auto">
+                    <a href="landing-page.html" class="nav-link">All Categories</a>
+                    <a href="todays-Deal.html" class="nav-link">Today's Deals</a>
+                    <a href="bestsellers.html" class="nav-link active">Best Sellers</a>
+                    <a href="new Realease.html" class="nav-link">New Releases</a>
+                    <a href="customer service.html" class="nav-link">Customer Service</a>
+                    <a href="electronics.html" class="nav-link">Electronics</a>
+                    <a href="home-kitchenware.html" class="nav-link">Home & Kitchen</a>
+                    <a href="fashion-page.html" class="nav-link">Fashion</a>
+                </div>
+            </div>
+
+            <!-- Search Bar - Mobile -->
+            <div class="mt-4 mobile-only relative">
+                <div class="search-bar flex">
+                    <input type="text" id="searchInputMobile" placeholder="Search for products, brands and more">
+                    <button id="searchButtonMobile" class="bg-black text-white px-4 py-2 rounded-lg ml-2">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+                <div class="search-results" id="searchResultsMobile">
+                    <!-- Search results will be populated here -->
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Best Sellers Hero -->
+    <section class="bestsellers-hero">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="bestseller-badge">Most Popular Products</div>
+            <h1>Best Sellers</h1>
+            <p>Discover the products our customers love the most. These top-rated items are consistently popular for their quality and value.</p>
+        </div>
+    </section>
+
+    <!-- Category Filters -->
+    <section class="category-filters">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="filter-tabs">
+                <div class="filter-tab active" data-category="all">All Best Sellers</div>
+                <div class="filter-tab" data-category="electronics">Electronics</div>
+                <div class="filter-tab" data-category="home">Home & Kitchen</div>
+                <div class="filter-tab" data-category="fashion">Fashion</div>
+                <div class="filter-tab" data-category="beauty">Beauty</div>
+                <div class="filter-tab" data-category="sports">Sports</div>
+                <div class="filter-tab" data-category="books">Books</div>
+                <div class="filter-tab" data-category="toys">Toys & Games</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 py-8">
+        <!-- Top 3 Bestsellers -->
+        <section class="top-bestsellers">
+            <h2 class="text-2xl font-bold mb-6">Top 3 Bestsellers</h2>
+            <div class="top-products">
+                <!-- Top 1 -->
+                <div class="top-product-card" data-product-id="1">
+                    <div class="rank-badge rank-1">1</div>
+                    <div class="top-product-image">
+                        <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Wireless Headphones">
+                    </div>
+                    <div class="top-product-info">
+                        <h3 class="top-product-title">SoundMax Pro Wireless Noise Cancelling Headphones</h3>
+                        <div class="top-product-rating">
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="rating-count">(4,832 reviews)</span>
+                        </div>
+                        <div class="top-sales">10,000+ sold this month</div>
+                        <div class="top-product-price">
+                            <span class="top-current-price">R1,299.99</span>
+                            <span class="top-original-price">R1,999.99</span>
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Top 2 -->
+                <div class="top-product-card" data-product-id="2">
+                    <div class="rank-badge rank-2">2</div>
+                    <div class="top-product-image">
+                        <img src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Smart TV">
+                    </div>
+                    <div class="top-product-info">
+                        <h3 class="top-product-title">UltraView 55" 4K Smart TV with HDR</h3>
+                        <div class="top-product-rating">
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <span class="rating-count">(3,921 reviews)</span>
+                        </div>
+                        <div class="top-sales">8,500+ sold this month</div>
+                        <div class="top-product-price">
+                            <span class="top-current-price">R6,999.99</span>
+                            <span class="top-original-price">R8,499.99</span>
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Top 3 -->
+                <div class="top-product-card" data-product-id="3">
+                    <div class="rank-badge rank-3">3</div>
+                    <div class="top-product-image">
+                        <img src="https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Air Purifier">
+                    </div>
+                    <div class="top-product-info">
+                        <h3 class="top-product-title">PureAir 360 Smart Air Purifier with HEPA Filter</h3>
+                        <div class="top-product-rating">
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <span class="rating-count">(2,745 reviews)</span>
+                        </div>
+                        <div class="top-sales">7,200+ sold this month</div>
+                        <div class="top-product-price">
+                            <span class="top-current-price">R1,899.99</span>
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Monthly Bestsellers -->
+        <section class="monthly-bestsellers">
+            <div class="monthly-header">
+                <h2 class="monthly-title">Monthly Bestsellers</h2>
+                <div class="monthly-selector">
+                    <button class="monthly-btn active">This Month</button>
+                    <button class="monthly-btn">Last Month</button>
+                    <button class="monthly-btn">All Time</button>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6" id="bestsellersGrid">
+                <!-- Product 1 -->
+                <div class="product-card" data-category="electronics" data-product-id="4">
+                    <div class="product-badge bestseller-badge-product">BESTSELLER</div>
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Smartphone">
+                    </div>
+                    <div class="product-info">
+                        <div class="sales-badge">
+                            <i class="fas fa-fire mr-1"></i>
+                            5,000+ sold
+                        </div>
+                        <div class="product-title">Nexus X5 5G Smartphone - 128GB Storage</div>
+                        <div class="product-rating">
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="rating-count">(3,421)</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">R8,999.99</span>
+                            <span class="original-price">R10,499.99</span>
+                            <span class="discount">(14% off)</span>
+                        </div>
+                        <div class="delivery-badge">
+                            <i class="fas fa-shipping-fast mr-1"></i>
+                            FREE Delivery
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="product-card" data-category="home" data-product-id="5">
+                    <div class="product-badge bestseller-badge-product">BESTSELLER</div>
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1581093458791-8a6b5e219b09?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Coffee Maker">
+                    </div>
+                    <div class="product-info">
+                        <div class="sales-badge">
+                            <i class="fas fa-fire mr-1"></i>
+                            4,200+ sold
+                        </div>
+                        <div class="product-title">BrewMaster Pro Smart Coffee Maker with Grinder</div>
+                        <div class="product-rating">
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <span class="rating-count">(2,856)</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">R1,599.99</span>
+                            <span class="original-price">R1,999.99</span>
+                            <span class="discount">(20% off)</span>
+                        </div>
+                        <div class="delivery-badge">
+                            <i class="fas fa-shipping-fast mr-1"></i>
+                            FREE Delivery
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="product-card" data-category="fashion" data-product-id="6">
+                    <div class="product-badge bestseller-badge-product">BESTSELLER</div>
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Smart Watch">
+                    </div>
+                    <div class="product-info">
+                        <div class="sales-badge">
+                            <i class="fas fa-fire mr-1"></i>
+                            3,800+ sold
+                        </div>
+                        <div class="product-title">FitTrack Pro Smartwatch with Heart Rate Monitor</div>
+                        <div class="product-rating">
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="rating-count">(2,134)</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">R1,799.99</span>
+                            <span class="original-price">R2,299.99</span>
+                            <span class="discount">(22% off)</span>
+                        </div>
+                        <div class="delivery-badge">
+                            <i class="fas fa-shipping-fast mr-1"></i>
+                            FREE Delivery
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="product-card" data-category="beauty" data-product-id="7">
+                    <div class="product-badge bestseller-badge-product">BESTSELLER</div>
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Beauty Device">
+                    </div>
+                    <div class="product-info">
+                        <div class="sales-badge">
+                            <i class="fas fa-fire mr-1"></i>
+                            3,500+ sold
+                        </div>
+                        <div class="product-title">GlowTech Advanced Facial Cleansing Brush</div>
+                        <div class="product-rating">
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <span class="rating-count">(1,987)</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">R899.99</span>
+                            <span class="original-price">R1,199.99</span>
+                            <span class="discount">(25% off)</span>
+                        </div>
+                        <div class="delivery-badge">
+                            <i class="fas fa-shipping-fast mr-1"></i>
+                            FREE Delivery
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Product 5 -->
+                <div class="product-card" data-category="electronics" data-product-id="8">
+                    <div class="product-badge bestseller-badge-product">BESTSELLER</div>
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1541807084-5c52b6b3adef?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Laptop">
+                    </div>
+                    <div class="product-info">
+                        <div class="sales-badge">
+                            <i class="fas fa-fire mr-1"></i>
+                            3,200+ sold
+                        </div>
+                        <div class="product-title">ProBook X1 Business Laptop - 16GB RAM, 512GB SSD</div>
+                        <div class="product-rating">
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="rating-count">(2,543)</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">R12,499.99</span>
+                            <span class="original-price">R14,999.99</span>
+                            <span class="discount">(17% off)</span>
+                        </div>
+                        <div class="delivery-badge">
+                            <i class="fas fa-shipping-fast mr-1"></i>
+                            FREE Delivery
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Product 6 -->
+                <div class="product-card" data-category="home" data-product-id="9">
+                    <div class="product-badge bestseller-badge-product">BESTSELLER</div>
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Air Fryer">
+                    </div>
+                    <div class="product-info">
+                        <div class="sales-badge">
+                            <i class="fas fa-fire mr-1"></i>
+                            2,900+ sold
+                        </div>
+                        <div class="product-title">RapidCook Digital Air Fryer - 5.5L Capacity</div>
+                        <div class="product-rating">
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <span class="rating-count">(1,765)</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">R999.99</span>
+                            <span class="original-price">R1,499.99</span>
+                            <span class="discount">(33% off)</span>
+                        </div>
+                        <div class="delivery-badge">
+                            <i class="fas fa-shipping-fast mr-1"></i>
+                            FREE Delivery
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Product 7 -->
+                <div class="product-card" data-category="sports" data-product-id="10">
+                    <div class="product-badge bestseller-badge-product">BESTSELLER</div>
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Fitness Equipment">
+                    </div>
+                    <div class="product-info">
+                        <div class="sales-badge">
+                            <i class="fas fa-fire mr-1"></i>
+                            2,700+ sold
+                        </div>
+                        <div class="product-title">FitCore Pro Compact Home Gym System</div>
+                        <div class="product-rating">
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="rating-count">(1,432)</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">R3,499.99</span>
+                            <span class="original-price">R4,199.99</span>
+                            <span class="discount">(17% off)</span>
+                        </div>
+                        <div class="delivery-badge">
+                            <i class="fas fa-shipping-fast mr-1"></i>
+                            FREE Delivery
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Product 8 -->
+                <div class="product-card" data-category="books" data-product-id="11">
+                    <div class="product-badge bestseller-badge-product">BESTSELLER</div>
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Book">
+                    </div>
+                    <div class="product-info">
+                        <div class="sales-badge">
+                            <i class="fas fa-fire mr-1"></i>
+                            2,500+ sold
+                        </div>
+                        <div class="product-title">Bestseller Collection - 5 Book Set</div>
+                        <div class="product-rating">
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <span class="rating-count">(987)</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">R299.99</span>
+                            <span class="original-price">R499.99</span>
+                            <span class="discount">(40% off)</span>
+                        </div>
+                        <div class="delivery-badge">
+                            <i class="fas fa-shipping-fast mr-1"></i>
+                            FREE Delivery
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Customer Testimonials -->
+        <section class="mt-12">
+            <h2 class="text-2xl font-bold mb-6">Why Customers Love Our Best Sellers</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Testimonial 1 -->
+                <div class="bg-purple-50 border border-purple-200 rounded-lg p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mr-4">
+                            <i class="fas fa-user text-purple-500"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold">Sarah Johnson</h3>
+                            <div class="rating-stars text-sm">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-700">"The SoundMax headphones are incredible! The noise cancellation is perfect for my daily commute. Best purchase I've made this year!"</p>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="bg-purple-50 border border-purple-200 rounded-lg p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mr-4">
+                            <i class="fas fa-user text-purple-500"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold">Michael Chen</h3>
+                            <div class="rating-stars text-sm">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-700">"The UltraView TV transformed my living room experience. The picture quality is stunning and the smart features work flawlessly."</p>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="bg-purple-50 border border-purple-200 rounded-lg p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mr-4">
+                            <i class="fas fa-user text-purple-500"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold">Emily Rodriguez</h3>
+                            <div class="rating-stars text-sm">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-700">"The PureAir purifier has made such a difference in our home. My allergies have improved significantly. Highly recommended!"</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Product Detail Modal -->
+    <div class="product-modal" id="productModal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="modal-body" id="modalBody">
+                <!-- Modal content will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Back to Top -->
+    <div class="back-to-top" id="backToTop">
+        Back to top
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-top">
+            <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Get to Know Us</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">About Us</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Careers</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Press Releases</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Hills Market Science</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Connect with Us</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Facebook</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Twitter</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Instagram</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Make Money with Us</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Sell on Hills Market</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Sell under Hills Market Accelerator</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Become an Affiliate</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Fulfillment by Hills Market</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Let Us Help You</h3>
+                    <ul class="space-y-2">
+                        <li><a href="customer-service.html" class="text-gray-400 hover:text-white">Customer Service</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Your Account</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Returns Centre</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">100% Purchase Protection</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Help</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="flex items-center mb-4 md:mb-0">
+                        <div class="h-6 w-6 mr-2 flex items-center justify-center bg-white text-black font-bold rounded-sm">
+                            HM
+                        </div>
+                        <span class="text-white font-bold">Hills Market</span>
+                    </div>
+                    <div class="flex space-x-6">
+                        <a href="#" class="text-gray-400 hover:text-white text-xs">Conditions of Use</a>
+                        <a href="#" class="text-gray-400 hover:text-white text-xs">Privacy Notice</a>
+                        <a href="#" class="text-gray-400 hover:text-white text-xs">Interest-Based Ads</a>
+                    </div>
+                </div>
+                <p class="mt-4">© 1996-2025, HillsMarket.com, Inc. or its affiliates</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Mobile Navigation -->
+    <nav class="mobile-nav mobile-only">
+        <a href="landing-page.html" class="mobile-nav-item">
+            <i class="fas fa-home mobile-nav-icon"></i>
+            <span>Home</span>
+        </a>
+        <a href="#" class="mobile-nav-item">
+            <i class="fas fa-search mobile-nav-icon"></i>
+            <span>Search</span>
+        </a>
+        <a href="#" class="mobile-nav-item">
+            <i class="fas fa-shopping-cart mobile-nav-icon"></i>
+            <span>Cart</span>
+        </a>
+        <a href="#" class="mobile-nav-item">
+            <i class="fas fa-user mobile-nav-icon"></i>
+            <span>Account</span>
+        </a>
+        <a href="bestsellers.html" class="mobile-nav-item active">
+            <i class="fas fa-crown mobile-nav-icon"></i>
+            <span>Best</span>
+        </a>
+    </nav>
+
+    <script>
+        // Product data
+        const products = [
+            {
+                id: 1,
+                name: "SoundMax Pro Wireless Noise Cancelling Headphones",
+                category: "electronics",
+                price: 1299.99,
+                originalPrice: 1999.99,
+                rating: 4.5,
+                reviews: 4832,
+                sales: 10000,
+                images: [
+                    "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1484704849700-f032a568e944?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1583394838336-acd977736f90?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                ],
+                description: "Experience premium sound quality with our SoundMax Pro Wireless Headphones. Featuring advanced noise cancellation technology, these headphones provide an immersive audio experience whether you're commuting, working, or relaxing.",
+                features: [
+                    "Active Noise Cancellation",
+                    "30-hour battery life",
+                    "Bluetooth 5.0 connectivity",
+                    "Comfortable over-ear design",
+                    "Built-in microphone for calls"
+                ],
+                relatedProducts: [2, 4, 8]
+            },
+            {
+                id: 2,
+                name: "UltraView 55\" 4K Smart TV with HDR",
+                category: "electronics",
+                price: 6999.99,
+                originalPrice: 8499.99,
+                rating: 5,
+                reviews: 3921,
+                sales: 8500,
+                images: [
+                    "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1593784991095-a205069470b6?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                ],
+                description: "Transform your entertainment experience with the UltraView 55\" 4K Smart TV. With stunning HDR visuals and smart features, this TV brings your favorite content to life with incredible clarity and color.",
+                features: [
+                    "4K Ultra HD resolution",
+                    "High Dynamic Range (HDR)",
+                    "Smart TV with built-in apps",
+                    "Voice control compatible",
+                    "Multiple HDMI and USB ports"
+                ],
+                relatedProducts: [1, 5, 8]
+            },
+            {
+                id: 3,
+                name: "PureAir 360 Smart Air Purifier with HEPA Filter",
+                category: "home",
+                price: 1899.99,
+                originalPrice: null,
+                rating: 5,
+                reviews: 2745,
+                sales: 7200,
+                images: [
+                    "https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1581862078617-5d86b4d6d82a?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1558618666-fcd25856cd63?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                ],
+                description: "Breathe easier with the PureAir 360 Smart Air Purifier. Using advanced HEPA filtration technology, it captures 99.97% of airborne particles, including dust, pollen, and pet dander.",
+                features: [
+                    "True HEPA filtration",
+                    "360-degree air intake",
+                    "Smart sensor technology",
+                    "Quiet operation",
+                    "Wi-Fi connectivity and app control"
+                ],
+                relatedProducts: [5, 9, 10]
+            },
+            {
+                id: 4,
+                name: "Nexus X5 5G Smartphone - 128GB Storage",
+                category: "electronics",
+                price: 8999.99,
+                originalPrice: 10499.99,
+                rating: 4.5,
+                reviews: 3421,
+                sales: 5000,
+                images: [
+                    "https://images.unsplash.com/photo-1546868871-7041f2a55e12?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1583394838336-acd977736f90?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                ],
+                description: "Stay connected with the Nexus X5 5G Smartphone. Featuring a powerful processor, stunning display, and advanced camera system, this phone delivers exceptional performance for work and play.",
+                features: [
+                    "5G connectivity",
+                    "128GB internal storage",
+                    "Triple camera system",
+                    "All-day battery life",
+                    "Fast charging capability"
+                ],
+                relatedProducts: [1, 6, 8]
+            },
+            {
+                id: 5,
+                name: "BrewMaster Pro Smart Coffee Maker with Grinder",
+                category: "home",
+                price: 1599.99,
+                originalPrice: 1999.99,
+                rating: 5,
+                reviews: 2856,
+                sales: 4200,
+                images: [
+                    "https://images.unsplash.com/photo-1581093458791-8a6b5e219b09?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                ],
+                description: "Start your day with the perfect cup of coffee using the BrewMaster Pro Smart Coffee Maker. With built-in grinder and smart features, you can customize your brew to perfection.",
+                features: [
+                    "Built-in burr grinder",
+                    "Programmable settings",
+                    "Wi-Fi connectivity",
+                    "12-cup capacity",
+                    "Auto-shutoff feature"
+                ],
+                relatedProducts: [3, 9, 10]
+            },
+            {
+                id: 6,
+                name: "FitTrack Pro Smartwatch with Heart Rate Monitor",
+                category: "fashion",
+                price: 1799.99,
+                originalPrice: 2299.99,
+                rating: 4.5,
+                reviews: 2134,
+                sales: 3800,
+                images: [
+                    "https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1544117519-31a4b719223d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                ],
+                description: "Track your fitness and stay connected with the FitTrack Pro Smartwatch. With advanced health monitoring features and stylish design, it's the perfect companion for your active lifestyle.",
+                features: [
+                    "Heart rate monitoring",
+                    "Sleep tracking",
+                    "Water-resistant design",
+                    "7-day battery life",
+                    "Smart notifications"
+                ],
+                relatedProducts: [4, 7, 10]
+            },
+            {
+                id: 7,
+                name: "GlowTech Advanced Facial Cleansing Brush",
+                category: "beauty",
+                price: 899.99,
+                originalPrice: 1199.99,
+                rating: 5,
+                reviews: 1987,
+                sales: 3500,
+                images: [
+                    "https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-15562285785-5f6d73b8bad7?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                ],
+                description: "Achieve cleaner, smoother skin with the GlowTech Advanced Facial Cleansing Brush. Using sonic technology, it deeply cleanses pores and removes impurities for a radiant complexion.",
+                features: [
+                    "Sonic vibration technology",
+                    "Multiple brush heads included",
+                    "Waterproof design",
+                    "Rechargeable battery",
+                    "Multiple speed settings"
+                ],
+                relatedProducts: [6, 8, 11]
+            },
+            {
+                id: 8,
+                name: "ProBook X1 Business Laptop - 16GB RAM, 512GB SSD",
+                category: "electronics",
+                price: 12499.99,
+                originalPrice: 14999.99,
+                rating: 4.5,
+                reviews: 2543,
+                sales: 3200,
+                images: [
+                    "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                ],
+                description: "Boost your productivity with the ProBook X1 Business Laptop. With powerful performance, long battery life, and premium features, it's designed for professionals on the go.",
+                features: [
+                    "Intel Core i7 processor",
+                    "16GB RAM, 512GB SSD",
+                    "14-inch Full HD display",
+                    "All-day battery life",
+                    "Lightweight and portable"
+                ],
+                relatedProducts: [1, 2, 4]
+            },
+            {
+                id: 9,
+                name: "RapidCook Digital Air Fryer - 5.5L Capacity",
+                category: "home",
+                price: 999.99,
+                originalPrice: 1499.99,
+                rating: 5,
+                reviews: 1765,
+                sales: 2900,
+                images: [
+                    "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1554866585-cd94860890b7?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                ],
+                description: "Enjoy healthier fried foods with the RapidCook Digital Air Fryer. Using hot air technology, it cooks food with up to 80% less oil while delivering crispy, delicious results.",
+                features: [
+                    "5.5-liter capacity",
+                    "Digital touch controls",
+                    "8 preset cooking programs",
+                    "Auto-shutoff safety feature",
+                    "Dishwasher-safe parts"
+                ],
+                relatedProducts: [3, 5, 10]
+            },
+            {
+                id: 10,
+                name: "FitCore Pro Compact Home Gym System",
+                category: "sports",
+                price: 3499.99,
+                originalPrice: 4199.99,
+                rating: 4.5,
+                reviews: 1432,
+                sales: 2700,
+                images: [
+                    "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                ],
+                description: "Transform your home into a personal gym with the FitCore Pro Compact Home Gym System. With multiple exercise stations and adjustable resistance, it offers a complete workout in minimal space.",
+                features: [
+                    "Multiple exercise stations",
+                    "Adjustable resistance",
+                    "Compact foldable design",
+                    "Instructional workout guide",
+                    "Durable steel construction"
+                ],
+                relatedProducts: [3, 6, 9]
+            },
+            {
+                id: 11,
+                name: "Bestseller Collection - 5 Book Set",
+                category: "books",
+                price: 299.99,
+                originalPrice: 499.99,
+                rating: 5,
+                reviews: 987,
+                sales: 2500,
+                images: [
+                    "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1543002588-bfa74002ed7e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                ],
+                description: "Dive into captivating stories with our Bestseller Collection. This 5-book set features award-winning novels from acclaimed authors, perfect for avid readers.",
+                features: [
+                    "5 bestselling novels",
+                    "Hardcover editions",
+                    "Author signatures in select copies",
+                    "Beautiful slipcase packaging",
+                    "Perfect for gifting"
+                ],
+                relatedProducts: [7, 8, 10]
+            }
+        ];
+
+        // Side Navigation
+        const menuButton = document.getElementById('menuButton');
+        const closeSideNav = document.getElementById('closeSideNav');
+        const sideNav = document.getElementById('sideNav');
+        const overlay = document.getElementById('overlay');
+
+        menuButton.addEventListener('click', () => {
+            sideNav.classList.add('open');
+            overlay.classList.add('active');
+        });
+
+        closeSideNav.addEventListener('click', () => {
+            sideNav.classList.remove('open');
+            overlay.classList.remove('active');
+        });
+
+        overlay.addEventListener('click', () => {
+            sideNav.classList.remove('open');
+            overlay.classList.remove('active');
+        });
+
+        // Back to Top
+        document.getElementById('backToTop').addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Category Filtering
+        const filterTabs = document.querySelectorAll('.filter-tab');
+        const productCards = document.querySelectorAll('.product-card');
+
+        filterTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs
+                filterTabs.forEach(t => t.classList.remove('active'));
+                // Add active class to clicked tab
+                tab.classList.add('active');
+                
+                const category = tab.getAttribute('data-category');
+                
+                // Show/hide products based on category
+                productCards.forEach(card => {
+                    if (category === 'all' || card.getAttribute('data-category') === category) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Monthly Selector
+        const monthlyBtns = document.querySelectorAll('.monthly-btn');
+        
+        monthlyBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active class from all buttons
+                monthlyBtns.forEach(b => b.classList.remove('active'));
+                // Add active class to clicked button
+                btn.classList.add('active');
+                
+                // In a real application, you would fetch different data based on the selected timeframe
+                console.log(`Loading ${btn.textContent} bestsellers...`);
+            });
+        });
+
+        // Add to Cart functionality
+        const addToCartButtons = document.querySelectorAll('.add-to-cart');
+        const cartCount = document.querySelector('.cart-count');
+        let cartItems = 0;
+
+        addToCartButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevent triggering product detail page
+                cartItems++;
+                cartCount.textContent = cartItems;
+                
+                // Animation effect
+                button.textContent = 'Added!';
+                button.style.background = '#10b981';
+                
+                setTimeout(() => {
+                    button.textContent = 'Add to Cart';
+                    button.style.background = '';
+                }, 1500);
+            });
+        });
+
+        // Mobile navigation active state
+        const mobileNavItems = document.querySelectorAll('.mobile-nav-item');
+        mobileNavItems.forEach(item => {
+            item.addEventListener('click', function() {
+                mobileNavItems.forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Search Functionality
+        const searchInput = document.getElementById('searchInput');
+        const searchInputMobile = document.getElementById('searchInputMobile');
+        const searchButton = document.getElementById('searchButton');
+        const searchButtonMobile = document.getElementById('searchButtonMobile');
+        const searchResults = document.getElementById('searchResults');
+        const searchResultsMobile = document.getElementById('searchResultsMobile');
+
+        function performSearch(query) {
+            if (!query.trim()) {
+                return [];
+            }
+            
+            const searchTerms = query.toLowerCase().split(' ');
+            
+            return products.filter(product => {
+                const productText = (
+                    product.name.toLowerCase() + ' ' + 
+                    product.category.toLowerCase() + ' ' + 
+                    product.description.toLowerCase()
+                );
+                
+                // Check if all search terms appear in the product text
+                return searchTerms.every(term => productText.includes(term));
+            });
+        }
+
+        function displaySearchResults(results, resultsContainer) {
+            resultsContainer.innerHTML = '';
+            
+            if (results.length === 0) {
+                resultsContainer.innerHTML = '<div class="no-results">No products found</div>';
+                return;
+            }
+            
+            results.slice(0, 5).forEach(product => {
+                const resultItem = document.createElement('div');
+                resultItem.className = 'search-result-item';
+                resultItem.setAttribute('data-product-id', product.id);
+                
+                resultItem.innerHTML = `
+                    <div class="search-result-image">
+                        <img src="${product.images[0]}" alt="${product.name}">
+                    </div>
+                    <div class="search-result-info">
+                        <div class="search-result-name">${product.name}</div>
+                        <div class="search-result-price">R${product.price.toFixed(2)}</div>
+                    </div>
+                `;
+                
+                resultItem.addEventListener('click', () => {
+                    openProductModal(product.id);
+                    resultsContainer.classList.remove('active');
+                    searchInput.value = '';
+                    if (searchInputMobile) searchInputMobile.value = '';
+                });
+                
+                resultsContainer.appendChild(resultItem);
+            });
+        }
+
+        function handleSearch(inputElement, resultsContainer) {
+            const query = inputElement.value;
+            const results = performSearch(query);
+            displaySearchResults(results, resultsContainer);
+            resultsContainer.classList.toggle('active', results.length > 0);
+        }
+
+        // Event listeners for search
+        searchInput.addEventListener('input', () => handleSearch(searchInput, searchResults));
+        searchButton.addEventListener('click', () => handleSearch(searchInput, searchResults));
+        
+        if (searchInputMobile) {
+            searchInputMobile.addEventListener('input', () => handleSearch(searchInputMobile, searchResultsMobile));
+            searchButtonMobile.addEventListener('click', () => handleSearch(searchInputMobile, searchResultsMobile));
+        }
+
+        // Close search results when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.search-bar')) {
+                searchResults.classList.remove('active');
+                if (searchResultsMobile) searchResultsMobile.classList.remove('active');
+            }
+        });
+
+        // Product Modal Functionality
+        const productModal = document.getElementById('productModal');
+        const modalClose = document.getElementById('modalClose');
+        const modalBody = document.getElementById('modalBody');
+
+        function openProductModal(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+            
+            // Get related products
+            const relatedProducts = product.relatedProducts.map(id => 
+                products.find(p => p.id === id)
+            ).filter(Boolean);
+            
+            // Generate stars HTML
+            const fullStars = Math.floor(product.rating);
+            const hasHalfStar = product.rating % 1 !== 0;
+            const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+            
+            let starsHTML = '';
+            for (let i = 0; i < fullStars; i++) {
+                starsHTML += '<i class="fas fa-star"></i>';
+            }
+            if (hasHalfStar) {
+                starsHTML += '<i class="fas fa-star-half-alt"></i>';
+            }
+            for (let i = 0; i < emptyStars; i++) {
+                starsHTML += '<i class="far fa-star"></i>';
+            }
+            
+            // Generate thumbnails HTML
+            let thumbnailsHTML = '';
+            product.images.forEach((img, index) => {
+                thumbnailsHTML += `
+                    <div class="modal-thumbnail ${index === 0 ? 'active' : ''}" data-image-index="${index}">
+                        <img src="${img}" alt="${product.name}">
+                    </div>
+                `;
+            });
+            
+            // Generate features HTML
+            let featuresHTML = '';
+            product.features.forEach(feature => {
+                featuresHTML += `<li>${feature}</li>`;
+            });
+            
+            // Generate related products HTML
+            let relatedHTML = '';
+            relatedProducts.forEach(relatedProduct => {
+                relatedHTML += `
+                    <div class="modal-related-card" data-product-id="${relatedProduct.id}">
+                        <div class="modal-related-image">
+                            <img src="${relatedProduct.images[0]}" alt="${relatedProduct.name}">
+                        </div>
+                        <div class="modal-related-name">${relatedProduct.name}</div>
+                        <div class="modal-related-price">R${relatedProduct.price.toFixed(2)}</div>
+                    </div>
+                `;
+            });
+            
+            // Build modal content
+            modalBody.innerHTML = `
+                <div class="modal-image-gallery">
+                    <div class="modal-main-image">
+                        <img src="${product.images[0]}" alt="${product.name}" id="modalMainImage">
+                    </div>
+                    <div class="modal-thumbnails">
+                        ${thumbnailsHTML}
+                    </div>
+                </div>
+                <div class="modal-product-info">
+                    <h1 class="modal-product-title">${product.name}</h1>
+                    <div class="modal-product-rating">
+                        <div class="rating-stars">
+                            ${starsHTML}
+                        </div>
+                        <span class="rating-count">(${product.reviews} reviews)</span>
+                    </div>
+                    <div class="modal-product-price">
+                        <span class="modal-current-price">R${product.price.toFixed(2)}</span>
+                        ${product.originalPrice ? `<span class="modal-original-price">R${product.originalPrice.toFixed(2)}</span>` : ''}
+                        ${product.originalPrice ? `<span class="modal-discount">(${Math.round((1 - product.price / product.originalPrice) * 100)}% off)</span>` : ''}
+                    </div>
+                    <div class="sales-badge">
+                        <i class="fas fa-fire mr-1"></i>
+                        ${product.sales}+ sold
+                    </div>
+                    <p class="modal-description">${product.description}</p>
+                    <div class="modal-features">
+                        <h3 class="font-bold mb-2">Key Features:</h3>
+                        <ul>
+                            ${featuresHTML}
+                        </ul>
+                    </div>
+                    <div class="modal-actions">
+                        <button class="modal-add-to-cart" data-product-id="${product.id}">Add to Cart</button>
+                        <button class="modal-buy-now">Buy Now</button>
+                    </div>
+                    <div class="delivery-badge">
+                        <i class="fas fa-shipping-fast mr-1"></i>
+                        FREE Delivery
+                    </div>
+                    ${relatedProducts.length > 0 ? `
+                    <div class="modal-related-products">
+                        <h3 class="modal-related-title">Customers Also Bought</h3>
+                        <div class="modal-related-grid">
+                            ${relatedHTML}
+                        </div>
+                    </div>
+                    ` : ''}
+                </div>
+            `;
+            
+            // Add event listeners for thumbnails
+            const thumbnails = modalBody.querySelectorAll('.modal-thumbnail');
+            const mainImage = modalBody.querySelector('#modalMainImage');
+            
+            thumbnails.forEach(thumb => {
+                thumb.addEventListener('click', () => {
+                    const imageIndex = thumb.getAttribute('data-image-index');
+                    mainImage.src = product.images[imageIndex];
+                    
+                    // Update active thumbnail
+                    thumbnails.forEach(t => t.classList.remove('active'));
+                    thumb.classList.add('active');
+                });
+            });
+            
+            // Add event listeners for related products
+            const relatedCards = modalBody.querySelectorAll('.modal-related-card');
+            relatedCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const relatedProductId = parseInt(card.getAttribute('data-product-id'));
+                    openProductModal(relatedProductId);
+                });
+            });
+            
+            // Add event listener for modal add to cart button
+            const modalAddToCart = modalBody.querySelector('.modal-add-to-cart');
+            modalAddToCart.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const productId = parseInt(modalAddToCart.getAttribute('data-product-id'));
+                
+                // Add to cart logic
+                cartItems++;
+                cartCount.textContent = cartItems;
+                
+                // Show confirmation
+                modalAddToCart.textContent = 'Added!';
+                modalAddToCart.style.background = '#10b981';
+                
+                setTimeout(() => {
+                    modalAddToCart.textContent = 'Add to Cart';
+                    modalAddToCart.style.background = '';
+                }, 1500);
+            });
+            
+            // Show modal
+            productModal.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling
+        }
+
+        function closeProductModal() {
+            productModal.classList.remove('active');
+            document.body.style.overflow = ''; // Restore scrolling
+        }
+
+        // Event listeners for modal
+        modalClose.addEventListener('click', closeProductModal);
+        productModal.addEventListener('click', (e) => {
+            if (e.target === productModal) {
+                closeProductModal();
+            }
+        });
+
+        // Add click event to product cards to open modal
+        const allProductCards = document.querySelectorAll('.product-card, .top-product-card');
+        allProductCards.forEach(card => {
+            card.addEventListener('click', (e) => {
+                // Don't open modal if clicking on add to cart button
+                if (e.target.closest('.add-to-cart')) return;
+                
+                const productId = parseInt(card.getAttribute('data-product-id'));
+                openProductModal(productId);
+            });
+        });
+    </script>
+</body>
+</html>

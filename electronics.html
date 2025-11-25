@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electronics - Hills Market</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a1a1a;
+            --secondary: #ffffff;
+            --accent: #4a5568;
+            --light: #f8f9fa;
+            --dark: #0f0f0f;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --tech-blue: #3b82f6;
+            --tech-cyan: #06b6d4;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #ffffff;
+            color: #1a1a1a;
+        }
+
+        /* Header Styles */
+        .header {
+            background: var(--secondary);
+            border-bottom: 1px solid #e5e5e5;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .search-bar {
+            flex: 1;
+            max-width: 600px;
+        }
+
+        .search-bar input {
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            padding: 10px 15px;
+            font-size: 14px;
+            width: 100%;
+            transition: all 0.2s;
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(26, 26, 26, 0.1);
+        }
+
+        .search-bar button {
+            background: var(--primary);
+            color: var(--secondary);
+            border: none;
+            border-radius: 6px;
+            padding: 10px 20px;
+            margin-left: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .search-bar button:hover {
+            background: #333333;
+        }
+
+        .nav-link {
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: all 0.2s;
+            color: #4a5568;
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            background: #f7f7f7;
+            color: var(--primary);
+        }
+
+        .nav-link.active {
+            color: var(--primary);
+            background: #f0f0f0;
+        }
+
+        .electronics-nav-link {
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: all 0.2s;
+            color: #4a5568;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .electronics-nav-link.active {
+            color: var(--tech-blue);
+            font-weight: 600;
+        }
+
+        .electronics-nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 12px;
+            right: 12px;
+            height: 2px;
+            background: var(--tech-blue);
+        }
+
+        .cart-count {
+            background: var(--primary);
+            color: var(--secondary);
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: -5px;
+            right: -5px;
+        }
+
+        /* Electronics Hero Section */
+        .electronics-hero {
+            background: linear-gradient(135deg, #eff6ff 0%, #f0f9ff 100%);
+            padding: 60px 0;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .electronics-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" opacity="0.05"><path fill="%233b82f6" d="M500,150c138.07,0,250,111.93,250,250s-111.93,250-250,250s-250-111.93-250-250S361.93,150,500,150z"/></svg>') repeat;
+        }
+
+        .electronics-hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .electronics-hero-title {
+            font-size: 48px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--tech-blue), var(--tech-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 16px;
+        }
+
+        .electronics-hero-subtitle {
+            font-size: 20px;
+            color: #6b7280;
+            margin-bottom: 30px;
+            max-width: 600px;
+        }
+
+        .electronics-tag {
+            display: inline-block;
+            background: var(--tech-blue);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+
+        /* Electronics Categories */
+        .electronics-categories {
+            margin-bottom: 50px;
+        }
+
+        .electronics-category-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            position: relative;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .electronics-category-card:hover {
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            transform: translateY(-5px);
+        }
+
+        .electronics-category-image {
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+            background: #f8fafc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .electronics-category-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            transition: transform 0.5s ease;
+        }
+
+        .electronics-category-card:hover .electronics-category-image img {
+            transform: scale(1.05);
+        }
+
+        .electronics-category-content {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .electronics-category-name {
+            font-weight: 700;
+            font-size: 18px;
+            margin-bottom: 8px;
+            color: var(--primary);
+        }
+
+        .electronics-category-description {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+
+        .electronics-category-link {
+            color: var(--tech-blue);
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+        }
+
+        .electronics-category-link i {
+            margin-left: 5px;
+            transition: transform 0.2s;
+        }
+
+        .electronics-category-link:hover i {
+            transform: translateX(3px);
+        }
+
+        /* Electronics Products */
+        .electronics-products-section {
+            margin-bottom: 60px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--tech-blue);
+        }
+
+        .view-all-link {
+            color: var(--tech-blue);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+
+        .view-all-link i {
+            margin-left: 5px;
+            transition: transform 0.2s;
+        }
+
+        .view-all-link:hover i {
+            transform: translateX(3px);
+        }
+
+        /* Product Cards */
+        .product-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            border: 1px solid #f0f0f0;
+            cursor: pointer;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card:hover {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+            transform: translateY(-5px);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: var(--tech-blue);
+            color: var(--secondary);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            z-index: 2;
+        }
+
+        .product-image {
+            height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: #ffffff;
+            position: relative;
+            padding: 20px;
+        }
+
+        .product-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.05);
+        }
+
+        .product-info {
+            padding: 16px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-title {
+            font-size: 15px;
+            line-height: 1.4;
+            height: 42px;
+            overflow: hidden;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .product-rating {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .rating-stars {
+            color: var(--warning);
+            margin-right: 8px;
+        }
+
+        .rating-value {
+            font-size: 13px;
+            font-weight: 600;
+            color: #4b5563;
+        }
+
+        .product-price {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .current-price {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .original-price {
+            font-size: 14px;
+            color: #9ca3af;
+            text-decoration: line-through;
+            margin-left: 8px;
+        }
+
+        .discount {
+            color: var(--success);
+            font-size: 13px;
+            margin-left: 8px;
+            font-weight: 600;
+        }
+
+        .delivery-badge {
+            display: inline-flex;
+            align-items: center;
+            color: var(--success);
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+
+        .add-to-cart {
+            background: var(--primary);
+            color: var(--secondary);
+            border: none;
+            width: 100%;
+            padding: 10px 0;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: auto;
+        }
+
+        .add-to-cart:hover {
+            background: #333333;
+        }
+
+        /* Tech Showcase */
+        .tech-showcase {
+            margin-bottom: 60px;
+        }
+
+        .showcase-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .showcase-item {
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            height: 400px;
+        }
+
+        .showcase-item.large {
+            grid-column: span 2;
+        }
+
+        .showcase-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .showcase-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 30px;
+            color: white;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .showcase-item:hover .showcase-overlay {
+            opacity: 1;
+        }
+
+        .showcase-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .showcase-description {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .showcase-button {
+            background: white;
+            color: var(--primary);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            align-self: flex-start;
+            transition: all 0.2s;
+        }
+
+        .showcase-button:hover {
+            background: var(--tech-blue);
+            color: white;
+        }
+
+        /* Electronics Brands */
+        .electronics-brands {
+            margin-bottom: 60px;
+        }
+
+        .brands-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 20px;
+        }
+
+        .brand-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .brand-card:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: translateY(-3px);
+        }
+
+        .brand-logo {
+            max-width: 100%;
+            max-height: 60px;
+            filter: grayscale(100%);
+            transition: filter 0.3s ease;
+        }
+
+        .brand-card:hover .brand-logo {
+            filter: grayscale(0%);
+        }
+
+        /* Electronics Newsletter */
+        .electronics-newsletter {
+            background: linear-gradient(135deg, #eff6ff 0%, #f0f9ff 100%);
+            padding: 60px 0;
+            border-radius: 12px;
+            margin-bottom: 60px;
+            text-align: center;
+        }
+
+        .newsletter-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--primary);
+        }
+
+        .newsletter-description {
+            font-size: 18px;
+            color: #6b7280;
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .newsletter-form {
+            display: flex;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            border: 1px solid #d1d5db;
+            border-radius: 6px 0 0 6px;
+            padding: 12px 15px;
+            font-size: 16px;
+        }
+
+        .newsletter-input:focus {
+            outline: none;
+            border-color: var(--tech-blue);
+        }
+
+        .newsletter-button {
+            background: var(--tech-blue);
+            color: white;
+            border: none;
+            border-radius: 0 6px 6px 0;
+            padding: 12px 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .newsletter-button:hover {
+            background: var(--tech-cyan);
+        }
+
+        /* Tech Specs */
+        .tech-specs {
+            background: #f8fafc;
+            padding: 40px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+        }
+
+        .specs-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .spec-item {
+            display: flex;
+            align-items: center;
+        }
+
+        .spec-icon {
+            background: var(--tech-blue);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .spec-content h4 {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .spec-content p {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--primary);
+            color: white;
+        }
+
+        .footer-top {
+            background: #0f0f0f;
+            padding: 40px 0;
+        }
+
+        .footer-bottom {
+            background: #0a0a0a;
+            padding: 30px 0;
+            text-align: center;
+            font-size: 14px;
+            color: #9ca3af;
+        }
+
+        .back-to-top {
+            background: #374151;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .back-to-top:hover {
+            background: #4b5563;
+        }
+
+        /* Mobile Navigation */
+        .mobile-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid #e5e5e5;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            z-index: 90;
+        }
+
+        .mobile-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .mobile-nav-item.active {
+            color: var(--primary);
+        }
+
+        .mobile-nav-icon {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .electronics-hero-title {
+                font-size: 36px;
+            }
+
+            .electronics-hero-subtitle {
+                font-size: 18px;
+            }
+
+            .showcase-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .showcase-item.large {
+                grid-column: span 1;
+            }
+
+            .brands-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .specs-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .newsletter-form {
+                flex-direction: column;
+            }
+
+            .newsletter-input {
+                border-radius: 6px;
+                margin-bottom: 10px;
+            }
+
+            .newsletter-button {
+                border-radius: 6px;
+            }
+
+            .desktop-only {
+                display: none;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .mobile-only {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo and Menu Button -->
+                <div class="flex items-center">
+                    <button id="menuButton" class="mr-4 p-2 rounded-lg bg-gray-100">
+                        <i class="fas fa-bars text-lg"></i>
+                    </button>
+                    <a href="landing page.html" class="flex items-center">
+                        <img src="ANewlogo.png" alt="Hills Market" class="h-8 sm:h-10 md:h-12 lg:h-16 w-auto object-contain">
+                        <span class="ml-2 text-xl font-bold text-black"></span>
+                    </a>
+                </div>
+
+                <!-- Search Bar - Desktop -->
+                <div class="search-bar mx-4 flex desktop-only">
+                    <input type="text" placeholder="Search for electronics, gadgets and more">
+                    <button class="bg-black text-white px-4 py-2 rounded-lg">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+
+                <!-- Right Menu - Desktop -->
+                <div class="flex items-center space-x-4 desktop-only">
+                    <div class="relative">
+                        <a href="#" class="nav-link flex flex-col items-start">
+                            <span class="text-xs text-gray-500">Hello, Sign in</span>
+                            <span class="text-sm font-medium">Account & Lists</span>
+                        </a>
+                    </div>
+                    <div class="relative">
+                        <a href="#" class="nav-link flex flex-col items-start">
+                            <span class="text-xs text-gray-500">Returns</span>
+                            <span class="text-sm font-medium">& Orders</span>
+                        </a>
+                    </div>
+                    <div class="relative">
+                        <a href="#" class="nav-link flex items-center">
+                            <i class="fas fa-shopping-cart text-xl"></i>
+                            <span class="ml-1 font-medium">Cart</span>
+                            <span class="cart-count">0</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="mobile-only">
+                    <button class="p-2 rounded-lg bg-gray-100">
+                        <i class="fas fa-bars text-lg"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Electronics Navigation - Desktop -->
+            <div class="mt-4 desktop-only">
+                <div class="flex items-center space-x-6 overflow-x-auto">
+                    <a href="landing page.html" class="nav-link">Home</a>
+                    <a href="electronics.html" class="electronics-nav-link active">Electronics</a>
+                    <a href="#" class="electronics-nav-link">Smartphones</a>
+                    <a href="#" class="electronics-nav-link">Laptops</a>
+                    <a href="#" class="electronics-nav-link">TV & Audio</a>
+                    <a href="#" class="electronics-nav-link">Cameras</a>
+                    <a href="#" class="electronics-nav-link">Wearables</a>
+                    <a href="#" class="electronics-nav-link">Gaming</a>
+                    <a href="#" class="electronics-nav-link">Accessories</a>
+                    <a href="#" class="electronics-nav-link">Smart Home</a>
+                </div>
+            </div>
+
+            <!-- Search Bar - Mobile -->
+            <div class="mt-4 mobile-only">
+                <div class="search-bar flex">
+                    <input type="text" placeholder="Search for electronics, gadgets and more">
+                    <button class="bg-black text-white px-4 py-2 rounded-lg ml-2">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Electronics Hero Section -->
+    <section class="electronics-hero">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="electronics-hero-content">
+                <h1 class="electronics-hero-title">Tech Innovation Awaits</h1>
+                <p class="electronics-hero-subtitle">Discover the latest in electronics with cutting-edge gadgets, smart devices, and innovative technology for your home and lifestyle.</p>
+                <div>
+                    <span class="electronics-tag">New Releases</span>
+                    <span class="electronics-tag">Smart Home</span>
+                    <span class="electronics-tag">Up to 30% Off</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4">
+        <!-- Electronics Categories -->
+        <section class="electronics-categories">
+            <h2 class="section-title">Shop by Category</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Category 1 -->
+                <div class="electronics-category-card">
+                    <div class="electronics-category-image">
+                        <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Smartphones">
+                    </div>
+                    <div class="electronics-category-content">
+                        <h3 class="electronics-category-name">Smartphones</h3>
+                        <p class="electronics-category-description">Latest smartphones with advanced cameras, powerful processors, and innovative features.</p>
+                        <a href="#" class="electronics-category-link">
+                            Shop Now <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Category 2 -->
+                <div class="electronics-category-card">
+                    <div class="electronics-category-image">
+                        <img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Laptops">
+                    </div>
+                    <div class="electronics-category-content">
+                        <h3 class="electronics-category-name">Laptops & Computers</h3>
+                        <p class="electronics-category-description">High-performance laptops, desktops, and accessories for work and entertainment.</p>
+                        <a href="#" class="electronics-category-link">
+                            Shop Now <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Category 3 -->
+                <div class="electronics-category-card">
+                    <div class="electronics-category-image">
+                        <img src="https://images.unsplash.com/photo-1546443077-8f2d57f4b9b7?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Audio">
+                    </div>
+                    <div class="electronics-category-content">
+                        <h3 class="electronics-category-name">Audio & Headphones</h3>
+                        <p class="electronics-category-description">Premium sound quality with wireless headphones, speakers, and home audio systems.</p>
+                        <a href="#" class="electronics-category-link">
+                            Shop Now <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Category 4 -->
+                <div class="electronics-category-card">
+                    <div class="electronics-category-image">
+                        <img src="https://images.unsplash.com/photo-1558089687-db4b18a5d35a?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Smart Home">
+                    </div>
+                    <div class="electronics-category-content">
+                        <h3 class="electronics-category-name">Smart Home</h3>
+                        <p class="electronics-category-description">Transform your home with smart devices, assistants, and automated systems.</p>
+                        <a href="#" class="electronics-category-link">
+                            Shop Now <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tech Specs Section -->
+        <section class="tech-specs">
+            <h2 class="specs-title">Why Choose Hills Electronics?</h2>
+            <div class="specs-grid">
+                <!-- Spec 1 -->
+                <div class="spec-item">
+                    <div class="spec-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="spec-content">
+                        <h4>Warranty Protection</h4>
+                        <p>All electronics come with manufacturer warranty and extended protection plans</p>
+                    </div>
+                </div>
+
+                <!-- Spec 2 -->
+                <div class="spec-item">
+                    <div class="spec-icon">
+                        <i class="fas fa-shipping-fast"></i>
+                    </div>
+                    <div class="spec-content">
+                        <h4>Fast Delivery</h4>
+                        <p>Free next-day delivery on eligible items with secure packaging</p>
+                    </div>
+                </div>
+
+                <!-- Spec 3 -->
+                <div class="spec-item">
+                    <div class="spec-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <div class="spec-content">
+                        <h4>Expert Support</h4>
+                        <p>24/7 customer support and technical assistance for all products</p>
+                    </div>
+                </div>
+
+                <!-- Spec 4 -->
+                <div class="spec-item">
+                    <div class="spec-icon">
+                        <i class="fas fa-sync-alt"></i>
+                    </div>
+                    <div class="spec-content">
+                        <h4>Easy Returns</h4>
+                        <p>30-day return policy with free returns on most electronics</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- New Arrivals -->
+        <section class="electronics-products-section">
+            <div class="section-header">
+                <h2 class="section-title">New Arrivals</h2>
+                <a href="#" class="view-all-link">
+                    View All <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <!-- Product 1 -->
+                <div class="product-card">
+                    <div class="product-badge">New</div>
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1592750475338-74b7b21085ab?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Smartphone Pro">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">Smartphone Pro Max - 5G, 256GB, Triple Camera</div>
+                        <div class="product-rating">
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="rating-value">4.5</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">R15,999.99</span>
+                        </div>
+                        <div class="delivery-badge">
+                            <i class="fas fa-shipping-fast mr-1"></i>
+                            FREE Delivery
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="product-card">
+                    <div class="product-badge">-15%</div>
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Ultrabook">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">Ultrabook Pro - 13.3", 16GB RAM, 512GB SSD</div>
+                        <div class="product-rating">
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <span class="rating-value">5.0</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">R22,499.99</span>
+                            <span class="original-price">R26,470.58</span>
+                            <span class="discount">(15% off)</span>
+                        </div>
+                        <div class="delivery-badge">
+                            <i class="fas fa-shipping-fast mr-1"></i>
+                            FREE Delivery
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Wireless Headphones">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">Wireless Noise-Canceling Headphones</div>
+                        <div class="product-rating">
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                            <span class="rating-value">4.0</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">R3,499.99</span>
+                        </div>
+                        <div class="delivery-badge">
+                            <i class="fas fa-shipping-fast mr-1"></i>
+                            FREE Delivery
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="product-card">
+                    <div class="product-badge">Limited</div>
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Smart Watch">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">Smart Watch Series 5 - GPS, Heart Rate Monitor</div>
+                        <div class="product-rating">
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="rating-value">4.5</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">R4,999.99</span>
+                        </div>
+                        <div class="delivery-badge">
+                            <i class="fas fa-shipping-fast mr-1"></i>
+                            FREE Delivery
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tech Showcase -->
+        <section class="tech-showcase">
+            <h2 class="section-title">Tech Innovation</h2>
+            <div class="showcase-grid">
+                <!-- Showcase Item 1 -->
+                <div class="showcase-item large">
+                    <img src="https://images.unsplash.com/photo-1550009158-9ebf69173e03?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" alt="Smart Home Ecosystem" class="showcase-image">
+                    <div class="showcase-overlay">
+                        <h3 class="showcase-title">Smart Home Ecosystem</h3>
+                        <p class="showcase-description">Connect and control your entire home with our integrated smart devices</p>
+                        <button class="showcase-button">Explore Smart Home</button>
+                    </div>
+                </div>
+
+                <!-- Showcase Item 2 -->
+                <div class="showcase-item">
+                    <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Gaming Setup" class="showcase-image">
+                    <div class="showcase-overlay">
+                        <h3 class="showcase-title">Ultimate Gaming</h3>
+                        <p class="showcase-description">High-performance gaming gear for immersive experiences</p>
+                        <button class="showcase-button">Shop Gaming</button>
+                    </div>
+                </div>
+
+                <!-- Showcase Item 3 -->
+                <div class="showcase-item">
+                    <img src="https://images.unsplash.com/photo-1542751110-97427bbecf20?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Photography Gear" class="showcase-image">
+                    <div class="showcase-overlay">
+                        <h3 class="showcase-title">Pro Photography</h3>
+                        <p class="showcase-description">Professional cameras and accessories for stunning visuals</p>
+                        <button class="showcase-button">Discover Cameras</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Trending Now -->
+        <section class="electronics-products-section">
+            <div class="section-header">
+                <h2 class="section-title">Trending Now</h2>
+                <a href="#" class="view-all-link">
+                    View All <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <!-- Product 1 -->
+                <div class="product-card">
+                    <div class="product-badge">Bestseller</div>
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1605236453806-6ff36851218e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Wireless Earbuds">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">True Wireless Earbuds - 24hr Battery</div>
+                        <div class="product-rating">
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="rating-value">4.5</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">R1,299.99</span>
+                        </div>
+                        <div class="delivery-badge">
+                            <i class="fas fa-shipping-fast mr-1"></i>
+                            FREE Delivery
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1593640408182-31c70c8268f5?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Tablet">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">10.9" Tablet - 128GB, Stylus Support</div>
+                        <div class="product-rating">
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                            <span class="rating-value">4.0</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">R8,499.99</span>
+                        </div>
+                        <div class="delivery-badge">
+                            <i class="fas fa-shipping-fast mr-1"></i>
+                            FREE Delivery
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="product-card">
+                    <div class="product-badge">-20%</div>
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1558089687-db4b18a5d35a?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Smart Speaker">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">Smart Speaker with Voice Assistant</div>
+                        <div class="product-rating">
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <span class="rating-value">5.0</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">R1,799.99</span>
+                            <span class="original-price">R2,249.99</span>
+                            <span class="discount">(20% off)</span>
+                        </div>
+                        <div class="delivery-badge">
+                            <i class="fas fa-shipping-fast mr-1"></i>
+                            FREE Delivery
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Fitness Tracker">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">Fitness Tracker - Heart Rate & Sleep Monitor</div>
+                        <div class="product-rating">
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                            <span class="rating-value">4.0</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">R899.99</span>
+                        </div>
+                        <div class="delivery-badge">
+                            <i class="fas fa-shipping-fast mr-1"></i>
+                            FREE Delivery
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Electronics Brands -->
+        <section class="electronics-brands">
+            <h2 class="section-title">Featured Brands</h2>
+            <div class="brands-grid">
+                <!-- Brand 1 -->
+                <div class="brand-card">
+                    <img src="https://via.placeholder.com/150x60/FFFFFF?text=TechPro" alt="TechPro" class="brand-logo">
+                </div>
+
+                <!-- Brand 2 -->
+                <div class="brand-card">
+                    <img src="https://via.placeholder.com/150x60/FFFFFF?text=SmartLife" alt="SmartLife" class="brand-logo">
+                </div>
+
+                <!-- Brand 3 -->
+                <div class="brand-card">
+                    <img src="https://via.placeholder.com/150x60/FFFFFF?text=AudioMax" alt="AudioMax" class="brand-logo">
+                </div>
+
+                <!-- Brand 4 -->
+                <div class="brand-card">
+                    <img src="https://via.placeholder.com/150x60/FFFFFF?text=GamerZone" alt="GamerZone" class="brand-logo">
+                </div>
+
+                <!-- Brand 5 -->
+                <div class="brand-card">
+                    <img src="https://via.placeholder.com/150x60/FFFFFF?text=VisionTech" alt="VisionTech" class="brand-logo">
+                </div>
+
+                <!-- Brand 6 -->
+                <div class="brand-card">
+                    <img src="https://via.placeholder.com/150x60/FFFFFF?text=ConnectPlus" alt="ConnectPlus" class="brand-logo">
+                </div>
+            </div>
+        </section>
+
+        <!-- Electronics Newsletter -->
+        <section class="electronics-newsletter">
+            <h2 class="newsletter-title">Stay Updated with Tech</h2>
+            <p class="newsletter-description">Subscribe to our newsletter and be the first to know about new product launches, tech innovations, and exclusive deals.</p>
+            <form class="newsletter-form">
+                <input type="email" placeholder="Your email address" class="newsletter-input" required>
+                <button type="submit" class="newsletter-button">Subscribe</button>
+            </form>
+        </section>
+    </main>
+
+    <!-- Back to Top -->
+    <div class="back-to-top" id="backToTop">
+        Back to top
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-top">
+            <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Get to Know Us</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">About Us</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Careers</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Press Releases</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Hills Market Science</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Connect with Us</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Facebook</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Twitter</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Instagram</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Make Money with Us</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Sell on Hills Market</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Sell under Hills Market Accelerator</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Become an Affiliate</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Fulfillment by Hills Market</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Let Us Help You</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">COVID-19 and Hills Market</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Your Account</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Returns Centre</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">100% Purchase Protection</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Help</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="flex items-center mb-4 md:mb-0">
+                        <img src="hills-logo.png" alt="Hills Market" class="h-6 mr-2">
+                        <span class="text-white font-bold">Hills Market</span>
+                    </div>
+                    <div class="flex space-x-6">
+                        <a href="#" class="text-gray-400 hover:text-white text-xs">Conditions of Use</a>
+                        <a href="#" class="text-gray-400 hover:text-white text-xs">Privacy Notice</a>
+                        <a href="#" class="text-gray-400 hover:text-white text-xs">Interest-Based Ads</a>
+                    </div>
+                </div>
+                <p class="mt-4">© 1996-2025, HillsMarket.com, Inc. or its affiliates</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Mobile Navigation -->
+    <nav class="mobile-nav mobile-only">
+        <a href="landing page.html" class="mobile-nav-item">
+            <i class="fas fa-home mobile-nav-icon"></i>
+            <span>Home</span>
+        </a>
+        <a href="electronics.html" class="mobile-nav-item active">
+            <i class="fas fa-laptop mobile-nav-icon"></i>
+            <span>Electronics</span>
+        </a>
+        <a href="#" class="mobile-nav-item">
+            <i class="fas fa-search mobile-nav-icon"></i>
+            <span>Search</span>
+        </a>
+        <a href="#" class="mobile-nav-item">
+            <i class="fas fa-shopping-cart mobile-nav-icon"></i>
+            <span>Cart</span>
+        </a>
+        <a href="#" class="mobile-nav-item">
+            <i class="fas fa-user mobile-nav-icon"></i>
+            <span>Account</span>
+        </a>
+    </nav>
+
+    <script>
+        // Back to Top
+        document.getElementById('backToTop').addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Add to Cart functionality
+        const addToCartButtons = document.querySelectorAll('.add-to-cart');
+        const cartCount = document.querySelector('.cart-count');
+        let cartItems = 0;
+
+        addToCartButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                cartItems++;
+                cartCount.textContent = cartItems;
+                
+                // Animation effect
+                button.textContent = 'Added!';
+                button.style.background = '#10b981';
+                
+                setTimeout(() => {
+                    button.textContent = 'Add to Cart';
+                    button.style.background = '';
+                }, 1500);
+            });
+        });
+
+        // Mobile navigation active state
+        const mobileNavItems = document.querySelectorAll('.mobile-nav-item');
+        mobileNavItems.forEach(item => {
+            item.addEventListener('click', function() {
+                mobileNavItems.forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
